@@ -7,20 +7,37 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F5F5F7;--card:#fff;--border:#E5E5EA;--text:#1D1D1F;--muted:#6E6E73;
-  --accent:#0071E3;--accent-light:#E8F0FE;--success:#34C759;--danger:#FF3B30;
-  --radius:18px;--radius-sm:12px;
+  --bg:#F5F5F7;
+  --card:#fff;
+  --border:#E5E5EA;
+  --text:#1D1D1F;
+  --muted:#6E6E73;
+  --accent:#0071E3;
+  --accent-light:#E8F0FE;
+  --success:#34C759;
+  --danger:#FF3B30;
+  --warn:#FF9500;
+  --radius:18px;
+  --radius-sm:12px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.nav{background:rgba(255,255,255,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);padding:0 1.25rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+
+/* NAV */
+.nav{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);padding:0 1.25rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .nav-brand{font-size:17px;font-weight:600;color:var(--text)}
 .nav-tabs{display:flex;gap:4px;background:#F2F2F7;border-radius:9px;padding:3px}
 .tab-btn{padding:5px 14px;border-radius:7px;border:none;background:transparent;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:all 0.15s}
 .tab-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.12)}
+
+/* PAGES */
 .page{display:none;padding:1.25rem;max-width:460px;margin:0 auto}
 .page.active{display:block}
+
+/* CARDS */
 .card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:1.25rem;margin-bottom:1rem}
 .card-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem}
+
+/* CAMERA */
 .cam-wrap{border-radius:var(--radius-sm);overflow:hidden;background:#000;position:relative;aspect-ratio:4/3;margin-bottom:1rem}
 #video{width:100%;height:100%;object-fit:cover;display:block}
 #canvas{display:none}
@@ -30,88 +47,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 #captureBtn{flex:1;padding:13px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:opacity 0.15s}
 #captureBtn:active{opacity:0.8}
 #retakeBtn{padding:13px 18px;border-radius:13px;border:0.5px solid var(--border);background:#fff;color:var(--text);font-size:15px;font-weight:500;cursor:pointer;display:none}
-.preview-img{width:100%;border-radius:var(--radius-sm);display:none;margin-bottom:10px}
+.preview-img{width:100%;border-radius:var(--radius-sm);display:none}
+
+/* LOCATION */
 .loc-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .loc-row:last-child{border-bottom:none}
-.loc-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.loc-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.loc-icon svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .loc-info{flex:1}
 .loc-label{font-size:12px;color:var(--muted)}
-.loc-val{font-size:14px;font-weight:500;color:var(--text);margin-top:1px;word-break:break-all}
-.loc-status{font-size:12px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+.loc-val{font-size:14px;font-weight:500;color:var(--text);margin-top:1px}
+.loc-status{font-size:12px;padding:3px 9px;border-radius:20px;font-weight:500}
 .loc-status.getting{background:#FFF3E0;color:#E65100}
 .loc-status.done{background:#E8F5E9;color:#1B5E20}
 .loc-status.error{background:#FFEBEE;color:#B71C1C}
+
+/* FIELDS */
 .field{margin-bottom:.875rem}
 label{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-bottom:5px}
 input,select{width:100%;background:#F5F5F7;border:0.5px solid transparent;border-radius:11px;padding:12px 13px;font-size:15px;color:var(--text);font-family:inherit;outline:none;transition:all 0.15s;-webkit-appearance:none;appearance:none}
 input:focus,select:focus{background:#fff;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,0.12)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6E73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
+
+/* SUBMIT */
 .submit-btn{width:100%;padding:15px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.15s,transform 0.1s;margin-top:.25rem}
 .submit-btn:active{transform:scale(0.98);opacity:0.85}
 .submit-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* SUCCESS */
 .success-screen{display:none;text-align:center;padding:2rem 1rem}
-.check-circle{width:72px;height:72px;border-radius:50%;background:#34C75920;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:36px}
+.check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#34C759,#30D158);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.check-circle svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .success-screen h2{font-size:20px;font-weight:600;margin-bottom:6px}
 .success-screen p{font-size:14px;color:var(--muted);margin-bottom:1.5rem}
 .again-btn{padding:13px 28px;border-radius:12px;border:0.5px solid var(--border);background:#fff;font-size:15px;font-weight:500;cursor:pointer;color:var(--text)}
-.login-wrap{min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;padding:1.5rem;margin:-1.25rem}
-.login-card{background:#fff;border-radius:24px;border:0.5px solid var(--border);padding:2rem 1.5rem;width:100%;max-width:340px;text-align:center}
-.login-icon{font-size:42px;margin-bottom:1rem}
-.login-card h2{font-size:20px;font-weight:600;margin-bottom:4px}
-.login-card p{font-size:14px;color:var(--muted);margin-bottom:1.5rem}
-.login-field{margin-bottom:.75rem;text-align:left}
-.login-field label{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-bottom:5px}
-.login-btn{width:100%;padding:14px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:.5rem;transition:opacity .15s}
-.login-btn:active{opacity:.8}
-.login-error{font-size:13px;color:var(--danger);margin-top:.5rem;display:none}
-.logout-btn{font-size:13px;color:var(--danger);background:none;border:none;cursor:pointer;padding:4px 8px}
+
+/* ---- ADMIN ---- */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
 .stat-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:1rem;text-align:center}
 .stat-num{font-size:28px;font-weight:700;color:var(--text)}
 .stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+
 .filter-row{display:flex;gap:8px;margin-bottom:1rem}
 .filter-row input,.filter-row select{flex:1;font-size:13px;padding:9px 12px}
+
 .record-list{display:flex;flex-direction:column;gap:8px}
 .record-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:1rem;display:flex;gap:12px;align-items:flex-start}
-.record-face{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#F2F2F7}
-.record-face-placeholder{width:52px;height:52px;border-radius:10px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.record-face{width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#F2F2F7}
+.record-face-placeholder{width:48px;height:48px;border-radius:10px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
 .record-info{flex:1;min-width:0}
 .record-name{font-size:15px;font-weight:600;color:var(--text)}
-.record-meta{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.7}
-.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;background:#E8F0FE;color:#1565C0}
-.empty-state{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px}
-.export-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:#fff;font-size:14px;font-weight:500;cursor:pointer;color:var(--text);margin-top:1rem}
-.tg-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;font-size:13px;margin-bottom:1rem}
-.tg-status.sending{background:#E3F2FD;color:#1565C0}
-.tg-status.sent{background:#E8F5E9;color:#1B5E20}
-.tg-status.failed{background:#FFEBEE;color:#B71C1C}
+.record-meta{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
+.record-time{font-size:11px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px}
+.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge-blue{background:#E8F0FE;color:#1565C0}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.empty-state svg{width:48px;height:48px;stroke:var(--border);fill:none;stroke-width:1.5;margin-bottom:.75rem}
+.empty-state p{font-size:14px}
+
+.export-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:#fff;font-size:14px;font-weight:500;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;gap:6px;margin-top:1rem}
+.export-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1D1D1F;color:#fff;padding:10px 20px;border-radius:24px;font-size:14px;font-weight:500;transition:transform 0.3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:400px){
+  .nav-brand{font-size:15px}
+  .tab-btn{padding:5px 10px;font-size:12px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
 </style>
-<script src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'></script>
 </head>
 <body>
 
 <nav class="nav">
   <span class="nav-brand">📋 Attendance</span>
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="showPage('form',event)">Mark</button>
-    <button class="tab-btn" onclick="showPage('admin',event)">Dashboard</button>
+    <button class="tab-btn active" onclick="showPage('form')">Mark</button>
+    <button class="tab-btn" onclick="showPage('admin')">Dashboard</button>
   </div>
 </nav>
 
 <div id="toast" class="toast"></div>
 
-<!-- FORM PAGE -->
+<!-- ===== FORM PAGE ===== -->
 <div class="page active" id="page-form">
-  <div id="form-main">
 
+  <div id="form-main">
+    <!-- FACE -->
     <div class="card">
       <div class="card-title">Face Capture</div>
       <div class="cam-wrap">
         <video id="video" autoplay playsinline muted></video>
         <canvas id="canvas"></canvas>
-        <div class="cam-overlay" id="cam-overlay"><p>Tap "Open Camera" to capture your face</p></div>
+        <div class="cam-overlay" id="cam-overlay">
+          <p>Tap "Open Camera" to capture your face</p>
+        </div>
       </div>
       <img id="preview" class="preview-img" alt="Captured face">
       <div class="cam-btn-row">
@@ -120,23 +152,34 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
 
+    <!-- LOCATION -->
     <div class="card">
       <div class="card-title">Location</div>
       <div class="loc-row">
-        <div class="loc-icon">📍</div>
-        <div class="loc-info"><div class="loc-label">Coordinates</div><div class="loc-val" id="loc-coords">—</div></div>
+        <div class="loc-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+        <div class="loc-info">
+          <div class="loc-label">Coordinates</div>
+          <div class="loc-val" id="loc-coords">—</div>
+        </div>
         <span class="loc-status getting" id="loc-status">Getting...</span>
       </div>
       <div class="loc-row">
-        <div class="loc-icon">🗺️</div>
-        <div class="loc-info"><div class="loc-label">Address</div><div class="loc-val" id="loc-address">Fetching...</div></div>
+        <div class="loc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="loc-info">
+          <div class="loc-label">Address</div>
+          <div class="loc-val" id="loc-address">Fetching...</div>
+        </div>
       </div>
       <div class="loc-row">
-        <div class="loc-icon">🌐</div>
-        <div class="loc-info"><div class="loc-label">IP Address</div><div class="loc-val" id="loc-ip">Fetching...</div></div>
+        <div class="loc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg></div>
+        <div class="loc-info">
+          <div class="loc-label">IP Address</div>
+          <div class="loc-val" id="loc-ip">Fetching...</div>
+        </div>
       </div>
     </div>
 
+    <!-- INFO -->
     <div class="card">
       <div class="card-title">Your Information</div>
       <div class="field"><label>Full Name</label><input type="text" id="f-name" placeholder="Enter full name"></div>
@@ -154,343 +197,290 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="field"><label id="org-label">University Name</label><input type="text" id="f-org" placeholder="e.g. BUET, BRAC University"></div>
     </div>
 
-    <div id="tg-status-box" style="display:none" class="tg-status sending">
-      <span id="tg-status-text">📤 Sending to Telegram...</span>
-    </div>
-
-    <button class="submit-btn" id="submitBtn" onclick="submitAttendance()">✓ Mark Attendance</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitAttendance()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Mark Attendance
+    </button>
   </div>
 
   <div class="success-screen" id="success-screen">
-    <div class="check-circle">✅</div>
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
     <h2>Attendance Marked!</h2>
-    <p id="success-detail">Your attendance has been recorded.</p>
-    <p id="tg-result" style="font-size:13px;margin-bottom:1rem"></p>
+    <p id="success-detail">Your attendance has been recorded successfully.</p>
     <button class="again-btn" onclick="resetForm()">Mark Another</button>
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
+<!-- ===== ADMIN PAGE ===== -->
 <div class="page" id="page-admin">
-  <div id="admin-login" class="login-wrap">
-    <div class="login-card">
-      <div class="login-icon">🔐</div>
-      <h2>Admin Access</h2>
-      <p>Enter your credentials to view the dashboard</p>
-      <div class="login-field"><label>Username</label><input type="text" id="login-user" placeholder="Username" autocomplete="username"></div>
-      <div class="login-field"><label>Password</label><input type="password" id="login-pass" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <p class="login-error" id="login-error">❌ Incorrect username or password</p>
-      <button class="login-btn" onclick="doLogin()">Sign In</button>
-    </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Records</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">Today</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-orgs">0</div><div class="stat-label">Organizations</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-week">0</div><div class="stat-label">This Week</div></div>
   </div>
 
-  <div id="admin-dash" style="display:none">
-    <div style="display:flex;justify-content:flex-end;margin-bottom:.75rem">
-      <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Records</div></div>
-      <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">Today</div></div>
-      <div class="stat-card"><div class="stat-num" id="stat-orgs">0</div><div class="stat-label">Organizations</div></div>
-      <div class="stat-card"><div class="stat-num" id="stat-week">0</div><div class="stat-label">This Week</div></div>
-    </div>
-    <div class="filter-row">
-      <input type="text" id="search-input" placeholder="🔍  Search name, ID..." oninput="renderRecords()">
-      <select id="filter-org" onchange="renderRecords()"><option value="">All Orgs</option></select>
-    </div>
-    <div id="record-list" class="record-list"></div>
-    <button class="export-btn" onclick="exportCSV()">⬇️ Export CSV</button>
+  <div class="filter-row">
+    <input type="text" id="search-input" placeholder="🔍  Search name, ID..." oninput="renderRecords()">
+    <select id="filter-org" onchange="renderRecords()"><option value="">All Orgs</option></select>
   </div>
+
+  <div id="record-list" class="record-list"></div>
+
+  <button class="export-btn" onclick="exportCSV()">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Export CSV
+  </button>
 </div>
 
 <script>
-// ========= CONFIG =========
-const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'attend2025';
-const SUPABASE_URL='https://elsjszzjoumlxppsenmv.supabase.co';
-const SUPABASE_KEY='PASTE_ANON_KEY_HERE';
-// ==========================
-
+// ---- STATE ----
 let db = JSON.parse(localStorage.getItem('attendance_db') || '[]');
-let stream = null, capturedImage = null, camState = 'idle';
+let stream = null;
+let capturedImage = null;
+let camState = 'idle'; // idle | streaming | captured
 let locationData = { lat: null, lng: null, address: 'Unknown', ip: 'Unknown' };
-let adminLoggedIn = sessionStorage.getItem('admin_auth') === 'true';
 
-function saveDB(){ localStorage.setItem('attendance_db', JSON.stringify(db)); }
+// ---- INIT ----
+getLocation();
+getIP();
 
-// TABS
-function showPage(p, e){
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  if(e) e.target.classList.add('active');
-  if(p==='admin') checkAdminAuth();
+function saveDB() {
+  localStorage.setItem('attendance_db', JSON.stringify(db));
 }
 
-// ADMIN AUTH
-function checkAdminAuth(){
-  if(adminLoggedIn){
-    document.getElementById('admin-login').style.display='none';
-    document.getElementById('admin-dash').style.display='block';
-    updateStats(); renderRecords();
-  } else {
-    document.getElementById('admin-login').style.display='flex';
-    document.getElementById('admin-dash').style.display='none';
+// ---- TABS ----
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  event.target.classList.add('active');
+  if (p === 'admin') { updateStats(); renderRecords(); }
+}
+
+// ---- CAMERA ----
+async function handleCam() {
+  if (camState === 'idle') {
+    await startCamera();
+  } else if (camState === 'streaming') {
+    capturePhoto();
   }
 }
-function doLogin(){
-  const u=document.getElementById('login-user').value.trim();
-  const p=document.getElementById('login-pass').value;
-  if(u===ADMIN_USER && p===ADMIN_PASS){
-    adminLoggedIn=true; sessionStorage.setItem('admin_auth','true');
-    document.getElementById('login-error').style.display='none';
-    checkAdminAuth();
-  } else {
-    document.getElementById('login-error').style.display='block';
-    document.getElementById('login-pass').value='';
+
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 640, height: 480 } });
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    document.getElementById('cam-overlay').style.display = 'none';
+    document.getElementById('captureBtn').textContent = '📸 Capture';
+    camState = 'streaming';
+  } catch(e) {
+    showToast('Camera access denied');
   }
 }
-function doLogout(){
-  adminLoggedIn=false; sessionStorage.removeItem('admin_auth');
-  document.getElementById('admin-login').style.display='flex';
-  document.getElementById('admin-dash').style.display='none';
-  document.getElementById('login-user').value='';
-  document.getElementById('login-pass').value='';
-}
 
-// CAMERA
-async function handleCam(){
-  if(camState==='idle') await startCamera();
-  else if(camState==='streaming') capturePhoto();
-}
-async function startCamera(){
-  try{
-    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:640,height:480}});
-    document.getElementById('video').srcObject=stream;
-    document.getElementById('cam-overlay').style.display='none';
-    document.getElementById('captureBtn').textContent='📸 Capture';
-    camState='streaming';
-  } catch(e){ showToast('Camera access denied'); }
-}
-function capturePhoto(){
-  const v=document.getElementById('video'), c=document.getElementById('canvas');
-  c.width=v.videoWidth; c.height=v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  capturedImage=c.toDataURL('image/jpeg',0.75);
-  document.getElementById('preview').src=capturedImage;
-  document.getElementById('preview').style.display='block';
+function capturePhoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  capturedImage = canvas.toDataURL('image/jpeg', 0.75);
+
+  const preview = document.getElementById('preview');
+  preview.src = capturedImage;
+  preview.style.display = 'block';
+
   stopCamera();
-  document.querySelector('.cam-wrap').style.display='none';
-  document.getElementById('captureBtn').style.display='none';
-  document.getElementById('retakeBtn').style.display='block';
-  camState='captured';
+  document.querySelector('.cam-wrap').style.display = 'none';
+  document.getElementById('captureBtn').style.display = 'none';
+  document.getElementById('retakeBtn').style.display = 'block';
+  camState = 'captured';
 }
-function retake(){
-  capturedImage=null;
-  document.getElementById('preview').style.display='none';
-  document.querySelector('.cam-wrap').style.display='block';
-  document.getElementById('cam-overlay').style.display='flex';
-  document.getElementById('captureBtn').style.display='block';
-  document.getElementById('captureBtn').textContent='📷 Open Camera';
-  document.getElementById('retakeBtn').style.display='none';
-  camState='idle';
-}
-function stopCamera(){ if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;} }
 
-// LOCATION
-getLocation(); getIP();
-function getLocation(){
-  if(!navigator.geolocation){ setLocError(); return; }
-  navigator.geolocation.getCurrentPosition(async pos=>{
-    const {latitude:lat,longitude:lng}=pos.coords;
-    locationData.lat=lat.toFixed(6); locationData.lng=lng.toFixed(6);
-    document.getElementById('loc-coords').textContent=`${locationData.lat}, ${locationData.lng}`;
-    document.getElementById('loc-status').textContent='Got it ✓';
-    document.getElementById('loc-status').className='loc-status done';
-    try{
-      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
-      const d=await r.json();
-      locationData.address=d.display_name||'Unknown';
-      document.getElementById('loc-address').textContent=locationData.address.substring(0,65)+'…';
-    } catch(e){ document.getElementById('loc-address').textContent=`${lat.toFixed(4)}, ${lng.toFixed(4)}`; }
-  }, ()=>setLocError());
+function retake() {
+  capturedImage = null;
+  document.getElementById('preview').style.display = 'none';
+  document.querySelector('.cam-wrap').style.display = 'block';
+  document.getElementById('cam-overlay').style.display = 'flex';
+  document.getElementById('captureBtn').style.display = 'block';
+  document.getElementById('captureBtn').textContent = '📷 Open Camera';
+  document.getElementById('retakeBtn').style.display = 'none';
+  camState = 'idle';
 }
-function setLocError(){
-  document.getElementById('loc-status').textContent='Denied';
-  document.getElementById('loc-status').className='loc-status error';
-  document.getElementById('loc-coords').textContent='Permission denied';
-  document.getElementById('loc-address').textContent='—';
-  locationData.address='Location denied';
+
+function stopCamera() {
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
 }
-async function getIP(){
-  for(const url of ['https://api.ipify.org?format=json','https://api.my-ip.io/ip.json']){
-    try{
-      const d=await (await fetch(url)).json();
-      locationData.ip=d.ip||'—';
-      document.getElementById('loc-ip').textContent=locationData.ip;
+
+// ---- LOCATION ----
+function getLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById('loc-status').textContent = 'N/A';
+    document.getElementById('loc-status').className = 'loc-status error';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude: lat, longitude: lng } = pos.coords;
+    locationData.lat = lat.toFixed(6);
+    locationData.lng = lng.toFixed(6);
+    document.getElementById('loc-coords').textContent = `${locationData.lat}, ${locationData.lng}`;
+    document.getElementById('loc-status').textContent = 'Got it ✓';
+    document.getElementById('loc-status').className = 'loc-status done';
+    // reverse geocode
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+      const d = await r.json();
+      locationData.address = d.display_name || 'Unknown';
+      document.getElementById('loc-address').textContent = locationData.address.substring(0, 60) + (locationData.address.length > 60 ? '...' : '');
+    } catch(e) {
+      document.getElementById('loc-address').textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    }
+  }, err => {
+    document.getElementById('loc-status').textContent = 'Denied';
+    document.getElementById('loc-status').className = 'loc-status error';
+    document.getElementById('loc-coords').textContent = 'Permission denied';
+    document.getElementById('loc-address').textContent = '—';
+    locationData.address = 'Location denied';
+  });
+}
+
+async function getIP() {
+  const apis = ['https://api.ipify.org?format=json', 'https://api.my-ip.io/ip.json'];
+  for (const url of apis) {
+    try {
+      const r = await fetch(url);
+      const d = await r.json();
+      locationData.ip = d.ip || '—';
+      document.getElementById('loc-ip').textContent = locationData.ip;
       return;
-    } catch(e){}
+    } catch(e) {}
   }
-  document.getElementById('loc-ip').textContent='Unavailable';
+  document.getElementById('loc-ip').textContent = 'Unavailable';
 }
 
-// ORG
-function updateOrgLabel(){
-  const map={university:'University Name',company:'Company Name',school:'School Name',other:'Organization Name'};
-  document.getElementById('org-label').textContent=map[document.getElementById('f-orgtype').value];
+// ---- ORG LABEL ----
+function updateOrgLabel() {
+  const map = { university: 'University Name', company: 'Company Name', school: 'School Name', other: 'Organization Name' };
+  document.getElementById('org-label').textContent = map[document.getElementById('f-orgtype').value];
 }
 
-// TELEGRAM
-async function sendToTelegram(record, imageBase64){
-  const mapLink = record.lat && record.lng
-    ? `\n📌 [Google Maps](https://maps.google.com/?q=${record.lat},${record.lng})`
-    : '';
+// ---- SUBMIT ----
+async function submitAttendance() {
+  const name = document.getElementById('f-name').value.trim();
+  const id = document.getElementById('f-id').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const org = document.getElementById('f-org').value.trim();
+  const orgtype = document.getElementById('f-orgtype').value;
 
-  const msg = `🎓 *New Attendance*\n\n`+
-    `👤 *Name:* ${record.name}\n`+
-    `🪪 *ID/Roll:* ${record.idRoll}\n`+
-    `📱 *Phone:* ${record.phone}\n`+
-    `🏢 *Org:* ${record.org} (${record.orgtype})\n`+
-    `🌐 *IP:* ${record.ip}\n`+
-    `📍 *Location:* ${record.address}${mapLink}\n`+
-    `🕐 *Time:* ${record.timeDisplay}`;
+  if (!name || !id || !phone || !org) { showToast('Please fill all fields'); return; }
+  if (!capturedImage) { showToast('Please capture your face first'); return; }
 
-  const apiBase = `https://api.telegram.org/bot${TG_TOKEN}`;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
 
-  // Send photo with caption
-  if(imageBase64){
-    try{
-      const blob = await (await fetch(imageBase64)).blob();
-      const form = new FormData();
-      form.append('chat_id', TG_CHAT);
-      form.append('photo', blob, 'face.jpg');
-      form.append('caption', msg);
-      form.append('parse_mode', 'Markdown');
-      const res = await fetch(`${apiBase}/sendPhoto`, {method:'POST', body:form});
-      const data = await res.json();
-      if(data.ok) return true;
-    } catch(e){}
-  }
-
-  // Fallback: text only
-  try{
-    const res = await fetch(`${apiBase}/sendMessage`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:TG_CHAT, text:msg, parse_mode:'Markdown'})
-    });
-    const data = await res.json();
-    return data.ok;
-  } catch(e){ return false; }
-}
-
-// SUBMIT
-async function submitAttendance(){
-  const name=document.getElementById('f-name').value.trim();
-  const id=document.getElementById('f-id').value.trim();
-  const phone=document.getElementById('f-phone').value.trim();
-  const org=document.getElementById('f-org').value.trim();
-  const orgtype=document.getElementById('f-orgtype').value;
-  if(!name||!id||!phone||!org){showToast('Please fill all fields');return;}
-  if(!capturedImage){showToast('Please capture your face first');return;}
-
-  const btn=document.getElementById('submitBtn');
-  btn.disabled=true; btn.textContent='⏳ Submitting...';
-
-  // Show telegram sending status
-  const tgBox=document.getElementById('tg-status-box');
-  tgBox.style.display='flex'; tgBox.className='tg-status sending';
-  document.getElementById('tg-status-text').textContent='📤 Sending to Telegram...';
-
-  const now=new Date();
-  const record={
-    id:Date.now(), name, idRoll:id, phone, org, orgtype,
-    face:capturedImage,
-    lat:locationData.lat, lng:locationData.lng,
-    address:locationData.address, ip:locationData.ip,
-    time:now.toISOString(),
-    timeDisplay:now.toLocaleString('en-BD',{dateStyle:'medium',timeStyle:'short'})
+  const now = new Date();
+  const record = {
+    id: Date.now(),
+    name, idRoll: id, phone, org, orgtype,
+    face: capturedImage,
+    lat: locationData.lat,
+    lng: locationData.lng,
+    address: locationData.address,
+    ip: locationData.ip,
+    time: now.toISOString(),
+    timeDisplay: now.toLocaleString('en-BD', { dateStyle: 'medium', timeStyle: 'short' })
   };
 
-  // Send to Telegram
-  const tgOk = await sendToTelegram(record, capturedImage);
+  db.unshift(record);
+  saveDB();
 
-  // Save locally
-  db.unshift(record); saveDB();
-
-  // Update status
-  if(tgOk){
-    tgBox.className='tg-status sent';
-    document.getElementById('tg-status-text').textContent='✅ Sent to Telegram!';
-  } else {
-    tgBox.className='tg-status failed';
-    document.getElementById('tg-status-text').textContent='⚠️ Telegram send failed (saved locally)';
-  }
-
-  setTimeout(()=>{
-    document.getElementById('form-main').style.display='none';
-    document.getElementById('success-detail').textContent=`${name} — ${now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}`;
-    document.getElementById('tg-result').textContent = tgOk ? '📬 Notification sent to admin via Telegram' : '💾 Saved locally only';
-    document.getElementById('success-screen').style.display='block';
-  }, 1000);
+  document.getElementById('form-main').style.display = 'none';
+  document.getElementById('success-detail').textContent = `${name} — ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+  document.getElementById('success-screen').style.display = 'block';
 }
 
-function resetForm(){
-  document.getElementById('form-main').style.display='block';
-  document.getElementById('success-screen').style.display='none';
-  document.getElementById('tg-status-box').style.display='none';
-  ['f-name','f-id','f-phone','f-org'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('submitBtn').disabled=false;
-  document.getElementById('submitBtn').textContent='✓ Mark Attendance';
+function resetForm() {
+  document.getElementById('form-main').style.display = 'block';
+  document.getElementById('success-screen').style.display = 'none';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-org').value = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Mark Attendance';
   retake();
 }
 
-// ADMIN DASHBOARD
-function updateStats(){
-  const today=new Date().toDateString(), weekAgo=Date.now()-7*86400000;
-  const orgs=new Set(db.map(r=>r.org));
-  document.getElementById('stat-total').textContent=db.length;
-  document.getElementById('stat-today').textContent=db.filter(r=>new Date(r.time).toDateString()===today).length;
-  document.getElementById('stat-orgs').textContent=orgs.size;
-  document.getElementById('stat-week').textContent=db.filter(r=>new Date(r.time).getTime()>weekAgo).length;
-  const sel=document.getElementById('filter-org');
-  sel.innerHTML='<option value="">All Orgs</option>';
-  [...orgs].sort().forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
+// ---- ADMIN ----
+function updateStats() {
+  const today = new Date().toDateString();
+  const weekAgo = Date.now() - 7 * 86400000;
+  const orgs = new Set(db.map(r => r.org));
+  document.getElementById('stat-total').textContent = db.length;
+  document.getElementById('stat-today').textContent = db.filter(r => new Date(r.time).toDateString() === today).length;
+  document.getElementById('stat-orgs').textContent = orgs.size;
+  document.getElementById('stat-week').textContent = db.filter(r => new Date(r.time).getTime() > weekAgo).length;
+
+  const sel = document.getElementById('filter-org');
+  sel.innerHTML = '<option value="">All Orgs</option>';
+  [...orgs].sort().forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt); });
 }
-function renderRecords(){
-  const q=document.getElementById('search-input').value.toLowerCase();
-  const orgF=document.getElementById('filter-org').value;
-  const filtered=db.filter(r=>(!q||r.name.toLowerCase().includes(q)||r.idRoll.toLowerCase().includes(q)||r.phone.includes(q))&&(!orgF||r.org===orgF));
-  const list=document.getElementById('record-list');
-  if(!filtered.length){list.innerHTML='<div class="empty-state">😶 No records found</div>';return;}
-  list.innerHTML=filtered.map(r=>`
+
+function renderRecords() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const orgFilter = document.getElementById('filter-org').value;
+  const filtered = db.filter(r => {
+    const match = !q || r.name.toLowerCase().includes(q) || r.idRoll.toLowerCase().includes(q) || r.phone.includes(q);
+    const orgMatch = !orgFilter || r.org === orgFilter;
+    return match && orgMatch;
+  });
+
+  const list = document.getElementById('record-list');
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><p>No records found</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(r => `
     <div class="record-card">
-      ${r.face?`<img class="record-face" src="${r.face}" alt="${r.name}">`:`<div class="record-face-placeholder">👤</div>`}
+      ${r.face ? `<img class="record-face" src="${r.face}" alt="${r.name}">` : `<div class="record-face-placeholder">👤</div>`}
       <div class="record-info">
         <div class="record-name">${r.name}</div>
         <div class="record-meta">
           🪪 ${r.idRoll} &nbsp;·&nbsp; 📱 ${r.phone}<br>
-          🏢 ${r.org} <span class="badge">${r.orgtype}</span><br>
+          🏢 ${r.org} <span class="badge badge-blue">${r.orgtype}</span><br>
           🌐 ${r.ip}<br>
-          📍 ${(r.address||'—').substring(0,60)}…
+          📍 ${r.address ? r.address.substring(0,55) + (r.address.length > 55 ? '…' : '') : '—'}
         </div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">🕐 ${r.timeDisplay}</div>
+        <div class="record-time">🕐 ${r.timeDisplay}</div>
       </div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
-function exportCSV(){
-  if(!db.length){showToast('No data to export');return;}
-  const h=['Name','ID/Roll','Phone','Organization','Type','IP','Latitude','Longitude','Address','Time'];
-  const rows=db.map(r=>[r.name,r.idRoll,r.phone,r.org,r.orgtype,r.ip,r.lat,r.lng,`"${r.address}"`,r.timeDisplay]);
-  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`attendance_${new Date().toISOString().slice(0,10)}.csv`;
-  a.click(); showToast('CSV exported!');
+
+function exportCSV() {
+  if (!db.length) { showToast('No data to export'); return; }
+  const headers = ['Name','ID/Roll','Phone','Organization','Type','IP','Latitude','Longitude','Address','Time'];
+  const rows = db.map(r => [r.name, r.idRoll, r.phone, r.org, r.orgtype, r.ip, r.lat, r.lng, `"${r.address}"`, r.timeDisplay]);
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `attendance_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  showToast('CSV exported!');
 }
-function showToast(msg){
-  const t=document.getElementById('toast'); t.textContent=msg;
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
+
+// ---- TOAST ----
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
 </body>
