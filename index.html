@@ -20,29 +20,25 @@
   --radius:18px;
   --radius-sm:12px;
 }
-
-body.dark-theme {
-  --bg:#1C1C1E;
-  --card:#2C2C2E;
-  --border:#3A3A3C;
-  --text:#FFFFFF;
-  --muted:#AEAEB2;
-  --accent-light:#1C273A;
+body.dark-theme{
+  --bg:#1C1C1E;--card:#2C2C2E;--border:#3A3A3C;--text:#FFFFFF;--muted:#AEAEB2;--accent-light:#1C273A;
 }
-
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s, color 0.3s}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s}
 
 /* NAV */
 .nav{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border);padding:0 1.25rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-body.dark-theme .nav { background:rgba(44,44,46,0.85); }
-.nav-brand{font-size:17px;font-weight:600;color:var(--text)}
+body.dark-theme .nav{background:rgba(44,44,46,0.85)}
+.nav-brand{font-size:17px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
 .nav-right{display:flex;align-items:center;gap:10px}
 .nav-tabs{display:flex;gap:4px;background:#F2F2F7;border-radius:9px;padding:3px}
-body.dark-theme .nav-tabs { background:#1C1C1E; }
+body.dark-theme .nav-tabs{background:#1C1C1E}
 .tab-btn{padding:5px 14px;border-radius:7px;border:none;background:transparent;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:all 0.15s}
 .tab-btn.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.12)}
-body.dark-theme .tab-btn.active { background:#3A3A3C; color:#fff; }
+body.dark-theme .tab-btn.active{background:#3A3A3C;color:#fff}
 .theme-toggle-btn{background:transparent;border:none;font-size:16px;cursor:pointer;padding:5px}
+
+/* LIVE CLOCK */
+.live-clock{font-size:12px;color:var(--muted);background:var(--bg);border:0.5px solid var(--border);border-radius:8px;padding:4px 10px;font-variant-numeric:tabular-nums;font-weight:500}
 
 /* PAGES */
 .page{display:none;padding:1.25rem;max-width:460px;margin:0 auto}
@@ -58,12 +54,26 @@ body.dark-theme .tab-btn.active { background:#3A3A3C; color:#fff; }
 #canvas{display:none}
 .cam-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:5}
 .cam-overlay p{color:#fff;font-size:14px;text-align:center;padding:1rem}
+
+/* CAMERA FLIP BUTTON */
+.cam-flip-btn{position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.45);border:none;border-radius:50%;width:36px;height:36px;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#fff;backdrop-filter:blur(6px)}
+.cam-flip-btn.visible{display:flex}
+
 .cam-btn-row{display:flex;gap:8px}
 #captureBtn{flex:1;padding:13px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 #retakeBtn{padding:13px 18px;border-radius:13px;border:0.5px solid var(--border);background:var(--card);color:var(--text);font-size:15px;font-weight:500;cursor:pointer;display:none}
 .preview-img{width:100%;border-radius:var(--radius-sm);display:none;margin-bottom:1rem}
 
-/* LOCATION & LISTS */
+/* EVENT BANNER WITH COUNTDOWN */
+.event-banner{background:linear-gradient(135deg,#0071E3,#5856D6);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:1rem;color:#fff}
+.event-banner-name{font-size:17px;font-weight:700;margin-bottom:3px}
+.event-banner-time{font-size:12px;opacity:0.85;line-height:1.6}
+.countdown-row{display:flex;gap:10px;margin-top:8px}
+.cd-block{background:rgba(255,255,255,0.18);border-radius:8px;padding:5px 10px;text-align:center;min-width:44px}
+.cd-num{font-size:18px;font-weight:700;line-height:1;display:block}
+.cd-lbl{font-size:10px;opacity:0.8;display:block;margin-top:1px}
+
+/* LOCATION */
 .loc-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .loc-row:last-child{border-bottom:none}
 .loc-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -80,48 +90,28 @@ body.dark-theme .tab-btn.active { background:#3A3A3C; color:#fff; }
 .field{margin-bottom:.875rem}
 label{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-bottom:5px}
 input,select,textarea{width:100%;background:var(--bg);border:0.5px solid var(--border);border-radius:11px;padding:12px 13px;font-size:15px;color:var(--text);font-family:inherit;outline:none;transition:all 0.15s}
-body.dark-theme input, body.dark-theme select, body.dark-theme textarea { background:#3A3A3C !important; color:#fff !important; }
+body.dark-theme input,body.dark-theme select,body.dark-theme textarea{background:#3A3A3C !important;color:#fff !important}
 input:focus,select:focus,textarea:focus{background:var(--card);border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,0.12)}
 textarea{min-height:60px;resize:none}
+
+/* DUPLICATE WARNING */
+.dup-warn{background:#FFF3E0;border:0.5px solid #FF9500;border-radius:11px;padding:10px 13px;font-size:13px;color:#E65100;margin-top:-6px;margin-bottom:8px;display:none}
 
 /* BUTTONS */
 .submit-btn{width:100%;padding:15px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
 .export-btn{width:100%;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:var(--card);font-size:14px;font-weight:500;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;gap:6px;margin-top:0.5rem}
 .report-btn{width:100%;padding:13px;border-radius:13px;border:none;background:#1D1D1F;color:#fff;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-body.dark-theme .report-btn { background:#fff; color:#000; }
+body.dark-theme .report-btn{background:#fff;color:#000}
 
 /* SUCCESS SCREEN */
 .success-screen{display:none;text-align:center;padding:2rem 1rem}
 .check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#34C759,#30D158);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem}
 .check-circle svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:2.5}
 .success-screen h2{font-size:20px;font-weight:600;margin-bottom:6px}
-.success-screen p{font-size:14px;color:var(--muted);margin-bottom:1.5rem}
+.success-screen p{font-size:14px;color:var(--muted);margin-bottom:1.25rem}
+.share-row{display:flex;gap:8px;justify-content:center;margin-bottom:1.25rem}
+.share-btn{padding:10px 18px;border-radius:12px;border:0.5px solid var(--border);background:var(--card);font-size:14px;font-weight:500;cursor:pointer;color:var(--text)}
 .again-btn{padding:13px 28px;border-radius:12px;border:0.5px solid var(--border);background:var(--card);font-size:15px;font-weight:500;cursor:pointer;color:var(--text)}
-
-/* ADMIN ANALYTICS CHARTS */
-.chart-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:1.25rem;margin-bottom:1rem}
-.chart-row{margin-bottom:0.75rem}
-.chart-row:last-child{margin-bottom:0}
-.chart-lbl{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
-.chart-bar-bg{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
-.chart-bar-fill{height:100%;background:var(--accent);width:0%;transition:width 0.5s ease-out}
-
-/* RECORD VIEW */
-.bulk-bar{display:flex;justify-content:space-between;align-items:center;background:var(--card);padding:10px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border);margin-bottom:0.75rem}
-.record-list{display:flex;flex-direction:column;gap:8px}
-.record-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:1rem;display:flex;gap:12px;align-items:flex-start;position:relative}
-.rec-check-wrap{display:flex;align-items:center;height:48px}
-.record-face{width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#F2F2F7}
-.record-info{flex:1;min-width:0}
-.record-name{font-size:15px;font-weight:600;color:var(--text);padding-right:28px}
-.record-meta{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
-.record-time{font-size:11px;color:var(--muted);margin-top:4px}
-.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;display:inline-block;margin-top:2px}
-.badge-blue{background:#E8F0FE;color:#1565C0}
-.badge-green{background:#E8F5E9;color:#1B5E20}
-.badge-red{background:#FFEBEE;color:#B71C1C}
-.badge-orange{background:#FFF3E0;color:#E65100}
-.delete-rec-btn{position:absolute;top:12px;right:12px;background:transparent;border:none;font-size:14px;cursor:pointer;opacity:0.4}
 
 /* PROFILE CARD */
 .profile-card{background:linear-gradient(135deg,#0071E3,#5856D6);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;color:#fff}
@@ -134,29 +124,84 @@ body.dark-theme .report-btn { background:#fff; color:#000; }
 .profile-stat-num{font-size:22px;font-weight:700}
 .profile-stat-lbl{font-size:11px;opacity:.8}
 
-.event-banner{background:linear-gradient(135deg,#0071E3,#5856D6);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:1rem;color:#fff}
-.event-banner-name{font-size:17px;font-weight:700;margin-bottom:3px}
-.event-banner-time{font-size:12px;opacity:0.85;line-height:1.4}
+/* CHARTS */
+.chart-card{background:var(--card);border-radius:var(--radius);border:0.5px solid var(--border);padding:1.25rem;margin-bottom:1rem}
+.chart-row{margin-bottom:0.75rem}
+.chart-row:last-child{margin-bottom:0}
+.chart-lbl{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
+.chart-bar-bg{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.chart-bar-fill{height:100%;background:var(--accent);width:0%;transition:width 0.5s ease-out}
+
+/* MINI BAR CHART */
+.mini-bars{display:flex;gap:4px;align-items:flex-end;height:48px;margin-top:8px}
+.mini-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.mini-bar{width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;transition:height 0.4s}
+.mini-bar-lbl{font-size:9px;color:var(--muted)}
+
+/* DATE RANGE FILTER */
+.date-range-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.date-range-row input{padding:9px 11px;font-size:13px}
+
+/* RECORDS */
+.bulk-bar{display:flex;justify-content:space-between;align-items:center;background:var(--card);padding:10px 12px;border-radius:var(--radius-sm);border:0.5px solid var(--border);margin-bottom:0.75rem}
+.record-list{display:flex;flex-direction:column;gap:8px}
+.record-card{background:var(--card);border-radius:var(--radius-sm);border:0.5px solid var(--border);padding:1rem;display:flex;gap:12px;align-items:flex-start;position:relative}
+.rec-check-wrap{display:flex;align-items:center;height:48px}
+.record-face{width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#F2F2F7;cursor:pointer}
+.record-info{flex:1;min-width:0}
+.record-name{font-size:15px;font-weight:600;color:var(--text);padding-right:28px}
+.record-meta{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
+.record-time{font-size:11px;color:var(--muted);margin-top:4px}
+.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;display:inline-block;margin-top:2px}
+.badge-blue{background:#E8F0FE;color:#1565C0}
+.badge-green{background:#E8F5E9;color:#1B5E20}
+.badge-red{background:#FFEBEE;color:#B71C1C}
+.badge-orange{background:#FFF3E0;color:#E65100}
+.rec-actions{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.rec-edit-btn,.delete-rec-btn{background:transparent;border:none;font-size:14px;cursor:pointer;opacity:0.45;padding:2px}
+.rec-edit-btn:hover,.delete-rec-btn:hover{opacity:1}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:1rem}
+.pg-btn{padding:7px 14px;border-radius:9px;border:0.5px solid var(--border);background:var(--card);font-size:13px;font-weight:500;cursor:pointer;color:var(--text)}
+.pg-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pg-btn:disabled{opacity:0.35;cursor:default}
+.pg-info{font-size:12px;color:var(--muted)}
+
+/* MANUAL ENTRY CARD */
+.manual-entry-card{background:var(--accent-light);border:0.5px solid var(--accent);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem}
+.manual-entry-card .card-title{color:var(--accent)}
 
 /* MODALS */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:none;align-items:flex-end;justify-content:center}
 .modal-backdrop.open{display:flex}
 .modal-sheet{background:var(--card);border-radius:22px 22px 0 0;padding:1.5rem 1.25rem 2rem;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s ease-out}
-body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+body.dark-theme .modal-sheet{background:#2C2C2E !important;color:#fff}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-handle{width:36px;height:4px;background:#E5E5EA;border-radius:2px;margin:0 auto 1.25rem}
 .modal-title{font-size:17px;font-weight:700;margin-bottom:1.25rem}
 .modal-save-btn{width:100%;padding:14px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-top:.5rem}
 .time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
+/* FACE PREVIEW MODAL */
+#face-modal-img{width:100%;border-radius:var(--radius-sm);margin-bottom:1rem}
+
+/* PERSON SUMMARY MODAL */
+.summary-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.summary-stat{background:var(--bg);border-radius:10px;padding:10px;text-align:center}
+.summary-stat-num{font-size:20px;font-weight:700;color:var(--text)}
+.summary-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.summary-log-row{padding:8px 0;border-bottom:0.5px solid var(--border);font-size:13px;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.summary-log-row:last-child{border-bottom:none}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1D1D1F;color:#fff;padding:10px 20px;border-radius:24px;font-size:14px;font-weight:500;transition:transform 0.3s;z-index:999}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-@media print {
-  body { background:#fff; color:#000; }
-  .nav, .report-btn, .export-btn, .bulk-bar, #search-input, #filter-org, #filter-status, .edit-profile-btn, .delete-rec-btn, button, input, .rec-check-wrap { display:none !important; }
-  .page { display:block !important; max-width:100% !important; padding:0; }
-  .record-card { border:1px solid #ccc !important; page-break-inside:avoid; }
+@media print{
+  body{background:#fff;color:#000}
+  .nav,.report-btn,.export-btn,.bulk-bar,#search-input,#filter-org,#filter-status,.edit-profile-btn,.delete-rec-btn,.rec-edit-btn,button,input,.rec-check-wrap,.live-clock,.countdown-row,.pagination{display:none !important}
+  .page{display:block !important;max-width:100% !important;padding:0}
+  .record-card{border:1px solid #ccc !important;page-break-inside:avoid}
 }
 </style>
 </head>
@@ -165,6 +210,7 @@ body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
 <nav class="nav">
   <span class="nav-brand">📋 Corporate Suite</span>
   <div class="nav-right">
+    <span class="live-clock" id="live-clock">--:--:--</span>
     <button class="theme-toggle-btn" onclick="toggleTheme()">🌓</button>
     <div class="nav-tabs">
       <button class="tab-btn active" id="tab-form" onclick="showPage('form')">Mark</button>
@@ -175,11 +221,18 @@ body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
 
 <div id="toast" class="toast"></div>
 
+<!-- ========== FORM PAGE ========== -->
 <div class="page active" id="page-form">
   <div id="form-main">
+
     <div id="event-banner" class="event-banner" style="display:none">
       <div class="event-banner-name" id="banner-name">Event Suite</div>
       <div class="event-banner-time" id="banner-time">🕐 —</div>
+      <div class="countdown-row" id="countdown-row" style="display:none">
+        <div class="cd-block"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">hrs</span></div>
+        <div class="cd-block"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">min</span></div>
+        <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">sec</span></div>
+      </div>
     </div>
 
     <div class="card">
@@ -188,6 +241,7 @@ body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
         <video id="video" autoplay playsinline muted></video>
         <canvas id="canvas"></canvas>
         <div class="cam-overlay" id="cam-overlay"><p>Tap "Open Camera" to begin verification</p></div>
+        <button class="cam-flip-btn" id="cam-flip-btn" onclick="flipCamera()" title="Switch camera">🔄</button>
       </div>
       <img id="preview" class="preview-img" alt="Captured face">
       <div class="cam-btn-row">
@@ -216,8 +270,8 @@ body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
       <div class="loc-row">
         <div class="loc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg></div>
         <div class="loc-info">
-          <div class="loc-label">IP Node Network Address</div>
-          <div class="loc-val" id="loc-ip">Detecting network...</div>
+          <div class="loc-label">IP Network Address</div>
+          <div class="loc-val" id="loc-ip">Detecting...</div>
         </div>
       </div>
     </div>
@@ -233,142 +287,280 @@ body.dark-theme .modal-sheet { background:#2C2C2E !important; color:#fff; }
         </select>
       </div>
       <div class="field"><label>Full Legal Name</label><input type="text" id="f-name" placeholder="Enter first and last name"></div>
-      <div class="field"><label>Corporate ID / Registration Roll</label><input type="text" id="f-id" placeholder="Unique system identifier"></div>
-      <div class="field"><label>Mobile Contact Number</label><input type="tel" id="f-phone" placeholder="Active communication string"></div>
+      <div class="field">
+        <label>Corporate ID / Roll</label>
+        <input type="text" id="f-id" placeholder="Unique system identifier" oninput="checkDuplicate()">
+        <div class="dup-warn" id="dup-warn">⚠️ This ID already has a record today. Submitting again will create a duplicate.</div>
+      </div>
+      <div class="field"><label>Mobile Contact Number</label><input type="tel" id="f-phone" placeholder="Active contact number"></div>
       <div class="field">
         <label>Institution Category</label>
         <select id="f-orgtype" onchange="updateOrgLabel()">
           <option value="university">University / College</option>
           <option value="company">Enterprise / Company</option>
           <option value="school">School Node</option>
-          <option value="other">Other entity</option>
+          <option value="other">Other</option>
         </select>
       </div>
-      <div class="field"><label id="org-label">University Name</label><input type="text" id="f-org" placeholder="Associated institution branch"></div>
+      <div class="field"><label id="org-label">University Name</label><input type="text" id="f-org" placeholder="Associated institution"></div>
       <div class="field"><label>Declaration Notes (Optional)</label><textarea id="f-notes" placeholder="Any manual declarations..."></textarea></div>
     </div>
 
-    <button class="submit-btn" id="submitBtn" onclick="submitAttendance()">Submit Verified Record</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitAttendance()">✅ Submit Verified Record</button>
   </div>
 
   <div class="success-screen" id="success-screen">
     <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Authentication Complete</h2>
     <p id="success-detail">—</p>
+    <div class="share-row">
+      <button class="share-btn" onclick="shareWhatsApp()">📲 WhatsApp</button>
+      <button class="share-btn" onclick="shareSMS()">💬 SMS</button>
+      <button class="share-btn" onclick="copySuccess()">📋 Copy</button>
+    </div>
     <button class="again-btn" onclick="resetForm()">New Attendance</button>
   </div>
 </div>
 
+<!-- ========== ADMIN PAGE ========== -->
 <div class="page" id="page-admin">
   <div class="profile-card">
     <div class="profile-card-top">
       <div>
         <div class="profile-card-name" id="pc-name">No System Configuration</div>
-        <div class="profile-card-meta" id="pc-meta">Tap Edit to manage global system settings</div>
+        <div class="profile-card-meta" id="pc-meta">Tap Setup to manage global settings</div>
       </div>
       <button class="edit-profile-btn" onclick="openProfileModal()">✏️ Setup</button>
     </div>
     <div class="profile-card-stats">
-      <div class="profile-stat"><div class="profile-stat-num" id="stat-total">0</div><div class="profile-stat-lbl">Logs</div></div>
+      <div class="profile-stat"><div class="profile-stat-num" id="stat-total">0</div><div class="profile-stat-lbl">Total</div></div>
       <div class="profile-stat"><div class="profile-stat-num" id="stat-today">0</div><div class="profile-stat-lbl">Today</div></div>
       <div class="profile-stat"><div class="profile-stat-num" id="stat-orgs">0</div><div class="profile-stat-lbl">Branches</div></div>
+      <div class="profile-stat"><div class="profile-stat-num" id="stat-late">0</div><div class="profile-stat-lbl">Late</div></div>
     </div>
   </div>
 
   <div class="chart-card">
-    <div class="card-title">Live Dynamic Performance Ratios</div>
+    <div class="card-title">Performance Ratios</div>
     <div class="chart-row">
-      <div class="chart-lbl"><span>Schedule Status (On-Time)</span><span id="chart-txt-schedule">0%</span></div>
+      <div class="chart-lbl"><span>On-Time Rate</span><span id="chart-txt-schedule">0%</span></div>
       <div class="chart-bar-bg"><div id="chart-bar-schedule" class="chart-bar-fill" style="background:var(--success)"></div></div>
     </div>
     <div class="chart-row" style="margin-top:0.75rem">
-      <div class="chart-lbl"><span>Geofence Perimeter Integrity</span><span id="chart-txt-range">0%</span></div>
-      <div class="chart-bar-bg"><div id="chart-bar-range" class="chart-bar-fill" style="background:var(--accent)"></div></div>
+      <div class="chart-lbl"><span>Geofence Integrity</span><span id="chart-txt-range">0%</span></div>
+      <div class="chart-bar-bg"><div id="chart-bar-range" class="chart-bar-fill"></div></div>
+    </div>
+    <div class="chart-row" style="margin-top:0.75rem">
+      <div class="chart-lbl"><span>Check-In vs Check-Out</span><span id="chart-txt-type">0% / 0%</span></div>
+      <div class="chart-bar-bg"><div id="chart-bar-type" class="chart-bar-fill" style="background:var(--warn)"></div></div>
+    </div>
+    <div id="mini-bar-container" style="display:none">
+      <div class="chart-lbl" style="margin-top:12px"><span>Records per branch (top 5)</span></div>
+      <div class="mini-bars" id="mini-bars"></div>
     </div>
   </div>
 
-  <button class="report-btn" onclick="exportCSV()">Download Complete Ledger (CSV)</button>
-  <button class="export-btn" onclick="exportHTML()">🌐 Generate Rich HTML Ledger Sheet</button>
-  <button class="export-btn" onclick="window.print()">🖨️ Hardware Print Commands</button>
-  
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:0.5rem">
-    <button class="export-btn" onclick="backupData()">📤 Database Dump (JSON)</button>
-    <button class="export-btn" onclick="document.getElementById('restore-input').click()">📥 Restore Dump (JSON)</button>
+  <!-- MANUAL ENTRY -->
+  <div class="manual-entry-card">
+    <div class="card-title">➕ Manual Entry (Admin)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <input type="text" id="m-name" placeholder="Full name" style="font-size:13px;padding:9px 11px">
+      <input type="text" id="m-id" placeholder="ID / Roll" style="font-size:13px;padding:9px 11px">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+      <input type="tel" id="m-phone" placeholder="Phone" style="font-size:13px;padding:9px 11px">
+      <input type="text" id="m-org" placeholder="Branch / Org" style="font-size:13px;padding:9px 11px">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <select id="m-type" style="font-size:13px;padding:9px 11px">
+        <option value="Check-In">Check-In</option>
+        <option value="Check-Out">Check-Out</option>
+        <option value="Break">Break</option>
+      </select>
+      <button onclick="manualEntry()" style="padding:9px;border-radius:11px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">Add Record</button>
+    </div>
+  </div>
+
+  <button class="report-btn" onclick="exportCSV()">⬇️ Download CSV Ledger</button>
+  <button class="export-btn" onclick="exportHTML()">🌐 Generate HTML Report</button>
+  <button class="export-btn" onclick="window.print()">🖨️ Print</button>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.5rem">
+    <button class="export-btn" onclick="backupData()">📤 Backup JSON</button>
+    <button class="export-btn" onclick="document.getElementById('restore-input').click()">📥 Restore JSON</button>
   </div>
   <input type="file" id="restore-input" style="display:none" onchange="restoreData(this)">
 
-  <div class="filter-row" style="margin-top:1.25rem; display:flex; flex-direction:column; gap:6px">
-    <input type="text" id="search-input" placeholder="🔍 Search records by legal name, roll ID..." oninput="renderRecords()">
-    <div style="display:flex; gap:6px; width:100%">
+  <!-- FILTERS -->
+  <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
+    <input type="text" id="search-input" placeholder="🔍 Search by name, ID..." oninput="renderRecords()">
+    <div class="date-range-row">
+      <input type="date" id="filter-date-from" onchange="renderRecords()" title="From date">
+      <input type="date" id="filter-date-to" onchange="renderRecords()" title="To date">
+    </div>
+    <div style="display:flex;gap:6px;width:100%">
       <select id="filter-org" onchange="renderRecords()"><option value="">All Branches</option></select>
       <select id="filter-status" onchange="renderRecords()">
         <option value="">All Statuses</option>
-        <option value="On-Time">On-Time Only</option>
-        <option value="Late">Late Only</option>
-        <option value="In-Range">In-Perimeter</option>
-        <option value="Out-of-Range">Out-of-Perimeter</option>
-        <option value="Check-In">Check-In Type</option>
-        <option value="Check-Out">Check-Out Type</option>
+        <option value="On-Time">On-Time</option>
+        <option value="Late">Late</option>
+        <option value="In-Range">In Perimeter</option>
+        <option value="Out-of-Range">Out of Perimeter</option>
+        <option value="Check-In">Check-In</option>
+        <option value="Check-Out">Check-Out</option>
       </select>
     </div>
   </div>
 
   <div class="bulk-bar" style="margin-top:0.75rem">
-    <label style="display:flex; align-items:center; gap:6px; margin-bottom:0; cursor:pointer">
-      <input type="checkbox" id="master-select" onchange="toggleSelectAll(this)"> Toggle All Selection
+    <label style="display:flex;align-items:center;gap:6px;margin-bottom:0;cursor:pointer">
+      <input type="checkbox" id="master-select" onchange="toggleSelectAll(this)"> Select All
     </label>
-    <button onclick="bulkDelete()" style="background:transparent; border:none; color:var(--danger); font-size:13px; font-weight:600; cursor:pointer">🗑️ Purge Selection</button>
+    <button onclick="bulkDelete()" style="background:transparent;border:none;color:var(--danger);font-size:13px;font-weight:600;cursor:pointer">🗑️ Delete Selected</button>
   </div>
 
   <div id="record-list" class="record-list"></div>
+  <div class="pagination" id="pagination"></div>
 
-  <button class="export-btn" style="color:var(--danger); border-color:#ffcdd2; background:#fff0f2; margin-top:1.5rem" onclick="clearAllData()">
-    🗑️ Nuclear Wipe Local Systems Data
+  <button class="export-btn" style="color:var(--danger);border-color:#ffcdd2;background:#fff0f2;margin-top:1.5rem" onclick="clearAllData()">
+    🗑️ Clear All Data
   </button>
 </div>
 
+<!-- ========== PROFILE MODAL ========== -->
 <div class="modal-backdrop" id="profile-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ Enterprise Environment Setup</div>
-    <div class="field"><label>Operation / Event Cluster Name</label><input type="text" id="p-event-name" placeholder="Corporate Branch or Seminar Title"></div>
-    <div class="field"><label>Host Administration Node</label><input type="text" id="p-organizer" placeholder="Department Registry Level"></div>
+    <div class="modal-title">⚙️ Enterprise Setup</div>
+    <div class="field"><label>Event / Operation Name</label><input type="text" id="p-event-name" placeholder="Corporate Branch or Seminar Title"></div>
+    <div class="field"><label>Host / Organizer</label><input type="text" id="p-organizer" placeholder="Department or Admin Name"></div>
     <div class="time-row">
-      <div class="field"><label>Operation Alpha Time</label><input type="datetime-local" id="p-start"></div>
-      <div class="field"><label>Operation Omega Time</label><input type="datetime-local" id="p-end"></div>
+      <div class="field"><label>Start Time</label><input type="datetime-local" id="p-start"></div>
+      <div class="field"><label>End Time</label><input type="datetime-local" id="p-end"></div>
     </div>
     <div class="time-row">
-      <div class="field"><label>Fence Center Latitude</label><input type="number" step="any" id="p-lat" placeholder="e.g. 23.7805"></div>
-      <div class="field"><label>Fence Center Longitude</label><input type="number" step="any" id="p-lng" placeholder="e.g. 90.4267"></div>
+      <div class="field"><label>Fence Latitude</label><input type="number" step="any" id="p-lat" placeholder="e.g. 23.7805"></div>
+      <div class="field"><label>Fence Longitude</label><input type="number" step="any" id="p-lng" placeholder="e.g. 90.4267"></div>
     </div>
-    <div class="field"><label>Max Allowed Radius Perimeter (Meters)</label><input type="number" id="p-radius" placeholder="e.g. 150"></div>
-    <div class="field"><label>Allowed ID Whitelist (Comma / Line Separation)</label><textarea id="p-whitelist" placeholder="Leave empty to accept all registry strings..."></textarea></div>
-    <div class="field"><label>Update System Administration Secure PIN</label><input type="password" id="p-pin" placeholder="Enter custom verification digits"></div>
-    
-    <button class="modal-save-btn" onclick="saveProfile()">Commit Configurations</button>
-    <button class="export-btn" style="margin-top:8px" onclick="closeProfileModal()">Abort Settings</button>
+    <div class="field"><label>Max Radius (Meters)</label><input type="number" id="p-radius" placeholder="e.g. 150"></div>
+    <div class="field"><label>ID Whitelist (comma or line separated)</label><textarea id="p-whitelist" placeholder="Leave empty to accept all IDs..."></textarea></div>
+    <div class="field"><label>Admin PIN</label><input type="password" id="p-pin" placeholder="Enter custom PIN"></div>
+    <button class="modal-save-btn" onclick="saveProfile()">Save Configuration</button>
+    <button class="export-btn" style="margin-top:8px" onclick="closeProfileModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== EDIT RECORD MODAL ========== -->
+<div class="modal-backdrop" id="edit-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Edit Record</div>
+    <input type="hidden" id="edit-id">
+    <div class="field"><label>Full Name</label><input type="text" id="edit-name"></div>
+    <div class="field"><label>ID / Roll</label><input type="text" id="edit-roll"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="edit-phone"></div>
+    <div class="field"><label>Branch / Org</label><input type="text" id="edit-org"></div>
+    <div class="field"><label>Attendance Type</label>
+      <select id="edit-type">
+        <option value="Check-In">Check-In</option>
+        <option value="Check-Out">Check-Out</option>
+        <option value="Break">Break</option>
+      </select>
+    </div>
+    <button class="modal-save-btn" onclick="saveEditRecord()">Save Changes</button>
+    <button class="export-btn" style="margin-top:8px" onclick="closeModal('edit-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ========== FACE PREVIEW MODAL ========== -->
+<div class="modal-backdrop" id="face-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="face-modal-name">—</div>
+    <img id="face-modal-img" src="" alt="Face photo">
+    <button class="export-btn" onclick="closeModal('face-modal')">Close</button>
+  </div>
+</div>
+
+<!-- ========== PERSON SUMMARY MODAL ========== -->
+<div class="modal-backdrop" id="summary-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="summary-modal-title">Person Summary</div>
+    <div class="summary-stat-row">
+      <div class="summary-stat"><div class="summary-stat-num" id="sum-total">0</div><div class="summary-stat-lbl">Total</div></div>
+      <div class="summary-stat"><div class="summary-stat-num" id="sum-ontime">0</div><div class="summary-stat-lbl">On-Time</div></div>
+      <div class="summary-stat"><div class="summary-stat-num" id="sum-late">0</div><div class="summary-stat-lbl">Late</div></div>
+    </div>
+    <div id="summary-log-list"></div>
+    <button class="export-btn" style="margin-top:1rem" onclick="closeModal('summary-modal')">Close</button>
   </div>
 </div>
 
 <script>
-// ---- ARCHITECTURE CORE STATE ----
+// ============================================================
+// CORE STATE
+// ============================================================
 let db = JSON.parse(localStorage.getItem('attendance_db') || '[]');
 let eventProfile = JSON.parse(localStorage.getItem('attendance_profile') || 'null');
 let adminPin = localStorage.getItem('attendance_secure_pin') || '1234';
 let currentTheme = localStorage.getItem('attendance_theme') || 'auto';
 let stream = null, capturedImage = null, camState = 'idle';
-let locationData = { lat: null, lng: null, address: 'Unknown Perimeter Node', ip: 'Unknown Network Segment', agent: '' };
+let currentFacingMode = 'user';
+let locationData = { lat: null, lng: null, address: 'Unknown', ip: 'Unknown', agent: '' };
 let isAdminAuthenticated = false;
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let lastSuccessText = '';
 
-// ---- MAIN BOOT INITIALIZATION ----
+// ============================================================
+// BOOT
+// ============================================================
 if (currentTheme === 'dark' || (currentTheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
   document.body.classList.add('dark-theme');
 }
 locationData.agent = getDeviceInfo();
 getLocation(); getIP(); applyProfile();
+startClock();
 
 function saveDB() { localStorage.setItem('attendance_db', JSON.stringify(db)); }
 
+// ============================================================
+// LIVE CLOCK + COUNTDOWN
+// ============================================================
+function startClock() {
+  function tick() {
+    const now = new Date();
+    document.getElementById('live-clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    updateCountdown(now);
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+function updateCountdown(now) {
+  if (!eventProfile || !eventProfile.start) return;
+  const start = new Date(eventProfile.start);
+  const end = eventProfile.end ? new Date(eventProfile.end) : null;
+  const cdRow = document.getElementById('countdown-row');
+  
+  let target = null, label = '';
+  if (now < start) { target = start; label = '⏳ Starts in'; }
+  else if (end && now < end) { target = end; label = '🔴 Live — ends in'; }
+  else { cdRow.style.display = 'none'; return; }
+
+  const diff = target - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  cdRow.style.display = 'flex';
+}
+
+// ============================================================
+// THEME
+// ============================================================
 function toggleTheme() {
   if (document.body.classList.contains('dark-theme')) {
     document.body.classList.remove('dark-theme');
@@ -383,23 +575,26 @@ function toggleTheme() {
 
 function getDeviceInfo() {
   const ua = navigator.userAgent;
-  let browser = "Unknown Engine";
-  if(ua.indexOf("Chrome") > -1) browser = "Chrome";
-  else if(ua.indexOf("Safari") > -1) browser = "Safari";
-  else if(ua.indexOf("Firefox") > -1) browser = "Firefox";
-  let os = "Desktop Node";
-  if(/Mobi|Android|iPhone/i.test(ua)) os = "Mobile Terminal";
+  let browser = 'Unknown';
+  if (ua.indexOf('Chrome') > -1) browser = 'Chrome';
+  else if (ua.indexOf('Safari') > -1) browser = 'Safari';
+  else if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
+  let os = 'Desktop';
+  if (/Mobi|Android|iPhone/i.test(ua)) os = 'Mobile';
   return `${os} (${browser})`;
 }
 
-// DIGITAL HARMONIC AUDIO CHIME CIRCUITS
+// ============================================================
+// AUDIO
+// ============================================================
 function playSuccessChime() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08); // E5
-    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.16); // G5
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);
+    osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.16);
     gain.gain.setValueAtTime(0.1, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + 0.4);
     osc.connect(gain); gain.connect(ctx.destination);
@@ -407,31 +602,172 @@ function playSuccessChime() {
   } catch(e) {}
 }
 
-// PERIMETER GEODETIC HAVERSINE MATRIX
-function calculateDistance(lat1, lon1, lat2, lon2) {
-  if(!lat1 || !lon1 || !lat2 || !lon2) return null;
-  const R = 6371e3;
-  const p1 = lat1 * Math.PI/180; const p2 = lat2 * Math.PI/180;
-  const dPhi = (lat2-lat1) * Math.PI/180; const dLam = (lon2-lon1) * Math.PI/180;
-  const a = Math.sin(dPhi/2) * Math.sin(dPhi/2) + Math.cos(p1) * Math.cos(p2) * Math.sin(dLam/2) * Math.sin(dLam/2);
-  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+// ============================================================
+// CAMERA — FRONT/BACK TOGGLE
+// ============================================================
+async function handleCam() {
+  if (camState === 'idle') { await startCamera(); }
+  else if (camState === 'streaming') { initCaptureCountdown(); }
 }
 
-// LAYER CONTROL VIEWS
+async function startCamera() {
+  try {
+    if (stream) { stream.getTracks().forEach(t => t.stop()); }
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: currentFacingMode, width: 640, height: 480 }
+    });
+    document.getElementById('video').srcObject = stream;
+    document.getElementById('cam-overlay').style.display = 'none';
+    document.getElementById('captureBtn').textContent = '📸 Capture Photo';
+    document.getElementById('cam-flip-btn').classList.add('visible');
+    camState = 'streaming';
+  } catch(e) {
+    showToast('Camera access denied or unavailable.'); 
+  }
+}
+
+async function flipCamera() {
+  currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+  showToast(currentFacingMode === 'user' ? '🤳 Front camera' : '📷 Back camera');
+  await startCamera();
+}
+
+function initCaptureCountdown() {
+  let ticks = 3;
+  const overlay = document.getElementById('cam-overlay');
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `<h1 style="font-size:64px;color:#fff;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,0.5)">${ticks}</h1>`;
+  const ticker = setInterval(() => {
+    ticks--;
+    if (ticks > 0) {
+      overlay.innerHTML = `<h1 style="font-size:64px;color:#fff;font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,0.5)">${ticks}</h1>`;
+    } else {
+      clearInterval(ticker);
+      overlay.style.display = 'none';
+      executePhotoCapture();
+    }
+  }, 1000);
+}
+
+function executePhotoCapture() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  // Mirror front camera
+  if (currentFacingMode === 'user') {
+    ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+  }
+  ctx.drawImage(video, 0, 0);
+  capturedImage = canvas.toDataURL('image/jpeg', 0.7);
+  document.getElementById('preview').src = capturedImage;
+  document.getElementById('preview').style.display = 'block';
+  stopCameraDataStream();
+  document.querySelector('.cam-wrap').style.display = 'none';
+  document.getElementById('captureBtn').style.display = 'none';
+  document.getElementById('retakeBtn').style.display = 'block';
+  camState = 'captured';
+}
+
+function retake() {
+  capturedImage = null;
+  document.getElementById('preview').style.display = 'none';
+  document.querySelector('.cam-wrap').style.display = 'block';
+  document.getElementById('cam-overlay').style.display = 'flex';
+  document.getElementById('cam-overlay').innerHTML = `<p>Tap "Open Camera" to begin</p>`;
+  document.getElementById('captureBtn').style.display = 'block';
+  document.getElementById('captureBtn').textContent = '📷 Open Camera';
+  document.getElementById('retakeBtn').style.display = 'none';
+  document.getElementById('cam-flip-btn').classList.remove('visible');
+  camState = 'idle';
+}
+
+function stopCameraDataStream() {
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+}
+
+// ============================================================
+// GEOLOCATION & IP
+// ============================================================
+function getLocation() {
+  if (!navigator.geolocation) { document.getElementById('loc-status').textContent = 'No GPS'; return; }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    locationData.lat = pos.coords.latitude;
+    locationData.lng = pos.coords.longitude;
+    document.getElementById('loc-coords').innerHTML = `<a href="https://maps.google.com/?q=${locationData.lat},${locationData.lng}" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600;">${locationData.lat.toFixed(5)}, ${locationData.lng.toFixed(5)} ↗</a>`;
+    document.getElementById('loc-status').textContent = 'Secured ✓';
+    document.getElementById('loc-status').className = 'loc-status done';
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${locationData.lat}&lon=${locationData.lng}&format=json`);
+      const d = await r.json();
+      locationData.address = d.display_name || 'Coordinates Verified';
+      document.getElementById('loc-address').textContent = locationData.address.substring(0, 48) + '...';
+    } catch(e) { document.getElementById('loc-address').textContent = 'GPS Registered'; }
+  }, err => {
+    document.getElementById('loc-status').textContent = 'Denied';
+    document.getElementById('loc-status').className = 'loc-status error';
+  });
+}
+
+async function getIP() {
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    const d = await r.json();
+    locationData.ip = d.ip || 'Unknown';
+    document.getElementById('loc-ip').textContent = locationData.ip;
+  } catch(e) { document.getElementById('loc-ip').textContent = 'Internal Network'; }
+}
+
+function updateOrgLabel() {
+  const map = { university: 'University Name', company: 'Company Name', school: 'School Name', other: 'Organization Name' };
+  document.getElementById('org-label').textContent = map[document.getElementById('f-orgtype').value];
+}
+
+// ============================================================
+// DUPLICATE CHECK
+// ============================================================
+function checkDuplicate() {
+  const id = document.getElementById('f-id').value.trim();
+  const todayStr = new Date().toDateString();
+  const dupEl = document.getElementById('dup-warn');
+  if (id && db.some(r => r.idRoll.toLowerCase() === id.toLowerCase() && r.timeStr === todayStr)) {
+    dupEl.style.display = 'block';
+  } else {
+    dupEl.style.display = 'none';
+  }
+}
+
+// ============================================================
+// GEOFENCE
+// ============================================================
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+  const R = 6371e3;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dPhi = (lat2 - lat1) * Math.PI / 180, dLam = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dPhi/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dLam/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ============================================================
+// PAGE NAVIGATION
+// ============================================================
 function showPage(p) {
   if (p === 'admin' && !isAdminAuthenticated) {
-    const accessPin = prompt(`Enter secure node administrator access key string (Default: 1234):`);
-    if (accessPin === adminPin) { isAdminAuthenticated = true; } 
-    else { showToast("❌ Security Exception: Validation Failure."); return; }
+    const pin = prompt('Enter admin PIN (default: 1234):');
+    if (pin === adminPin) { isAdminAuthenticated = true; }
+    else { showToast('❌ Wrong PIN.'); return; }
   }
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
   document.getElementById('tab-' + p).classList.add('active');
-  if (p === 'admin') { updateStats(); renderRecords(); }
+  if (p === 'admin') { currentPage = 1; updateStats(); renderRecords(); }
 }
 
-// CONFIGURE PROFILE DATA
+// ============================================================
+// PROFILE
+// ============================================================
 function openProfileModal() {
   document.getElementById('profile-modal').classList.add('open');
   document.getElementById('p-pin').value = adminPin;
@@ -449,9 +785,8 @@ function openProfileModal() {
 function closeProfileModal() { document.getElementById('profile-modal').classList.remove('open'); }
 
 function saveProfile() {
-  const selectedPin = document.getElementById('p-pin').value.trim();
-  if(selectedPin.length > 0) { adminPin = selectedPin; localStorage.setItem('attendance_secure_pin', adminPin); }
-  
+  const pin = document.getElementById('p-pin').value.trim();
+  if (pin.length > 0) { adminPin = pin; localStorage.setItem('attendance_secure_pin', adminPin); }
   eventProfile = {
     name: document.getElementById('p-event-name').value,
     organizer: document.getElementById('p-organizer').value,
@@ -463,113 +798,26 @@ function saveProfile() {
     whitelist: document.getElementById('p-whitelist').value
   };
   localStorage.setItem('attendance_profile', JSON.stringify(eventProfile));
-  closeProfileModal(); applyProfile(); showToast('Matrix Configurations Saved.');
+  closeProfileModal(); applyProfile(); showToast('Configuration saved.');
 }
 
 function applyProfile() {
   if (eventProfile && eventProfile.name) {
     document.getElementById('event-banner').style.display = 'block';
     document.getElementById('banner-name').textContent = eventProfile.name;
-    let timeText = eventProfile.start ? new Date(eventProfile.start).toLocaleString([], {dateStyle:'short', timeStyle:'short'}) : 'Ongoing Operation';
-    document.getElementById('banner-time').innerHTML = `⏱️ Live Launch: ${timeText}  ·  🏢 Cluster Hub: ${eventProfile.organizer || 'System Root'}`;
+    const startStr = eventProfile.start ? new Date(eventProfile.start).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Ongoing';
+    document.getElementById('banner-time').innerHTML = `⏱️ Start: ${startStr}  ·  🏢 Host: ${eventProfile.organizer || 'System Root'}`;
     document.getElementById('pc-name').textContent = eventProfile.name;
-    document.getElementById('pc-meta').textContent = `Target Boundary Radius: ${eventProfile.targetRadius ? eventProfile.targetRadius+'m' : 'Infinite Open'}`;
+    document.getElementById('pc-meta').textContent = `Radius: ${eventProfile.targetRadius ? eventProfile.targetRadius + 'm' : 'Unlimited'}`;
   } else {
     document.getElementById('event-banner').style.display = 'none';
     document.getElementById('pc-name').textContent = 'No System Configuration';
   }
 }
 
-// CHRONO TIMER CAMERA TRIGGER MODULE
-async function handleCam() {
-  if (camState === 'idle') { await startCamera(); } 
-  else if (camState === 'streaming') { initCaptureCountdown(); }
-}
-async function startCamera() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 640, height: 480 } });
-    document.getElementById('video').srcObject = stream;
-    document.getElementById('cam-overlay').style.display = 'none';
-    document.getElementById('captureBtn').textContent = '📸 Arm Biometric Capture';
-    camState = 'streaming';
-  } catch(e) { showToast('Hardware interface fault: Camera missing.'); }
-}
-
-function initCaptureCountdown() {
-  let ticks = 3;
-  const overlay = document.getElementById('cam-overlay');
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `<h1 style="font-size:64px; color:#fff; font-weight:800; text-shadow:0 2px 10px rgba(0,0,0,0.5)">${ticks}</h1>`;
-  
-  const ticker = setInterval(() => {
-    ticks--;
-    if(ticks > 0) {
-      overlay.innerHTML = `<h1 style="font-size:64px; color:#fff; font-weight:800; text-shadow:0 2px 10px rgba(0,0,0,0.5)">${ticks}</h1>`;
-    } else {
-      clearInterval(ticker);
-      overlay.style.display = 'none';
-      executePhotoCapture();
-    }
-  }, 1000);
-}
-
-function executePhotoCapture() {
-  const video = document.getElementById('video'); const canvas = document.getElementById('canvas');
-  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  capturedImage = canvas.toDataURL('image/jpeg', 0.7);
-  document.getElementById('preview').src = capturedImage;
-  document.getElementById('preview').style.display = 'block';
-  stopCameraDataStream();
-  document.querySelector('.cam-wrap').style.display = 'none';
-  document.getElementById('captureBtn').style.display = 'none';
-  document.getElementById('retakeBtn').style.display = 'block';
-  camState = 'captured';
-}
-function retake() {
-  capturedImage = null;
-  document.getElementById('preview').style.display = 'none';
-  document.querySelector('.cam-wrap').style.display = 'block';
-  document.getElementById('cam-overlay').style.display = 'flex';
-  document.getElementById('cam-overlay').innerHTML = `<p>Tap "Arm Biometric Capture" to record photo stream</p>`;
-  document.getElementById('captureBtn').style.display = 'block';
-  document.getElementById('captureBtn').textContent = '📸 Arm Biometric Capture';
-  document.getElementById('retakeBtn').style.display = 'none';
-  camState = 'idle';
-}
-function stopCameraDataStream() { if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; } }
-
-// NETWORK SEGMENTS & POSITION MATRICES
-function getLocation() {
-  if (!navigator.geolocation) { document.getElementById('loc-status').textContent = 'No GPS'; return; }
-  navigator.geolocation.getCurrentPosition(async pos => {
-    locationData.lat = pos.coords.latitude; locationData.lng = pos.coords.longitude;
-    document.getElementById('loc-coords').innerHTML = `<a href="http://googleusercontent.com/maps.google.com/2${locationData.lat},${locationData.lng}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:600;">${locationData.lat.toFixed(5)}, ${locationData.lng.toFixed(5)} Map ↗</a>`;
-    document.getElementById('loc-status').textContent = 'Secured ✓';
-    document.getElementById('loc-status').className = 'loc-status done';
-    try {
-      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${locationData.lat}&lon=${locationData.lng}&format=json`);
-      const d = await r.json(); locationData.address = d.display_name || 'Geocoded Coordinates Verified';
-      document.getElementById('loc-address').textContent = locationData.address.substring(0, 48) + '...';
-    } catch(e) { document.getElementById('loc-address').textContent = 'Coordinates Node Registered'; }
-  }, err => {
-    document.getElementById('loc-status').textContent = 'Rejected';
-    document.getElementById('loc-status').className = 'loc-status error';
-  });
-}
-async function getIP() {
-  try {
-    const r = await fetch('https://api.ipify.org?format=json');
-    const d = await r.json(); locationData.ip = d.ip || 'Unknown';
-    document.getElementById('loc-ip').textContent = locationData.ip;
-  } catch(e) { document.getElementById('loc-ip').textContent = 'Internal Segment Node'; }
-}
-function updateOrgLabel() {
-  const map = { university: 'University Registry Branch', company: 'Enterprise Legal Branch', school: 'School Node Division', other: 'Custom Branch Hub Name' };
-  document.getElementById('org-label').textContent = map[document.getElementById('f-orgtype').value];
-}
-
-// LOG RECORD PROCESSING
+// ============================================================
+// SUBMIT ATTENDANCE
+// ============================================================
 function submitAttendance() {
   const name = document.getElementById('f-name').value.trim();
   const id = document.getElementById('f-id').value.trim();
@@ -578,215 +826,390 @@ function submitAttendance() {
   const orgtype = document.getElementById('f-orgtype').value;
   const attendanceType = document.getElementById('f-type').value;
 
-  if (!name || !id || !phone || !org) { showToast('Required identity tokens missing.'); return; }
-  if (!capturedImage) { showToast('Biometric imaging block not verified.'); return; }
+  if (!name || !id || !phone || !org) { showToast('Required fields missing.'); return; }
+  if (!capturedImage) { showToast('Please capture a face photo first.'); return; }
 
-  // VERIFY SYSTEM WHITELIST REGISTRY
-  if(eventProfile && eventProfile.whitelist && eventProfile.whitelist.trim().length > 0) {
-    const listTokens = eventProfile.whitelist.split(/[\n,]+/).map(t => t.trim().toLowerCase());
-    if(!listTokens.includes(id.toLowerCase())) {
-      showToast("❌ Access Denied: Identification token not whitelisted.");
-      return;
-    }
+  if (eventProfile && eventProfile.whitelist && eventProfile.whitelist.trim()) {
+    const list = eventProfile.whitelist.split(/[\n,]+/).map(t => t.trim().toLowerCase());
+    if (!list.includes(id.toLowerCase())) { showToast('❌ ID not in whitelist.'); return; }
   }
 
   const now = new Date();
-  
-  // SCHEDULE INTEGRITY SCANNER
-  let scheduleStatus = 'On-Time';
-  if (eventProfile && eventProfile.start) {
-    if (now > new Date(eventProfile.start)) { scheduleStatus = 'Late'; }
-  }
-
-  // GEOFENCE RANGE SCANNER
+  const scheduleStatus = (eventProfile && eventProfile.start && now > new Date(eventProfile.start)) ? 'Late' : 'On-Time';
   let rangeStatus = 'In-Range';
-  if(eventProfile && eventProfile.targetLat && eventProfile.targetLng && eventProfile.targetRadius) {
-    if(locationData.lat && locationData.lng) {
-      const distance = calculateDistance(locationData.lat, locationData.lng, eventProfile.targetLat, eventProfile.targetLng);
-      if(distance > eventProfile.targetRadius) { rangeStatus = 'Out-of-Range'; }
-    } else { rangeStatus = 'Unverified Range'; }
+  if (eventProfile && eventProfile.targetLat && eventProfile.targetLng && eventProfile.targetRadius) {
+    if (locationData.lat && locationData.lng) {
+      const dist = calculateDistance(locationData.lat, locationData.lng, eventProfile.targetLat, eventProfile.targetLng);
+      if (dist > eventProfile.targetRadius) rangeStatus = 'Out-of-Range';
+    } else { rangeStatus = 'Unverified'; }
   }
 
-  const logRecord = {
+  const record = {
     id: Date.now(), name, idRoll: id, phone, org, orgtype, attendanceType,
     face: capturedImage, lat: locationData.lat, lng: locationData.lng,
     address: locationData.address, ip: locationData.ip, agent: locationData.agent,
     scheduleStatus, rangeStatus, checked: false,
     timeDisplay: now.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }),
-    timeStr: now.toDateString()
+    timeStr: now.toDateString(), notes: document.getElementById('f-notes').value.trim()
   };
 
-  db.unshift(logRecord); saveDB();
+  db.unshift(record); saveDB();
   playSuccessChime();
-
+  lastSuccessText = `${name} (ID: ${id}) — ${attendanceType} recorded at ${record.timeDisplay}`;
+  document.getElementById('success-detail').textContent = `${name} verified as ${attendanceType}.`;
   document.getElementById('form-main').style.display = 'none';
-  document.getElementById('success-detail').textContent = `${name} validated under terminal ID ${id}.`;
   document.getElementById('success-screen').style.display = 'block';
 }
 
 function resetForm() {
   document.getElementById('form-main').style.display = 'block';
   document.getElementById('success-screen').style.display = 'none';
-  document.getElementById('f-name').value = ''; document.getElementById('f-id').value = '';
-  document.getElementById('f-phone').value = ''; document.getElementById('f-org').value = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-org').value = '';
+  document.getElementById('f-notes').value = '';
+  document.getElementById('dup-warn').style.display = 'none';
   retake();
 }
 
-// ADMIN PANEL ANALYTICS & LEDGERS
+// ============================================================
+// SHARE BUTTONS
+// ============================================================
+function shareWhatsApp() {
+  const text = encodeURIComponent('✅ Attendance Confirmed!\n' + lastSuccessText);
+  window.open('https://wa.me/?text=' + text, '_blank');
+}
+function shareSMS() {
+  const text = encodeURIComponent('✅ Attendance: ' + lastSuccessText);
+  window.open('sms:?body=' + text, '_blank');
+}
+function copySuccess() {
+  navigator.clipboard.writeText('✅ ' + lastSuccessText).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Copy failed.'));
+}
+
+// ============================================================
+// MANUAL ENTRY (ADMIN)
+// ============================================================
+function manualEntry() {
+  const name = document.getElementById('m-name').value.trim();
+  const id = document.getElementById('m-id').value.trim();
+  const phone = document.getElementById('m-phone').value.trim();
+  const org = document.getElementById('m-org').value.trim();
+  const type = document.getElementById('m-type').value;
+  if (!name || !id) { showToast('Name and ID required for manual entry.'); return; }
+  const now = new Date();
+  const record = {
+    id: Date.now(), name, idRoll: id, phone: phone || '—', org: org || '—', orgtype: 'other',
+    attendanceType: type, face: null, lat: null, lng: null, address: 'Manual Entry', ip: 'Admin',
+    agent: 'Manual (Admin)', scheduleStatus: 'On-Time', rangeStatus: 'In-Range', checked: false,
+    timeDisplay: now.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }),
+    timeStr: now.toDateString(), notes: 'Manual admin entry'
+  };
+  db.unshift(record); saveDB();
+  document.getElementById('m-name').value = ''; document.getElementById('m-id').value = '';
+  document.getElementById('m-phone').value = ''; document.getElementById('m-org').value = '';
+  updateStats(); renderRecords();
+  showToast('✅ Manual record added.');
+}
+
+// ============================================================
+// ADMIN STATS & CHARTS
+// ============================================================
 function updateStats() {
   const todayStr = new Date().toDateString();
-  const branchSet = new Set(db.map(r => r.org));
+  const branches = new Set(db.map(r => r.org));
   document.getElementById('stat-total').textContent = db.length;
   document.getElementById('stat-today').textContent = db.filter(r => r.timeStr === todayStr).length;
-  document.getElementById('stat-orgs').textContent = branchSet.size;
+  document.getElementById('stat-orgs').textContent = branches.size;
+  document.getElementById('stat-late').textContent = db.filter(r => r.scheduleStatus === 'Late').length;
 
-  // COMPUTE DYNAMIC VISUAL RATIO GRAPH BARS
-  if(db.length > 0) {
-    const onTimeCount = db.filter(r => r.scheduleStatus === 'On-Time').length;
-    const inRangeCount = db.filter(r => r.rangeStatus === 'In-Range').length;
-    
-    const schedPct = Math.round((onTimeCount / db.length) * 100);
-    const rangePct = Math.round((inRangeCount / db.length) * 100);
-    
+  if (db.length > 0) {
+    const onTime = db.filter(r => r.scheduleStatus === 'On-Time').length;
+    const inRange = db.filter(r => r.rangeStatus === 'In-Range').length;
+    const checkIn = db.filter(r => r.attendanceType === 'Check-In').length;
+    const checkOut = db.filter(r => r.attendanceType === 'Check-Out').length;
+    const schedPct = Math.round((onTime / db.length) * 100);
+    const rangePct = Math.round((inRange / db.length) * 100);
+    const ciPct = Math.round((checkIn / db.length) * 100);
+    const coPct = Math.round((checkOut / db.length) * 100);
     document.getElementById('chart-txt-schedule').textContent = schedPct + '%';
     document.getElementById('chart-bar-schedule').style.width = schedPct + '%';
     document.getElementById('chart-txt-range').textContent = rangePct + '%';
     document.getElementById('chart-bar-range').style.width = rangePct + '%';
+    document.getElementById('chart-txt-type').textContent = `In: ${ciPct}% / Out: ${coPct}%`;
+    document.getElementById('chart-bar-type').style.width = ciPct + '%';
+
+    // Mini bar chart by branch
+    const branchCounts = {};
+    db.forEach(r => { branchCounts[r.org] = (branchCounts[r.org] || 0) + 1; });
+    const sorted = Object.entries(branchCounts).sort((a,b) => b[1]-a[1]).slice(0,5);
+    const max = sorted[0][1];
+    const miniContainer = document.getElementById('mini-bar-container');
+    const miniBars = document.getElementById('mini-bars');
+    if (sorted.length > 1) {
+      miniContainer.style.display = 'block';
+      miniBars.innerHTML = sorted.map(([org, count]) => `
+        <div class="mini-bar-col">
+          <div class="mini-bar" style="height:${Math.round((count/max)*44)}px;background:var(--accent)"></div>
+          <div class="mini-bar-lbl">${org.substring(0,6)}</div>
+        </div>
+      `).join('');
+    } else { miniContainer.style.display = 'none'; }
   } else {
-    document.getElementById('chart-txt-schedule').textContent = '0%';
-    document.getElementById('chart-bar-schedule').style.width = '0%';
-    document.getElementById('chart-txt-range').textContent = '0%';
-    document.getElementById('chart-bar-range').style.width = '0%';
+    ['schedule','range','type'].forEach(k => {
+      document.getElementById('chart-txt-' + k).textContent = k === 'type' ? '0% / 0%' : '0%';
+      document.getElementById('chart-bar-' + k).style.width = '0%';
+    });
   }
 
+  // Org filter options
   const sel = document.getElementById('filter-org');
   sel.innerHTML = '<option value="">All Branches</option>';
-  [...branchSet].sort().forEach(o => { const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt); });
+  [...new Set(db.map(r => r.org))].sort().forEach(o => {
+    const opt = document.createElement('option'); opt.value = o; opt.textContent = o; sel.appendChild(opt);
+  });
 }
 
-function renderRecords() {
+// ============================================================
+// RECORDS RENDERING WITH PAGINATION
+// ============================================================
+function getFilteredRecords() {
   const query = document.getElementById('search-input').value.toLowerCase();
   const orgFilter = document.getElementById('filter-org').value;
   const statusFilter = document.getElementById('filter-status').value;
+  const fromDate = document.getElementById('filter-date-from').value;
+  const toDate = document.getElementById('filter-date-to').value;
 
-  const filtered = db.filter(r => {
-    const matchesQuery = !query || r.name.toLowerCase().includes(query) || r.idRoll.toLowerCase().includes(query);
-    const matchesOrg = !orgFilter || r.org === orgFilter;
-    let matchesStatus = true;
-    if(statusFilter) {
-      if(statusFilter === 'On-Time' || statusFilter === 'Late') matchesStatus = r.scheduleStatus === statusFilter;
-      else if(statusFilter === 'In-Range' || statusFilter === 'Out-of-Range') matchesStatus = r.rangeStatus === statusFilter;
-      else matchesStatus = r.attendanceType === statusFilter;
+  return db.filter(r => {
+    const matchQuery = !query || r.name.toLowerCase().includes(query) || r.idRoll.toLowerCase().includes(query);
+    const matchOrg = !orgFilter || r.org === orgFilter;
+    let matchStatus = true;
+    if (statusFilter) {
+      if (['On-Time','Late'].includes(statusFilter)) matchStatus = r.scheduleStatus === statusFilter;
+      else if (['In-Range','Out-of-Range'].includes(statusFilter)) matchStatus = r.rangeStatus === statusFilter;
+      else matchStatus = r.attendanceType === statusFilter;
     }
-    return matchesQuery && matchesOrg && matchesStatus;
+    let matchDate = true;
+    if (fromDate || toDate) {
+      const recDate = new Date(r.timeDisplay);
+      if (fromDate && recDate < new Date(fromDate)) matchDate = false;
+      if (toDate && recDate > new Date(toDate + 'T23:59:59')) matchDate = false;
+    }
+    return matchQuery && matchOrg && matchStatus && matchDate;
   });
+}
+
+function renderRecords() {
+  const filtered = getFilteredRecords();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageRecords = filtered.slice(start, start + PAGE_SIZE);
 
   const list = document.getElementById('record-list');
-  if (!filtered.length) { list.innerHTML = `<div class="empty-state"><p>No transaction histories matching active system filter queries.</p></div>`; return; }
+  if (!filtered.length) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted);font-size:14px">No records found.</div>`;
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
 
-  list.innerHTML = filtered.map(r => `
+  list.innerHTML = pageRecords.map(r => `
     <div class="record-card">
       <div class="rec-check-wrap">
         <input type="checkbox" class="rec-select" data-id="${r.id}" ${r.checked ? 'checked' : ''} onchange="updateRecordCheckState(${r.id}, this.checked)">
       </div>
-      ${r.face ? `<img class="record-face" src="${r.face}">` : `<div class="record-face-placeholder">👤</div>`}
+      ${r.face
+        ? `<img class="record-face" src="${r.face}" onclick="showFaceModal('${r.id}')" title="Click to enlarge">`
+        : `<div style="width:48px;height:48px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">👤</div>`
+      }
       <div class="record-info">
-        <div class="record-name">${r.name}</div>
+        <div class="record-name" onclick="showPersonSummary('${r.idRoll}')" style="cursor:pointer;color:var(--accent)">${r.name}</div>
         <div class="record-meta">
-          🪪 Token: <b>${r.idRoll}</b> | 📱 Cell: ${r.phone}<br>
-          🏢 Branch: ${r.org} <span class="badge badge-blue">${r.orgtype}</span> 
-          <span class="badge badge-orange">${r.attendanceType || 'Check-In'}</span><br>
-          ${r.scheduleStatus === 'Late' ? '<span class="badge badge-red">🔴 Late Shift</span>' : '<span class="badge badge-green">🟢 On-Time</span>'}
-          ${r.rangeStatus === 'Out-of-Range' ? '<span class="badge badge-red">🔴 Out Perimeter</span>' : '<span class="badge badge-green">🟢 In Perimeter</span>'}<br>
-          💻 Node Client: <small>${r.agent || 'Unknown UA'}</small><br>
-          🌐 Gateway: ${r.ip} | 📍 GPS: ${r.lat ? r.lat.toFixed(4)+','+r.lng.toFixed(4) : 'Bypassed'}
+          🪪 <b>${r.idRoll}</b> · 📱 ${r.phone}<br>
+          🏢 ${r.org} <span class="badge badge-blue">${r.orgtype}</span> <span class="badge badge-orange">${r.attendanceType || 'Check-In'}</span><br>
+          ${r.scheduleStatus === 'Late' ? '<span class="badge badge-red">🔴 Late</span>' : '<span class="badge badge-green">🟢 On-Time</span>'}
+          ${r.rangeStatus === 'Out-of-Range' ? '<span class="badge badge-red">🔴 Out</span>' : '<span class="badge badge-green">🟢 In Range</span>'}
         </div>
-        <div class="record-time">🕐 Segment Sync Timestamp: <b>${r.timeDisplay}</b></div>
+        <div class="record-time">🕐 ${r.timeDisplay} · 🌐 ${r.ip}</div>
       </div>
-      <button class="delete-rec-btn" onclick="deleteRecord(${r.id})">🗑️</button>
+      <div class="rec-actions">
+        <button class="rec-edit-btn" onclick="openEditModal(${r.id})" title="Edit">✏️</button>
+        <button class="delete-rec-btn" onclick="deleteRecord(${r.id})" title="Delete">🗑️</button>
+      </div>
     </div>
   `).join('');
+
+  // Pagination
+  const pg = document.getElementById('pagination');
+  if (totalPages <= 1) { pg.innerHTML = ''; return; }
+  let html = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+      html += `<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    } else if (Math.abs(i - currentPage) === 2) {
+      html += `<span class="pg-info">…</span>`;
+    }
+  }
+  html += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>`;
+  pg.innerHTML = html;
 }
 
+function goPage(n) { currentPage = n; renderRecords(); }
+
+// ============================================================
+// FACE MODAL
+// ============================================================
+function showFaceModal(rid) {
+  const r = db.find(x => String(x.id) === String(rid));
+  if (!r || !r.face) return;
+  document.getElementById('face-modal-name').textContent = r.name;
+  document.getElementById('face-modal-img').src = r.face;
+  document.getElementById('face-modal').classList.add('open');
+}
+
+// ============================================================
+// PERSON SUMMARY MODAL
+// ============================================================
+function showPersonSummary(idRoll) {
+  const records = db.filter(r => r.idRoll === idRoll);
+  if (!records.length) return;
+  const name = records[0].name;
+  const onTime = records.filter(r => r.scheduleStatus === 'On-Time').length;
+  const late = records.filter(r => r.scheduleStatus === 'Late').length;
+  document.getElementById('summary-modal-title').textContent = `📊 ${name}`;
+  document.getElementById('sum-total').textContent = records.length;
+  document.getElementById('sum-ontime').textContent = onTime;
+  document.getElementById('sum-late').textContent = late;
+  document.getElementById('summary-log-list').innerHTML = records.map(r => `
+    <div class="summary-log-row">
+      <span>${r.timeDisplay}</span>
+      <span>
+        <span class="badge badge-orange">${r.attendanceType}</span>
+        ${r.scheduleStatus === 'Late' ? '<span class="badge badge-red">Late</span>' : '<span class="badge badge-green">On-Time</span>'}
+      </span>
+    </div>
+  `).join('');
+  document.getElementById('summary-modal').classList.add('open');
+}
+
+// ============================================================
+// EDIT RECORD MODAL
+// ============================================================
+function openEditModal(id) {
+  const r = db.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-name').value = r.name;
+  document.getElementById('edit-roll').value = r.idRoll;
+  document.getElementById('edit-phone').value = r.phone;
+  document.getElementById('edit-org').value = r.org;
+  document.getElementById('edit-type').value = r.attendanceType || 'Check-In';
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function saveEditRecord() {
+  const id = parseInt(document.getElementById('edit-id').value);
+  const r = db.find(x => x.id === id);
+  if (!r) return;
+  r.name = document.getElementById('edit-name').value.trim();
+  r.idRoll = document.getElementById('edit-roll').value.trim();
+  r.phone = document.getElementById('edit-phone').value.trim();
+  r.org = document.getElementById('edit-org').value.trim();
+  r.attendanceType = document.getElementById('edit-type').value;
+  saveDB(); closeModal('edit-modal'); updateStats(); renderRecords();
+  showToast('Record updated.');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ============================================================
+// SELECT / DELETE
+// ============================================================
 function updateRecordCheckState(id, checked) {
-  const item = db.find(r => r.id === id);
-  if(item) item.checked = checked;
+  const r = db.find(x => x.id === id);
+  if (r) r.checked = checked;
 }
 function toggleSelectAll(master) {
   document.querySelectorAll('.rec-select').forEach(cb => {
     cb.checked = master.checked;
-    const id = parseInt(cb.getAttribute('data-id'));
-    updateRecordCheckState(id, master.checked);
+    updateRecordCheckState(parseInt(cb.getAttribute('data-id')), master.checked);
   });
 }
-
 function bulkDelete() {
-  const targetWipes = db.filter(r => r.checked).length;
-  if(targetWipes === 0) { showToast("No items selected."); return; }
-  if(confirm(`Purge ${targetWipes} selected transaction streams permanently from memory storage blocks?`)) {
+  const n = db.filter(r => r.checked).length;
+  if (!n) { showToast('No records selected.'); return; }
+  if (confirm(`Delete ${n} selected records?`)) {
     db = db.filter(r => !r.checked); saveDB();
     document.getElementById('master-select').checked = false;
-    updateStats(); renderRecords(); showToast("Selection Purged.");
+    currentPage = 1; updateStats(); renderRecords(); showToast('Deleted.');
   }
 }
-
 function deleteRecord(id) {
-  if (confirm("Purge selected record element?")) {
-    db = db.filter(r => r.id !== id); saveDB(); updateStats(); renderRecords(); showToast("Record Purged.");
+  if (confirm('Delete this record?')) {
+    db = db.filter(r => r.id !== id); saveDB(); updateStats(); renderRecords(); showToast('Deleted.');
   }
 }
 function clearAllData() {
-  if (confirm("Nuclear System Wipe: Erase all secure local ledger blocks? This operation destroys the arrays completely!")) {
-    db = []; saveDB(); updateStats(); renderRecords(); showToast("Local memory modules wiped clean.");
+  if (confirm('Wipe ALL records permanently?')) {
+    db = []; saveDB(); updateStats(); renderRecords(); showToast('All data cleared.');
   }
 }
 
-// ARCHIVAL LEDGER DUMP UTILITIES
+// ============================================================
+// EXPORTS
+// ============================================================
 function backupData() {
-  if (!db.length) { showToast("Ledger contains zero registries."); return; }
+  if (!db.length) { showToast('No data to backup.'); return; }
   const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `System_Ledger_Dump_${new Date().toISOString().slice(0,10)}.json`; a.click();
+  a.download = `AttendanceBackup_${new Date().toISOString().slice(0,10)}.json`; a.click();
 }
 function restoreData(input) {
   const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = e => {
     try {
-      const parsedArray = JSON.parse(e.target.result);
-      if (Array.isArray(parsedArray)) {
-        db = parsedArray; saveDB(); updateStats(); renderRecords();
-        showToast("📦 Ledger Core Matrix Restored Successfully!");
-      } else { showToast("Structure violation: Array missing inside dump."); }
-    } catch(err) { showToast("Failed to read external system file streams."); }
+      const parsed = JSON.parse(e.target.result);
+      if (Array.isArray(parsed)) {
+        db = parsed; saveDB(); currentPage = 1; updateStats(); renderRecords();
+        showToast('✅ Data restored!');
+      } else { showToast('Invalid backup file.'); }
+    } catch(e) { showToast('Failed to read file.'); }
   };
   reader.readAsText(file); input.value = '';
 }
-
-// LEDGER EXPORTS
 function exportCSV() {
-  if (!db.length) { showToast('Ledger arrays empty.'); return; }
-  const headers = ['Legal Name','ID Token','Contact Phone','Branch Hub','Category','Mode','Schedule Delta','Perimeter Scan','Network IP Address','Device Client String','Execution Timestamp'];
-  const rows = db.map(r => [r.name, r.idRoll, r.phone, r.org, r.orgtype, r.attendanceType||'Check-In', r.scheduleStatus||'On-Time', r.rangeStatus||'In-Range', r.ip, r.agent, r.timeDisplay]);
-  
-  // UTF-8 Excel compatibility fix using BOM string
-  const csv = [headers, ...rows].map(r => r.map(val => `"${val}"`).join(',')).join('\n');
+  if (!db.length) { showToast('No data.'); return; }
+  const headers = ['Name','ID','Phone','Branch','Type','Mode','Schedule','Perimeter','IP','Device','Time'];
+  const rows = db.map(r => [r.name, r.idRoll, r.phone, r.org, r.orgtype, r.attendanceType||'Check-In', r.scheduleStatus, r.rangeStatus, r.ip, r.agent, r.timeDisplay]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
   const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Secure_Ledger_Report.csv`; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Attendance_Report.csv'; a.click();
 }
 function exportHTML() {
-  if (!db.length) { showToast('Ledger arrays empty.'); return; }
-  let html = `<html><head><meta charset="UTF-8"><title>System Sheet</title><style>body{font-family:sans-serif;padding:30px;background:#f5f5f7;color:#1d1d1f} table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05)} th,td{padding:14px;text-align:left;border-bottom:1px solid #e5E5ea} th{background:#f5f5f7;font-weight:600;color:#6e6e73} img{width:46px;height:46px;object-fit:cover;border-radius:8px}</style></head><body><h2>Enterprise Core Activity Sheet Ledger</h2><table><tr><th>Identity Vector</th><th>User Name</th><th>Registry ID</th><th>Branch Station</th><th>Shift State</th><th>Perimeter</th><th>Time Log Timestamp</th></tr>`;
-  db.forEach(r => { html += `<tr><td><img src="${r.face||''}"></td><td><b>${r.name}</b></td><td>${r.idRoll}</td><td>${r.org} (${r.attendanceType||'Check-In'})</td><td>${r.scheduleStatus}</td><td>${r.rangeStatus}</td><td>${r.timeDisplay}</td></tr>`; });
+  if (!db.length) { showToast('No data.'); return; }
+  let html = `<html><head><meta charset="UTF-8"><title>Attendance Sheet</title><style>body{font-family:sans-serif;padding:30px;background:#f5f5f7;color:#1d1d1f}table{width:100%;border-collapse:collapse;margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05)}th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e5ea}th{background:#f5f5f7;font-weight:600;color:#6e6e73}img{width:44px;height:44px;object-fit:cover;border-radius:8px}.badge{padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500}.on-time{background:#E8F5E9;color:#1B5E20}.late{background:#FFEBEE;color:#B71C1C}</style></head><body><h2 style="margin-bottom:4px">Attendance Report</h2><p style="color:#6e6e73;font-size:13px">Generated: ${new Date().toLocaleString()}</p><table><tr><th>Photo</th><th>Name</th><th>ID</th><th>Branch</th><th>Type</th><th>Schedule</th><th>Perimeter</th><th>Time</th></tr>`;
+  db.forEach(r => {
+    html += `<tr><td>${r.face ? `<img src="${r.face}">` : '👤'}</td><td><b>${r.name}</b><br><small style="color:#6e6e73">${r.phone}</small></td><td>${r.idRoll}</td><td>${r.org}</td><td>${r.attendanceType||'Check-In'}</td><td><span class="badge ${r.scheduleStatus === 'On-Time' ? 'on-time' : 'late'}">${r.scheduleStatus}</span></td><td>${r.rangeStatus}</td><td>${r.timeDisplay}</td></tr>`;
+  });
   html += `</table></body></html>`;
   const blob = new Blob([html], { type: 'text/html' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Rich_Ledger_Report.html`; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Attendance_Rich_Report.html'; a.click();
 }
 
+// ============================================================
+// TOAST
+// ============================================================
 function showToast(msg) {
   const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
+
+// Close modals on backdrop click
+document.querySelectorAll('.modal-backdrop').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
 </script>
 </body>
 </html>
