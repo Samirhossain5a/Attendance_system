@@ -1,3 +1,5 @@
+description="Create fixed HTML file"
+cat > /home/claude/fixed_attendance.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,8 +29,6 @@ body{
   background:var(--bg);color:var(--text);min-height:100vh;
   -webkit-font-smoothing:antialiased;
 }
-
-/* ── SPLASH ── */
 #splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.5s ease}
 #splash.gone{opacity:0;pointer-events:none}
 .splash-icon{width:80px;height:80px;background:linear-gradient(145deg,#1C8EF9,#0055D4);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:20px;box-shadow:0 8px 32px rgba(0,122,255,0.4);animation:splashPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both}
@@ -38,8 +38,6 @@ body{
 .splash-bar-bg{width:120px;height:2px;background:rgba(255,255,255,0.12);border-radius:2px;margin-top:32px;overflow:hidden}
 .splash-bar{height:100%;background:var(--accent);border-radius:2px;animation:loadbar 1.6s ease-out forwards}
 @keyframes loadbar{from{width:0}to{width:100%}}
-
-/* ── TOP NAV ── */
 .nav{
   background:rgba(242,242,247,0.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:0.5px solid var(--separator);padding:0 16px;height:48px;
@@ -56,19 +54,13 @@ body.dark-theme .nav{background:rgba(0,0,0,0.82)}
 }
 .icon-btn:active{transform:scale(0.88)}
 .notif-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--danger);border-radius:50%;border:2px solid var(--bg)}
-
-/* ── LIVE CLOCK ── */
 .live-clock{
   font-size:13px;font-weight:500;color:var(--muted);
   font-variant-numeric:tabular-nums;letter-spacing:-0.2px;margin-right:4px;
 }
-
-/* ── PAGES ── */
 .page{display:none;padding:16px 16px 0;max-width:480px;margin:0 auto}
 .page.active{display:block}
 .page-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--text);margin-bottom:16px;margin-top:4px}
-
-/* ── iOS GROUPED CARD ── */
 .ios-group{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
 body.dark-theme .ios-group{box-shadow:none}
 .ios-group-label{font-size:13px;font-weight:400;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin:0 4px 6px;padding-left:4px}
@@ -81,13 +73,9 @@ body.dark-theme .ios-group{box-shadow:none}
 .ios-row-sub{font-size:13px;color:var(--muted);margin-top:1px}
 .ios-row-trail{font-size:17px;color:var(--muted);display:flex;align-items:center;gap:4px;flex-shrink:0}
 .ios-chevron::after{content:'›';font-size:20px;color:var(--muted2)}
-
-/* ── CARD (plain) ── */
 .card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
 body.dark-theme .card{box-shadow:none;border:0.5px solid var(--border)}
 .card-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
-
-/* ── EVENT BANNER + COUNTDOWN ── */
 .event-banner{background:linear-gradient(135deg,#0062CC,#5856D6);border-radius:var(--radius);padding:16px;margin-bottom:16px;color:#fff;box-shadow:0 4px 20px rgba(0,98,204,0.35)}
 .event-banner-name{font-size:17px;font-weight:700;letter-spacing:-0.3px;margin-bottom:3px}
 .event-banner-time{font-size:12px;opacity:0.8;line-height:1.6}
@@ -95,8 +83,6 @@ body.dark-theme .card{box-shadow:none;border:0.5px solid var(--border)}
 .cd-block{background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:10px;padding:6px 12px;text-align:center;min-width:52px}
 .cd-num{font-size:22px;font-weight:700;line-height:1;display:block;letter-spacing:-0.5px}
 .cd-lbl{font-size:9px;opacity:0.7;display:block;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-
-/* ── WEATHER CARD ── */
 .weather-card{
   background:linear-gradient(135deg,#1C6EF2,#0040A8);
   border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;
@@ -109,8 +95,6 @@ body.dark-theme .card{box-shadow:none;border:0.5px solid var(--border)}
 .wx-desc{font-size:12px;opacity:0.8;margin-top:3px;font-weight:400}
 .wx-right{display:flex;flex-direction:column;gap:5px;text-align:right}
 .wx-stat{font-size:13px;opacity:0.9;display:flex;align-items:center;justify-content:flex-end;gap:5px;font-weight:500}
-
-/* ── CAMERA ── */
 .cam-wrap{border-radius:var(--radius-sm);overflow:hidden;background:#000;position:relative;aspect-ratio:4/3;margin-bottom:12px}
 #video{width:100%;height:100%;object-fit:cover;display:block}
 #canvas{display:none}
@@ -127,8 +111,6 @@ body.dark-theme .card{box-shadow:none;border:0.5px solid var(--border)}
 #retakeBtn{padding:14px 18px;border-radius:14px;border:none;background:var(--bg2);color:var(--text);font-size:17px;font-weight:500;cursor:pointer;display:none;transition:transform 0.1s}
 #retakeBtn:active{transform:scale(0.96)}
 .preview-img{width:100%;border-radius:var(--radius-sm);display:none;margin-bottom:12px}
-
-/* ── LOCATION ROWS ── */
 .loc-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:0.5px solid var(--separator)}
 .loc-row:last-child{border-bottom:none}
 .loc-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -140,8 +122,6 @@ body.dark-theme .card{box-shadow:none;border:0.5px solid var(--border)}
 .loc-status.getting{background:rgba(255,149,0,0.12);color:#FF9500}
 .loc-status.done{background:rgba(52,199,89,0.12);color:#34C759}
 .loc-status.error{background:rgba(255,59,48,0.12);color:#FF3B30}
-
-/* ── INPUTS ── */
 .field{margin-bottom:14px}
 label{font-size:13px;color:var(--muted);font-weight:500;display:block;margin-bottom:6px;letter-spacing:0.1px}
 input,select,textarea{
@@ -155,8 +135,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 
 textarea{min-height:64px;resize:none;line-height:1.5}
 .dup-warn{background:rgba(255,149,0,0.1);border:0.5px solid rgba(255,149,0,0.3);border-radius:var(--radius-xs);padding:10px 13px;font-size:13px;color:#FF9500;margin-top:-8px;margin-bottom:10px;display:none}
 .pin-strength{height:3px;border-radius:2px;margin-top:6px;transition:width 0.3s,background 0.3s;width:0%}
-
-/* ── BUTTONS ── */
 .submit-btn{
   width:100%;padding:16px;border-radius:14px;border:none;
   background:var(--accent);color:#fff;font-size:17px;font-weight:600;
@@ -179,8 +157,6 @@ textarea{min-height:64px;resize:none;line-height:1.5}
   transition:opacity 0.12s,transform 0.1s;
 }
 .report-btn:active{transform:scale(0.97);opacity:0.8}
-
-/* ── SUCCESS SCREEN ── */
 .success-screen{display:none;text-align:center;padding:40px 16px 20px}
 .check-circle{width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,#34C759,#28A745);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes popIn{from{transform:scale(0.3);opacity:0}to{transform:scale(1);opacity:1}}
@@ -192,8 +168,6 @@ textarea{min-height:64px;resize:none;line-height:1.5}
 .share-btn:active{transform:scale(0.94)}
 .again-btn{padding:14px 36px;border-radius:14px;border:none;background:var(--accent);color:#fff;font-size:17px;font-weight:600;cursor:pointer;transition:transform 0.1s,opacity 0.12s}
 .again-btn:active{transform:scale(0.96);opacity:0.85}
-
-/* ── PROFILE CARD (Admin) ── */
 .profile-card{background:linear-gradient(135deg,#0062CC,#4F4FE0);border-radius:var(--radius);padding:18px;margin-bottom:16px;color:#fff;box-shadow:0 4px 20px rgba(0,80,200,0.3)}
 .profile-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
 .profile-card-name{font-size:18px;font-weight:700;letter-spacing:-0.4px}
@@ -204,8 +178,6 @@ textarea{min-height:64px;resize:none;line-height:1.5}
 .profile-stat{text-align:center}
 .profile-stat-num{font-size:22px;font-weight:700;letter-spacing:-0.5px}
 .profile-stat-lbl{font-size:10px;opacity:.7;margin-top:1px;text-transform:uppercase;letter-spacing:0.4px}
-
-/* ── CHARTS ── */
 .chart-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
 body.dark-theme .chart-card{box-shadow:none;border:0.5px solid var(--border)}
 .chart-row{margin-bottom:12px}
@@ -216,12 +188,8 @@ body.dark-theme .chart-card{box-shadow:none;border:0.5px solid var(--border)}
 .mini-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .mini-bar{width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;transition:height 0.5s cubic-bezier(0.34,1,0.64,1);opacity:0.85}
 .mini-bar-lbl{font-size:9px;color:var(--muted);overflow:hidden;width:100%;text-align:center;text-overflow:ellipsis;white-space:nowrap}
-
-/* ── DATE RANGE ── */
 .date-range-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
 .date-range-row input{padding:9px 11px;font-size:13px}
-
-/* ── RECORDS ── */
 .bulk-bar{display:flex;justify-content:space-between;align-items:center;background:var(--card);padding:10px 14px;border-radius:var(--radius-xs);margin-bottom:10px;box-shadow:var(--shadow)}
 body.dark-theme .bulk-bar{box-shadow:none;border:0.5px solid var(--border)}
 .record-list{display:flex;flex-direction:column;gap:8px}
@@ -248,28 +216,20 @@ body.dark-theme .record-card{box-shadow:none;border:0.5px solid var(--border)}
 .rec-actions{position:absolute;top:10px;right:10px;display:flex;gap:2px}
 .rec-edit-btn,.delete-rec-btn{background:transparent;border:none;font-size:16px;cursor:pointer;opacity:0.35;padding:3px;transition:opacity 0.12s}
 .rec-edit-btn:hover,.delete-rec-btn:hover{opacity:1}
-
-/* ── PAGINATION ── */
 .pagination{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:14px;flex-wrap:wrap}
 .pg-btn{padding:7px 14px;border-radius:10px;border:none;background:var(--bg2);font-size:14px;font-weight:500;cursor:pointer;color:var(--text);transition:transform 0.1s}
 .pg-btn.active{background:var(--accent);color:#fff}
 .pg-btn:disabled{opacity:0.3;cursor:default}
 .pg-btn:active{transform:scale(0.94)}
 .pg-info{font-size:12px;color:var(--muted)}
-
-/* ── MANUAL ENTRY ── */
 .manual-entry-card{background:var(--accent-light);border:0.5px solid rgba(0,122,255,0.2);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px}
 .manual-entry-card .card-title{color:var(--accent)}
-
-/* ── ACTIVITY FEED ── */
 .activity-feed{display:flex;flex-direction:column}
 .activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--separator)}
 .activity-item:last-child{border-bottom:none}
 .activity-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
 .activity-text{font-size:14px;color:var(--text);flex:1;line-height:1.4}
 .activity-time{font-size:11px;color:var(--muted2);white-space:nowrap}
-
-/* ── MODALS (iOS sheet style) ── */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:none;align-items:flex-end;justify-content:center}
 .modal-backdrop.open{display:flex}
 .modal-sheet{
@@ -286,24 +246,18 @@ body.dark-theme .modal-sheet{background:var(--card2)}
 .modal-save-btn:active{transform:scale(0.97);opacity:0.85}
 .time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 #face-modal-img{width:100%;border-radius:var(--radius-sm);margin-bottom:12px}
-
-/* ── PERSON SUMMARY ── */
 .summary-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .summary-stat{background:var(--bg2);border-radius:10px;padding:12px;text-align:center}
 .summary-stat-num{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
 .summary-stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
 .summary-log-row{padding:9px 0;border-bottom:0.5px solid var(--separator);font-size:14px;display:flex;justify-content:space-between;align-items:center}
 .summary-log-row:last-child{border-bottom:none}
-
-/* ── NOTIFICATIONS ── */
 .notif-list{display:flex;flex-direction:column}
 .notif-item{padding:12px 0;border-bottom:0.5px solid var(--separator);font-size:14px;color:var(--text);display:flex;gap:12px;align-items:flex-start}
 .notif-item:last-child{border-bottom:none}
 .notif-icon{font-size:20px;flex-shrink:0;width:36px;height:36px;background:var(--bg2);border-radius:10px;display:flex;align-items:center;justify-content:center}
 .notif-body{flex:1}
 .notif-body-time{font-size:11px;color:var(--muted2);margin-top:2px}
-
-/* ── SETTINGS ── */
 .settings-section{margin-bottom:20px}
 .settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:0.5px solid var(--separator)}
 .settings-row:last-child{border-bottom:none}
@@ -316,8 +270,6 @@ body.dark-theme .toggle-slider{background:#39393D}
 .toggle-slider:before{position:absolute;content:"";height:27px;width:27px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:transform 0.22s;box-shadow:0 2px 6px rgba(0,0,0,0.25)}
 .toggle input:checked + .toggle-slider{background:var(--success)}
 .toggle input:checked + .toggle-slider:before{transform:translateX(20px)}
-
-/* ── BOTTOM TAB BAR ── */
 .bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
   height:calc(56px + env(safe-area-inset-bottom));
@@ -334,8 +286,6 @@ body.dark-theme .bottom-nav{background:rgba(18,18,18,0.9)}
 .bnav-btn.active .bnav-icon{transform:scale(1.1)}
 .bnav-lbl{font-size:10px;font-weight:500;letter-spacing:0.1px}
 .page{padding-bottom:calc(72px + env(safe-area-inset-bottom)) !important}
-
-/* ── FILES / PROFILE PAGE ── */
 .profile-pic-wrap{display:flex;flex-direction:column;align-items:center;padding:20px 0 14px}
 .profile-pic-ring{width:88px;height:88px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;transition:transform 0.15s;position:relative;box-shadow:0 2px 12px rgba(0,0,0,0.12)}
 .profile-pic-ring:active{transform:scale(0.95)}
@@ -355,8 +305,6 @@ body.dark-theme .file-item{box-shadow:none;border:0.5px solid var(--border)}
 .file-del-btn:hover,.file-del-btn:active{opacity:1}
 .file-upload-btn{width:100%;padding:14px;border-radius:13px;border:1.5px dashed var(--muted2);background:transparent;font-size:15px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;transition:border-color 0.15s,color 0.15s}
 .file-upload-btn:hover,.file-upload-btn:active{border-color:var(--accent);color:var(--accent)}
-
-/* ── TODAY STATS ── */
 .today-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .today-pill{background:var(--card);border-radius:14px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.12s}
 body.dark-theme .today-pill{box-shadow:none;border:0.5px solid var(--border)}
@@ -368,13 +316,9 @@ body.dark-theme .today-pill{box-shadow:none;border:0.5px solid var(--border)}
 .today-pill-lbl{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.4px}
 .today-ring-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:36px;height:36px}
 .today-ring-pct{position:absolute;font-size:8px;font-weight:700;color:#AF52DE}
-
-/* ── QUICK NOTE ── */
 .quick-note-card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
 body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border)}
 .quick-note-header{display:flex;justify-content:space-between;align-items:center}
-
-/* ── CALENDAR ── */
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
 .cal-month-label{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.4px}
 .cal-nav-btn{background:var(--bg2);border:none;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
@@ -397,8 +341,6 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 .cal-detail-info{flex:1;min-width:0}
 .cal-detail-name{font-size:14px;font-weight:600;color:var(--text)}
 .cal-detail-meta{font-size:12px;color:var(--muted);margin-top:1px}
-
-/* ── LEADERBOARD ── */
 .lb-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--separator)}
 .lb-row:last-child{border-bottom:none}
 .lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);flex-shrink:0}
@@ -408,8 +350,6 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 .lb-name{flex:1;font-size:15px;font-weight:600;color:var(--text)}
 .lb-sub{font-size:12px;color:var(--muted);margin-top:1px}
 .lb-score{font-size:17px;font-weight:700;color:var(--accent)}
-
-/* ── GLOBAL SEARCH ── */
 .gs-result{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--separator);cursor:pointer;transition:background 0.1s}
 .gs-result:last-child{border-bottom:none}
 .gs-result:active{background:var(--bg2);margin:0 -16px;padding:12px 16px;border-radius:12px}
@@ -418,8 +358,6 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 .gs-name{font-size:15px;font-weight:600;color:var(--text)}
 .gs-meta{font-size:12px;color:var(--muted);margin-top:2px}
 .gs-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
-
-/* ── TOAST ── */
 .toast{
   position:fixed;bottom:calc(72px + env(safe-area-inset-bottom) + 8px);left:50%;
   transform:translateX(-50%) translateY(16px);opacity:0;
@@ -430,7 +368,6 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 }
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
-
 @media print{
   body{background:#fff;color:#000}
   .nav,.report-btn,.export-btn,.bulk-bar,#search-input,#filter-org,#filter-status,.edit-profile-btn,.delete-rec-btn,.rec-edit-btn,button,input,.rec-check-wrap,.live-clock,.countdown-row,.pagination,#splash,.manual-entry-card,.bottom-nav{display:none !important}
@@ -441,7 +378,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 </head>
 <body>
 
-<!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-icon">✅</div>
   <div class="splash-title">Attendance Suite</div>
@@ -465,7 +401,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </nav>
 
-<!-- SEARCH OVERLAY -->
 <div id="search-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)" onclick="if(event.target===this)closeSearch()">
   <div style="background:var(--card);border-radius:20px 20px 0 0;position:absolute;bottom:0;left:0;right:0;padding:20px 16px 40px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s cubic-bezier(0.34,1,0.64,1)">
     <div style="width:36px;height:4px;background:var(--muted2);border-radius:2px;margin:0 auto 16px"></div>
@@ -477,7 +412,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </div>
 
-<!-- BOTTOM NAVBAR -->
 <nav class="bottom-nav" id="bottom-nav">
   <button class="bnav-btn active" id="bnav-form" onclick="showPage('form')">
     <span class="bnav-icon">✅</span>
@@ -501,20 +435,16 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </button>
 </nav>
 
-<!-- ===== FORM PAGE ===== -->
+<!-- FORM PAGE -->
 <div class="page active" id="page-form">
   <div id="form-main">
-
-    <!-- LATE ALERT BANNER -->
-    <div id="late-alert-banner" style="display:none;background:linear-gradient(135deg,#FF3B30,#FF6B35);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;display:none;align-items:center;gap:10px">
+    <div id="late-alert-banner" style="display:none;background:linear-gradient(135deg,#FF3B30,#FF6B35);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;align-items:center;gap:10px">
       <span style="font-size:24px">⚠️</span>
       <div>
         <div style="font-size:14px;font-weight:700">Session Running Late</div>
         <div id="late-alert-msg" style="font-size:12px;opacity:0.85;margin-top:2px"></div>
       </div>
     </div>
-
-    <!-- WEATHER CARD -->
     <div class="weather-card" id="weather-card">
       <div class="wx-left">
         <div class="wx-icon" id="wx-icon">⏳</div>
@@ -529,8 +459,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <div class="wx-stat"><span>📍</span><span id="wx-city">Locating...</span></div>
       </div>
     </div>
-
-    <!-- TODAY STATS PILLS -->
     <div class="today-stats-row" id="today-stats-row">
       <div class="today-pill" onclick="showPage('admin')">
         <span class="today-pill-num" id="today-total">0</span>
@@ -555,8 +483,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <span class="today-pill-lbl">Rate</span>
       </div>
     </div>
-
-    <!-- QUICK NOTE -->
     <div class="quick-note-card" id="quick-note-card">
       <div class="quick-note-header">
         <span style="font-size:14px;font-weight:600;color:var(--text)">📝 Quick Note</span>
@@ -567,7 +493,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <div style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right" id="qn-saved"></div>
       </div>
     </div>
-
     <div id="event-banner" class="event-banner" style="display:none">
       <div class="event-banner-name" id="banner-name">Event</div>
       <div class="event-banner-time" id="banner-time"></div>
@@ -578,7 +503,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">sec</span></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">Biometric Face Verification</div>
       <div class="cam-wrap">
@@ -594,7 +518,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <button id="retakeBtn" onclick="retake()">Retake</button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">Network & Geolocation</div>
       <div class="loc-row">
@@ -611,7 +534,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <div class="loc-info"><div class="loc-label">IP Address</div><div class="loc-val" id="loc-ip">Detecting...</div></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">User Details</div>
       <div class="field">
@@ -643,10 +565,8 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <div class="field"><label id="org-label">University Name</label><input type="text" id="f-org" placeholder="Organization name"></div>
       <div class="field"><label>Notes (Optional)</label><textarea id="f-notes" placeholder="Any remarks..."></textarea></div>
     </div>
-
     <button class="submit-btn" id="submitBtn" onclick="submitAttendance()">✅ Submit Attendance</button>
   </div>
-
   <div class="success-screen" id="success-screen">
     <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Attendance Recorded!</h2>
@@ -664,7 +584,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </div>
 
-<!-- ===== ADMIN PAGE ===== -->
+<!-- ADMIN PAGE -->
 <div class="page" id="page-admin">
   <div class="profile-card">
     <div class="profile-card-top">
@@ -682,7 +602,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <div class="profile-stat"><div class="profile-stat-num" id="stat-out">0</div><div class="profile-stat-lbl">Out of Range</div></div>
     </div>
   </div>
-
   <div class="chart-card">
     <div class="card-title">Analytics</div>
     <div class="chart-row">
@@ -702,8 +621,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <div class="mini-bars" id="mini-bars"></div>
     </div>
   </div>
-
-  <!-- LEADERBOARD -->
   <div class="card" id="leaderboard-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <div class="card-title" style="margin-bottom:0">🏆 Leaderboard</div>
@@ -715,14 +632,10 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
     <div id="leaderboard-list"></div>
   </div>
-
-  <!-- RECENT ACTIVITY FEED -->
   <div class="card" id="activity-card">
     <div class="card-title">Recent Activity</div>
     <div class="activity-feed" id="activity-feed"></div>
   </div>
-
-  <!-- MANUAL ENTRY -->
   <div class="manual-entry-card">
     <div class="card-title">➕ Manual Entry (Admin)</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
@@ -743,7 +656,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <button onclick="manualEntry()" style="padding:9px;border-radius:11px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">Add Record</button>
     </div>
   </div>
-
   <button class="report-btn" onclick="exportCSV()">⬇️ Download CSV</button>
   <button class="export-btn" style="background:rgba(52,199,89,0.1);border-color:rgba(52,199,89,0.3);color:#1B5E20;font-weight:600" onclick="sbPull()">☁️ Sync from Cloud</button>
   <button class="export-btn" onclick="exportHTML()">🌐 HTML Report</button>
@@ -754,7 +666,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     <button class="export-btn" onclick="document.getElementById('restore-input').click()">📥 Restore JSON</button>
   </div>
   <input type="file" id="restore-input" style="display:none" onchange="restoreData(this)">
-
   <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:6px">
     <input type="text" id="search-input" placeholder="🔍 Search name, ID..." oninput="currentPage=1;renderRecords()">
     <div class="date-range-row">
@@ -775,23 +686,18 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       </select>
     </div>
   </div>
-
   <div class="bulk-bar" style="margin-top:0.75rem">
     <label style="display:flex;align-items:center;gap:6px;margin-bottom:0;cursor:pointer">
       <input type="checkbox" id="master-select" onchange="toggleSelectAll(this)"> Select All
     </label>
     <button onclick="bulkDelete()" style="background:transparent;border:none;color:var(--danger);font-size:13px;font-weight:600;cursor:pointer">🗑️ Delete Selected</button>
   </div>
-
   <div id="record-list" class="record-list"></div>
   <div class="pagination" id="pagination"></div>
-
-  <button class="export-btn" style="color:var(--danger);border-color:#ffcdd2;background:#fff0f2;margin-top:1.5rem" onclick="clearAllData()">
-    🗑️ Clear All Data
-  </button>
+  <button class="export-btn" style="color:var(--danger);border-color:#ffcdd2;background:#fff0f2;margin-top:1.5rem" onclick="clearAllData()">🗑️ Clear All Data</button>
 </div>
 
-<!-- ===== NOTIFICATIONS PAGE ===== -->
+<!-- NOTIFICATIONS PAGE -->
 <div class="page" id="page-notif">
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
@@ -802,26 +708,18 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </div>
 
-<!-- ===== CALENDAR PAGE ===== -->
+<!-- CALENDAR PAGE -->
 <div class="page" id="page-calendar">
   <div class="page-title">Calendar</div>
-
-  <!-- Month nav -->
   <div class="cal-header">
     <button class="cal-nav-btn" onclick="calPrev()">‹</button>
     <span class="cal-month-label" id="cal-month-label"></span>
     <button class="cal-nav-btn" onclick="calNext()">›</button>
   </div>
-
-  <!-- Day labels -->
   <div class="cal-daynames">
     <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
   </div>
-
-  <!-- Grid -->
   <div class="cal-grid" id="cal-grid"></div>
-
-  <!-- Selected day detail -->
   <div class="card" id="cal-detail" style="display:none">
     <div class="card-title" id="cal-detail-date"></div>
     <div id="cal-detail-list"></div>
@@ -831,7 +729,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </div>
 
-<!-- ===== FILES PAGE ===== -->
+<!-- FILES PAGE -->
 <div class="page" id="page-files">
   <div class="card">
     <div class="profile-pic-wrap">
@@ -854,12 +752,9 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <input type="text" id="pp-role-input" placeholder="e.g. Admin, Manager..." oninput="updateProfileRole(this.value)">
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">My Files</div>
-    <button class="file-upload-btn" onclick="document.getElementById('file-input').click()">
-      ➕ Upload File
-    </button>
+    <button class="file-upload-btn" onclick="document.getElementById('file-input').click()">➕ Upload File</button>
     <input type="file" id="file-input" multiple style="display:none" onchange="uploadFiles(this)">
     <div class="file-grid" id="file-grid" style="margin-top:0.75rem"></div>
     <p id="file-empty" style="font-size:13px;color:var(--muted);text-align:center;padding:1rem 0">No files uploaded yet</p>
@@ -888,7 +783,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 </div>
 
-<!-- ===== SETTINGS PAGE ===== -->
+<!-- SETTINGS PAGE -->
 <div class="page" id="page-settings">
   <div class="card">
     <div class="card-title">Display</div>
@@ -907,7 +802,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">Submission</div>
     <div class="settings-section">
@@ -925,7 +819,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">Data</div>
     <div class="settings-section">
@@ -940,7 +833,6 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
     <button class="export-btn" style="margin-top:0" onclick="backupData()">📤 Backup All Data</button>
   </div>
-
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">Supabase Setup</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে:</div>
@@ -959,7 +851,6 @@ create policy "anon all" on attendance for all using (true) with check (true);
     </div>
     <button onclick="copySql()" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">📋 SQL Copy করো</button>
   </div>
-
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">About</div>
     <div class="settings-row" style="border:none;padding:6px 0">
@@ -968,7 +859,7 @@ create policy "anon all" on attendance for all using (true) with check (true);
   </div>
 </div>
 
-<!-- ===== PROFILE MODAL ===== -->
+<!-- PROFILE MODAL -->
 <div class="modal-backdrop" id="profile-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -995,7 +886,7 @@ create policy "anon all" on attendance for all using (true) with check (true);
   </div>
 </div>
 
-<!-- ===== EDIT RECORD MODAL ===== -->
+<!-- EDIT RECORD MODAL -->
 <div class="modal-backdrop" id="edit-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -1020,7 +911,7 @@ create policy "anon all" on attendance for all using (true) with check (true);
   </div>
 </div>
 
-<!-- ===== FACE MODAL ===== -->
+<!-- FACE MODAL -->
 <div class="modal-backdrop" id="face-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -1030,7 +921,7 @@ create policy "anon all" on attendance for all using (true) with check (true);
   </div>
 </div>
 
-<!-- ===== PERSON SUMMARY MODAL ===== -->
+<!-- PERSON SUMMARY MODAL -->
 <div class="modal-backdrop" id="summary-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -1052,19 +943,18 @@ create policy "anon all" on attendance for all using (true) with check (true);
 const SUPABASE_URL = 'https://zshwkbhrinsckoetifsw.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzaHdrYmhyaW5zY2tvZXRpZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NzkzNjEsImV4cCI6MjA2NjA1NTM2MX0.BK8tPHMjcoD0b4qOqMp8tABIQpqHYq8bIX17BaAmR3g';
 const SB_HEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
-let syncStatus = 'idle'; // idle | syncing | online | error
+let syncStatus = 'idle';
 
 async function sbFetch(path, options = {}) {
   return fetch(SUPABASE_URL + '/rest/v1/' + path, { headers: SB_HEADERS, ...options });
 }
 
-// Push one record to Supabase
 async function sbInsert(rec) {
   try {
     const row = {
       id: rec.id,
       name: rec.name || '',
-      roll: rec.roll || '',
+      roll: rec.idRoll || rec.roll || '',
       phone: rec.phone || '',
       org: rec.org || '',
       type: rec.attendanceType || rec.type || 'Check-In',
@@ -1075,7 +965,7 @@ async function sbInsert(rec) {
       address: rec.address || '',
       ip: rec.ip || '',
       notes: rec.notes || '',
-      photo: rec.photo || null,
+      photo: rec.face || rec.photo || null,
       timestamp: rec.timestamp || new Date().toISOString(),
       time_display: rec.timeDisplay || '',
       agent: rec.agent || ''
@@ -1086,21 +976,21 @@ async function sbInsert(rec) {
   } catch(e) { console.warn('Supabase offline:', e); return false; }
 }
 
-// Pull all records from Supabase
 async function sbPull() {
   try {
     setSyncStatus('syncing');
     const res = await sbFetch('attendance?select=*&order=timestamp.desc&limit=1000');
     if (!res.ok) { setSyncStatus('error'); return; }
     const rows = await res.json();
-    // Merge with local — Supabase is source of truth
     const remote = rows.map(r => ({
-      id: r.id, name: r.name, roll: r.roll, phone: r.phone, org: r.org,
+      id: r.id, name: r.name, roll: r.roll, idRoll: r.roll, phone: r.phone, org: r.org,
       attendanceType: r.type, type: r.type,
       scheduleStatus: r.schedule_status, rangeStatus: r.range_status,
       lat: r.lat, lng: r.lng, address: r.address, ip: r.ip,
-      notes: r.notes, photo: r.photo, timestamp: r.timestamp,
-      timeDisplay: r.time_display, agent: r.agent
+      notes: r.notes, face: r.photo, photo: r.photo,
+      timestamp: r.timestamp,
+      timeDisplay: r.time_display, timeStr: r.timestamp ? new Date(r.timestamp).toDateString() : '',
+      agent: r.agent
     }));
     db = remote;
     localStorage.setItem('attendance_db', JSON.stringify(db));
@@ -1110,12 +1000,10 @@ async function sbPull() {
   } catch(e) { setSyncStatus('error'); console.warn('Pull failed:', e); }
 }
 
-// Delete from Supabase
 async function sbDelete(id) {
   try { await sbFetch(`attendance?id=eq.${id}`, { method: 'DELETE' }); } catch(e) {}
 }
 
-// Sync indicator
 function setSyncStatus(s) {
   syncStatus = s;
   const dot = document.getElementById('sync-dot');
@@ -1131,7 +1019,6 @@ function setSyncStatus(s) {
   lbl.textContent = map[s].text;
 }
 
-// On boot — pull from Supabase
 async function sbInit() {
   setSyncStatus('syncing');
   await sbPull();
@@ -1193,7 +1080,6 @@ function loadSettings() {
   if (rp) rp.checked = settings.requirePhoto !== false;
   const af = document.getElementById('autofill-toggle');
   if (af) af.checked = settings.autofill !== false;
-  // Storage
   const raw = JSON.stringify(db);
   const kb = (new Blob([raw]).size / 1024).toFixed(1);
   const st2 = document.getElementById('set-storage');
@@ -1218,8 +1104,6 @@ function updateCountdown(now) {
   const end = eventProfile.end ? new Date(eventProfile.end) : null;
   const cdRow = document.getElementById('countdown-row');
   const submitBtn = document.getElementById('submitBtn');
-
-  // Session ended
   if (end && now > end) {
     cdRow.style.display = 'flex';
     const cdLabel = document.getElementById('countdown-label');
@@ -1227,27 +1111,18 @@ function updateCountdown(now) {
     document.getElementById('cd-h').textContent = '00';
     document.getElementById('cd-m').textContent = '00';
     document.getElementById('cd-s').textContent = '00';
-    document.querySelector('#countdown-row .cd-block:nth-child(1) .cd-lbl').textContent = 'hrs';
-    document.querySelector('#countdown-row .cd-block:nth-child(2) .cd-lbl').textContent = 'min';
-    document.querySelector('#countdown-row .cd-block:nth-child(3) .cd-lbl').textContent = 'sec';
     if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '🚫 Session Ended — Submissions Closed'; }
     return;
   }
-
-  // Re-enable submit if within window
   if (submitBtn && submitBtn.textContent.includes('Session Ended')) {
     submitBtn.disabled = false; submitBtn.innerHTML = '✅ Submit Attendance';
   }
-
-  let target = null;
-  let label = '';
+  let target = null, label = '';
   if (now < start) { target = start; label = '⏳ Starts in'; }
   else if (end && now <= end) { target = end; label = '🟢 Session ends in'; }
   else { cdRow.style.display = 'none'; return; }
-
   const cdLabel = document.getElementById('countdown-label');
   if (cdLabel) { cdLabel.textContent = label; cdLabel.style.display = 'block'; }
-
   const diff = target - now;
   const hh = Math.floor(diff / 3600000);
   const mm = Math.floor((diff % 3600000) / 60000);
@@ -1255,9 +1130,6 @@ function updateCountdown(now) {
   document.getElementById('cd-h').textContent = String(hh).padStart(2,'0');
   document.getElementById('cd-m').textContent = String(mm).padStart(2,'0');
   document.getElementById('cd-s').textContent = String(ss).padStart(2,'0');
-  document.querySelector('#countdown-row .cd-block:nth-child(1) .cd-lbl').textContent = 'hrs';
-  document.querySelector('#countdown-row .cd-block:nth-child(2) .cd-lbl').textContent = 'min';
-  document.querySelector('#countdown-row .cd-block:nth-child(3) .cd-lbl').textContent = 'sec';
   cdRow.style.display = 'flex';
 }
 
@@ -1275,7 +1147,6 @@ function toggleThemeFromSettings(cb) {
   localStorage.setItem('attendance_theme', cb.checked ? 'dark' : 'light');
   currentTheme = cb.checked ? 'dark' : 'light';
 }
-
 function getDeviceInfo() {
   const ua = navigator.userAgent;
   let b = ua.indexOf('Chrome')>-1?'Chrome':ua.indexOf('Safari')>-1?'Safari':ua.indexOf('Firefox')>-1?'Firefox':'Browser';
@@ -1385,7 +1256,6 @@ function getLocation() {
       const d = await r.json();
       locationData.address = d.display_name || 'Verified';
       document.getElementById('loc-address').textContent = locationData.address.substring(0, 52) + '...';
-      // Update weather card city
       const parts = locationData.address.split(',');
       const cityEl = document.getElementById('wx-city');
       if (cityEl) cityEl.textContent = (parts[2] || parts[1] || parts[0] || '—').trim().substring(0,16);
@@ -1408,24 +1278,17 @@ async function getIP() {
 // WEATHER
 // ============================================================
 const WX_CODES = {
-  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
-  45:'🌫️',48:'🌫️',
-  51:'🌦️',53:'🌦️',55:'🌧️',
-  61:'🌧️',63:'🌧️',65:'🌧️',
-  71:'❄️',73:'❄️',75:'❄️',77:'🌨️',
-  80:'🌦️',81:'🌧️',82:'⛈️',
-  85:'❄️',86:'❄️',
-  95:'⛈️',96:'⛈️',99:'⛈️'
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'❄️',73:'❄️',75:'❄️',77:'🌨️',80:'🌦️',81:'🌧️',82:'⛈️',
+  85:'❄️',86:'❄️',95:'⛈️',96:'⛈️',99:'⛈️'
 };
 const WX_DESC = {
   0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
-  45:'Foggy',48:'Icy fog',
-  51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
-  61:'Light rain',63:'Rain',65:'Heavy rain',
-  71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',
-  80:'Showers',81:'Heavy showers',82:'Violent showers',
-  85:'Snow showers',86:'Heavy snow showers',
-  95:'Thunderstorm',96:'Thunderstorm+hail',99:'Severe thunderstorm'
+  45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+  61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',
+  77:'Snow grains',80:'Showers',81:'Heavy showers',82:'Violent showers',
+  85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm+hail',99:'Severe thunderstorm'
 };
 async function fetchWeather(lat, lng) {
   try {
@@ -1439,7 +1302,6 @@ async function fetchWeather(lat, lng) {
     document.getElementById('wx-desc').textContent = WX_DESC[code] || 'Unknown';
     document.getElementById('wx-hum').textContent = c.relative_humidity_2m + '%';
     document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
-    // city from nominatim already stored
     const cityEl = document.getElementById('wx-city');
     if (locationData.address && locationData.address !== 'Unknown') {
       const parts = locationData.address.split(',');
@@ -1462,11 +1324,11 @@ function autoFillFromHistory() {
   if (!settings.autofill) return;
   const nameVal = document.getElementById('f-name').value.trim().toLowerCase();
   if (nameVal.length < 2) return;
-  const match = db.find(r => r.name.toLowerCase().startsWith(nameVal));
+  const match = db.find(r => (r.name||'').toLowerCase().startsWith(nameVal));
   if (match) {
-    document.getElementById('f-id').value = match.idRoll;
-    document.getElementById('f-phone').value = match.phone;
-    document.getElementById('f-org').value = match.org;
+    document.getElementById('f-id').value = match.idRoll || match.roll || '';
+    document.getElementById('f-phone').value = match.phone || '';
+    document.getElementById('f-org').value = match.org || '';
   }
 }
 
@@ -1476,7 +1338,7 @@ function autoFillFromHistory() {
 function checkDuplicate() {
   const id = document.getElementById('f-id').value.trim();
   const todayStr = new Date().toDateString();
-  const dup = id && db.some(r => r.idRoll.toLowerCase() === id.toLowerCase() && r.timeStr === todayStr);
+  const dup = id && db.some(r => (r.idRoll||r.roll||'').toLowerCase() === id.toLowerCase() && r.timeStr === todayStr);
   document.getElementById('dup-warn').style.display = dup ? 'block' : 'none';
 }
 
@@ -1581,31 +1443,24 @@ function submitAttendance() {
   const org = document.getElementById('f-org').value.trim();
   if (!name || !id || !phone || !org) { showToast('⚠️ Please fill all required fields.'); return; }
   if (settings.requirePhoto !== false && !capturedImage) { showToast('📷 Please capture a photo first.'); return; }
-
   if (settings.blockDup) {
     const todayStr = new Date().toDateString();
-    if (db.some(r => r.idRoll.toLowerCase() === id.toLowerCase() && r.timeStr === todayStr)) {
+    if (db.some(r => (r.idRoll||r.roll||'').toLowerCase() === id.toLowerCase() && r.timeStr === todayStr)) {
       showToast('🚫 Duplicate ID blocked.'); return;
     }
   }
-
   if (eventProfile && eventProfile.whitelist && eventProfile.whitelist.trim()) {
     const list = eventProfile.whitelist.split(/[\n,]+/).map(t => t.trim().toLowerCase());
     if (!list.includes(id.toLowerCase())) { showToast('❌ ID not in whitelist.'); return; }
   }
-
   const now = new Date();
   let scheduleStatus = 'On-Time';
   if (eventProfile && eventProfile.start) {
     const start = new Date(eventProfile.start);
     const end = eventProfile.end ? new Date(eventProfile.end) : null;
     if (end) {
-      // Event has a defined end time
-      if (now < start) scheduleStatus = 'On-Time'; // before start → early/on-time
-      else if (now <= end) scheduleStatus = 'On-Time'; // within event window → on-time
-      else scheduleStatus = 'Late'; // after end → late
+      scheduleStatus = (now < start || now <= end) ? 'On-Time' : 'Late';
     } else {
-      // No end time: late only if past start
       scheduleStatus = now > start ? 'Late' : 'On-Time';
     }
   }
@@ -1615,19 +1470,21 @@ function submitAttendance() {
       if (calcDist(locationData.lat, locationData.lng, eventProfile.targetLat, eventProfile.targetLng) > eventProfile.targetRadius) rangeStatus = 'Out-of-Range';
     } else rangeStatus = 'Unverified';
   }
-
+  const now2 = new Date();
   const rec = {
-    id: Date.now(), name, idRoll: id, phone, org,
+    id: Date.now(), name, idRoll: id, roll: id, phone, org,
     orgtype: document.getElementById('f-orgtype').value,
     attendanceType: document.getElementById('f-type').value,
-    face: capturedImage, lat: locationData.lat, lng: locationData.lng,
+    type: document.getElementById('f-type').value,
+    face: capturedImage, photo: capturedImage,
+    lat: locationData.lat, lng: locationData.lng,
     address: locationData.address, ip: locationData.ip, agent: locationData.agent,
     scheduleStatus, rangeStatus, checked: false,
-    timeDisplay: now.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
-    timeStr: now.toDateString(),
+    timestamp: now2.toISOString(),
+    timeDisplay: now2.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
+    timeStr: now2.toDateString(),
     notes: document.getElementById('f-notes').value.trim()
   };
-
   db.unshift(rec); saveDB();
   sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
   addNotif(`✅ ${name} (${id}) marked ${rec.attendanceType}`, scheduleStatus === 'Late' ? '🔴' : '🟢');
@@ -1668,7 +1525,9 @@ function manualEntry() {
     phone: document.getElementById('m-phone').value.trim() || '—',
     org: document.getElementById('m-org').value.trim() || '—',
     orgtype: 'other', attendanceType: document.getElementById('m-type').value,
-    photo: null, lat: null, lng: null, address: 'Manual Entry', ip: 'Admin', agent: 'Manual (Admin)',
+    type: document.getElementById('m-type').value,
+    face: null, photo: null, lat: null, lng: null,
+    address: 'Manual Entry', ip: 'Admin', agent: 'Manual (Admin)',
     scheduleStatus: 'On-Time', rangeStatus: 'In-Range', checked: false,
     timestamp: now.toISOString(),
     timeDisplay: now.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
@@ -1713,7 +1572,7 @@ function clearNotifs() {
 }
 
 // ============================================================
-// ACTIVITY FEED (last 5 actions)
+// ACTIVITY FEED
 // ============================================================
 function renderActivityFeed() {
   const feed = document.getElementById('activity-feed');
@@ -1723,9 +1582,9 @@ function renderActivityFeed() {
   const colors = {'Check-In':'var(--success)','Check-Out':'var(--danger)','Break':'var(--warn)','Overtime':'#5856D6','Return':'var(--accent)'};
   feed.innerHTML = recent.map(r => `
     <div class="activity-item">
-      <div class="activity-dot" style="background:${colors[r.attendanceType]||'var(--accent)'}"></div>
-      <div class="activity-text"><b>${r.name}</b> — ${r.attendanceType} <span class="badge ${r.scheduleStatus==='Late'?'badge-red':'badge-green'}">${r.scheduleStatus}</span></div>
-      <div class="activity-time">${r.timeDisplay.split(',')[1]?.trim()||r.timeDisplay}</div>
+      <div class="activity-dot" style="background:${colors[r.attendanceType||r.type]||'var(--accent)'}"></div>
+      <div class="activity-text"><b>${r.name}</b> — ${r.attendanceType||r.type} <span class="badge ${r.scheduleStatus==='Late'?'badge-red':'badge-green'}">${r.scheduleStatus||''}</span></div>
+      <div class="activity-time">${(r.timeDisplay||'').split(',')[1]?.trim()||r.timeDisplay||''}</div>
     </div>
   `).join('');
 }
@@ -1741,11 +1600,10 @@ function updateStats() {
   document.getElementById('stat-orgs').textContent = branches.size;
   document.getElementById('stat-late').textContent = db.filter(r => r.scheduleStatus === 'Late').length;
   document.getElementById('stat-out').textContent = db.filter(r => r.rangeStatus === 'Out-of-Range').length;
-
   if (db.length > 0) {
     const onTime = db.filter(r => r.scheduleStatus === 'On-Time').length;
     const inRange = db.filter(r => r.rangeStatus === 'In-Range').length;
-    const checkIn = db.filter(r => r.attendanceType === 'Check-In').length;
+    const checkIn = db.filter(r => (r.attendanceType||r.type) === 'Check-In').length;
     const sp = Math.round(onTime/db.length*100);
     const rp = Math.round(inRange/db.length*100);
     const cp = Math.round(checkIn/db.length*100);
@@ -1755,7 +1613,6 @@ function updateStats() {
     document.getElementById('chart-bar-range').style.width = rp+'%';
     document.getElementById('chart-txt-type').textContent = cp+'% Check-In';
     document.getElementById('chart-bar-type').style.width = cp+'%';
-    // Branch bars
     const bc = {};
     db.forEach(r => bc[r.org] = (bc[r.org]||0)+1);
     const sorted = Object.entries(bc).sort((a,b)=>b[1]-a[1]).slice(0,5);
@@ -1767,7 +1624,6 @@ function updateStats() {
       ).join('');
     } else document.getElementById('mini-bar-container').style.display = 'none';
   }
-
   const sel = document.getElementById('filter-org');
   const prev = sel.value;
   sel.innerHTML = '<option value="">All Branches</option>';
@@ -1778,21 +1634,22 @@ function updateStats() {
 // RECORDS + PAGINATION
 // ============================================================
 function getFiltered() {
-  const q = document.getElementById('search-input').value.toLowerCase();
+  const q = (document.getElementById('search-input').value||'').toLowerCase();
   const org = document.getElementById('filter-org').value;
   const status = document.getElementById('filter-status').value;
   const from = document.getElementById('filter-date-from').value;
   const to = document.getElementById('filter-date-to').value;
   return db.filter(r => {
-    if (q && !r.name.toLowerCase().includes(q) && !r.idRoll.toLowerCase().includes(q)) return false;
+    const rid = r.idRoll || r.roll || '';
+    if (q && !(r.name||'').toLowerCase().includes(q) && !rid.toLowerCase().includes(q)) return false;
     if (org && r.org !== org) return false;
     if (status) {
       if (['On-Time','Late'].includes(status) && r.scheduleStatus !== status) return false;
       if (['In-Range','Out-of-Range'].includes(status) && r.rangeStatus !== status) return false;
-      if (['Check-In','Check-Out','Break','Return','Overtime'].includes(status) && r.attendanceType !== status) return false;
+      if (['Check-In','Check-Out','Break','Return','Overtime'].includes(status) && (r.attendanceType||r.type) !== status) return false;
     }
     if (from || to) {
-      const d = new Date(r.timeDisplay);
+      const d = new Date(r.timeDisplay||r.timestamp);
       if (from && d < new Date(from)) return false;
       if (to && d > new Date(to+'T23:59:59')) return false;
     }
@@ -1804,27 +1661,26 @@ function renderRecords() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;
   const slice = filtered.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
-
   const list = document.getElementById('record-list');
   if (!filtered.length) { list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted);font-size:14px">No records found.</div>`; document.getElementById('pagination').innerHTML=''; return; }
-
+  const faceImg = (r) => r.face||r.photo;
   list.innerHTML = slice.map(r => `
     <div class="record-card">
       <div class="rec-check-wrap"><input type="checkbox" class="rec-select" data-id="${r.id}" ${r.checked?'checked':''} onchange="updateRecordCheckState(${r.id},this.checked)"></div>
-      ${r.face
-        ? `<img class="record-face" src="${r.face}" onclick="showFaceModal('${r.id}')">`
+      ${faceImg(r)
+        ? `<img class="record-face" src="${faceImg(r)}" onclick="showFaceModal('${r.id}')">`
         : `<div style="width:48px;height:48px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">👤</div>`
       }
       <div class="record-info">
-        <div class="record-name" onclick="showPersonSummary('${r.idRoll}')">${r.name}</div>
+        <div class="record-name" onclick="showPersonSummary('${r.idRoll||r.roll}')">${r.name}</div>
         <div class="record-meta">
-          🪪 <b>${r.idRoll}</b> · 📱 ${r.phone}<br>
-          🏢 ${r.org} <span class="badge badge-blue">${r.orgtype}</span> <span class="badge badge-orange">${r.attendanceType||'Check-In'}</span><br>
+          🪪 <b>${r.idRoll||r.roll||'—'}</b> · 📱 ${r.phone||'—'}<br>
+          🏢 ${r.org||'—'} <span class="badge badge-blue">${r.orgtype||''}</span> <span class="badge badge-orange">${r.attendanceType||r.type||'Check-In'}</span><br>
           ${r.scheduleStatus==='Late'?'<span class="badge badge-red">🔴 Late</span>':'<span class="badge badge-green">🟢 On-Time</span>'}
           ${r.rangeStatus==='Out-of-Range'?'<span class="badge badge-red">📍 Out</span>':'<span class="badge badge-green">📍 In Range</span>'}
           ${r.notes?`<br><span style="font-style:italic">📝 ${r.notes}</span>`:''}
         </div>
-        <div class="record-time">🕐 ${r.timeDisplay} · 🌐 ${r.ip}</div>
+        <div class="record-time">🕐 ${r.timeDisplay||''} · 🌐 ${r.ip||''}</div>
       </div>
       <div class="rec-actions">
         <button class="rec-edit-btn" onclick="openEditModal(${r.id})" title="Edit">✏️</button>
@@ -1832,8 +1688,6 @@ function renderRecords() {
       </div>
     </div>
   `).join('');
-
-  // Pagination
   const pg = document.getElementById('pagination');
   if (totalPages <= 1) { pg.innerHTML=''; return; }
   let h = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
@@ -1852,9 +1706,11 @@ function goPage(n) { currentPage=n; renderRecords(); window.scrollTo(0,0); }
 // ============================================================
 function showFaceModal(rid) {
   const r = db.find(x => String(x.id)===String(rid));
-  if (!r||!r.face) return;
+  if (!r) return;
+  const img = r.face || r.photo;
+  if (!img) return;
   document.getElementById('face-modal-name').textContent = r.name;
-  document.getElementById('face-modal-img').src = r.face;
+  document.getElementById('face-modal-img').src = img;
   document.getElementById('face-modal').classList.add('open');
 }
 
@@ -1862,7 +1718,7 @@ function showFaceModal(rid) {
 // PERSON SUMMARY
 // ============================================================
 function showPersonSummary(idRoll) {
-  const recs = db.filter(r => r.idRoll === idRoll);
+  const recs = db.filter(r => (r.idRoll||r.roll) === idRoll);
   if (!recs.length) return;
   document.getElementById('summary-modal-title').textContent = '📊 ' + recs[0].name;
   document.getElementById('sum-total').textContent = recs.length;
@@ -1870,9 +1726,9 @@ function showPersonSummary(idRoll) {
   document.getElementById('sum-late').textContent = recs.filter(r=>r.scheduleStatus==='Late').length;
   document.getElementById('summary-log-list').innerHTML = recs.map(r => `
     <div class="summary-log-row">
-      <span>${r.timeDisplay}</span>
+      <span>${r.timeDisplay||''}</span>
       <span>
-        <span class="badge badge-orange">${r.attendanceType}</span>
+        <span class="badge badge-orange">${r.attendanceType||r.type||''}</span>
         ${r.scheduleStatus==='Late'?'<span class="badge badge-red">Late</span>':'<span class="badge badge-green">On-Time</span>'}
       </span>
     </div>
@@ -1887,11 +1743,11 @@ function openEditModal(id) {
   const r = db.find(x => x.id===id);
   if (!r) return;
   document.getElementById('edit-id').value = id;
-  document.getElementById('edit-name').value = r.name;
-  document.getElementById('edit-roll').value = r.idRoll;
-  document.getElementById('edit-phone').value = r.phone;
-  document.getElementById('edit-org').value = r.org;
-  document.getElementById('edit-type').value = r.attendanceType||'Check-In';
+  document.getElementById('edit-name').value = r.name||'';
+  document.getElementById('edit-roll').value = r.idRoll||r.roll||'';
+  document.getElementById('edit-phone').value = r.phone||'';
+  document.getElementById('edit-org').value = r.org||'';
+  document.getElementById('edit-type').value = r.attendanceType||r.type||'Check-In';
   document.getElementById('edit-notes').value = r.notes||'';
   document.getElementById('edit-modal').classList.add('open');
 }
@@ -1901,9 +1757,11 @@ function saveEditRecord() {
   if (!r) return;
   r.name = document.getElementById('edit-name').value.trim();
   r.idRoll = document.getElementById('edit-roll').value.trim();
+  r.roll = r.idRoll;
   r.phone = document.getElementById('edit-phone').value.trim();
   r.org = document.getElementById('edit-org').value.trim();
   r.attendanceType = document.getElementById('edit-type').value;
+  r.type = r.attendanceType;
   r.notes = document.getElementById('edit-notes').value.trim();
   saveDB(); closeModal('edit-modal'); updateStats(); renderRecords();
   showToast('✅ Record updated.');
@@ -1960,8 +1818,8 @@ function restoreData(input) {
 function exportCSV() {
   if (!db.length) { showToast('No data.'); return; }
   const headers=['Name','ID','Phone','Branch','Type','Mode','Schedule','Perimeter','IP','Device','Time','Notes'];
-  const rows=db.map(r=>[r.name,r.idRoll,r.phone,r.org,r.orgtype,r.attendanceType||'Check-In',r.scheduleStatus,r.rangeStatus,r.ip,r.agent,r.timeDisplay,r.notes||'']);
-  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const rows=db.map(r=>[r.name,r.idRoll||r.roll,r.phone,r.org,r.orgtype,r.attendanceType||r.type||'Check-In',r.scheduleStatus,r.rangeStatus,r.ip,r.agent,r.timeDisplay,r.notes||'']);
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Attendance.csv'; a.click();
 }
@@ -1969,23 +1827,23 @@ function exportHTML() {
   if (!db.length) { showToast('No data.'); return; }
   const event = eventProfile && eventProfile.name ? eventProfile.name : 'Attendance Report';
   let html=`<html><head><meta charset="UTF-8"><title>${event}</title><style>body{font-family:sans-serif;padding:30px;background:#f5f5f7;color:#1d1d1f}h2{margin-bottom:4px}p.sub{color:#6e6e73;font-size:13px;margin-bottom:20px}table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05)}th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e5ea;font-size:13px}th{background:#f5f5f7;font-weight:600;color:#6e6e73}img{width:44px;height:44px;object-fit:cover;border-radius:8px}.b{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}.g{background:#E8F5E9;color:#1B5E20}.r{background:#FFEBEE;color:#B71C1C}.o{background:#FFF3E0;color:#E65100}</style></head><body><h2>${event}</h2><p class="sub">Generated: ${new Date().toLocaleString()} · Total: ${db.length} records</p><table><tr><th>Photo</th><th>Name</th><th>ID</th><th>Branch</th><th>Type</th><th>Schedule</th><th>Perimeter</th><th>Time</th></tr>`;
-  db.forEach(r => { html+=`<tr><td>${r.face?`<img src="${r.face}">`:'👤'}</td><td><b>${r.name}</b><br><small style="color:#6e6e73">${r.phone}</small></td><td>${r.idRoll}</td><td>${r.org}</td><td><span class="b o">${r.attendanceType||'Check-In'}</span></td><td><span class="b ${r.scheduleStatus==='On-Time'?'g':'r'}">${r.scheduleStatus}</span></td><td>${r.rangeStatus}</td><td>${r.timeDisplay}</td></tr>`; });
+  db.forEach(r => { const img=r.face||r.photo; html+=`<tr><td>${img?`<img src="${img}">`:'👤'}</td><td><b>${r.name}</b><br><small style="color:#6e6e73">${r.phone||''}</small></td><td>${r.idRoll||r.roll||''}</td><td>${r.org||''}</td><td><span class="b o">${r.attendanceType||r.type||'Check-In'}</span></td><td><span class="b ${r.scheduleStatus==='On-Time'?'g':'r'}">${r.scheduleStatus||''}</span></td><td>${r.rangeStatus||''}</td><td>${r.timeDisplay||''}</td></tr>`; });
   html+=`</table></body></html>`;
   const blob=new Blob([html],{type:'text/html'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Report.html'; a.click();
 }
 
 // ============================================================
-// TODAY STATS
+// TODAY STATS  ← BUG FIX: was using undefined `records`, now uses `db`
 // ============================================================
 function updateTodayStats() {
   const today = new Date().toDateString();
-  const todayRecs = records.filter(r => new Date(r.timestamp).toDateString() === today);
+  const todayRecs = db.filter(r => r.timeStr === today || (r.timestamp && new Date(r.timestamp).toDateString() === today));
   const onTime = todayRecs.filter(r => r.scheduleStatus === 'On-Time').length;
   const late = todayRecs.filter(r => r.scheduleStatus === 'Late').length;
   const total = todayRecs.length;
   const pct = total > 0 ? Math.round((onTime / total) * 100) : 0;
-  const circumference = 2 * Math.PI * 14; // r=14
+  const circumference = 2 * Math.PI * 14;
   const dash = (pct / 100) * circumference;
   document.getElementById('today-total').textContent = total;
   document.getElementById('today-ontime').textContent = onTime;
@@ -2014,7 +1872,7 @@ function saveQuickNote(val) {
 }
 
 // ============================================================
-// CALENDAR
+// CALENDAR  ← BUG FIX: was using undefined `records`, now uses `db`
 // ============================================================
 let calDate = new Date();
 function renderCalendar() {
@@ -2024,18 +1882,16 @@ function renderCalendar() {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const today = new Date();
-
-  // Build date → records map
   const dateMap = {};
-  records.forEach(r => {
-    const d = new Date(r.timestamp);
+  db.forEach(r => {
+    const d = new Date(r.timestamp || r.timeDisplay);
+    if (isNaN(d.getTime())) return;
     if (d.getFullYear() === year && d.getMonth() === month) {
       const key = d.getDate();
       if (!dateMap[key]) dateMap[key] = [];
       dateMap[key].push(r);
     }
   });
-
   let html = '';
   for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
   for (let d = 1; d <= daysInMonth; d++) {
@@ -2047,7 +1903,7 @@ function renderCalendar() {
     let dots = '';
     if (onTime > 0) dots += `<div class="cal-dot" style="background:#34C759"></div>`;
     if (late > 0) dots += `<div class="cal-dot" style="background:#FF3B30"></div>`;
-    html += `<div class="cal-day${isToday?' today':''}${hasRecs?' has-records':''}" onclick="calSelectDay(${d},${year},${month})">
+    html += `<div class="cal-day${isToday?' today':''}${hasRecs?' has-records':''}" onclick="calSelectDay(${d},${year},${month},event)">
       <span class="cal-day-num">${d}</span>
       ${hasRecs ? `<div class="cal-dot-row">${dots}</div>` : ''}
     </div>`;
@@ -2056,26 +1912,31 @@ function renderCalendar() {
   document.getElementById('cal-detail').style.display = 'none';
   document.getElementById('cal-no-selection').style.display = 'block';
 }
-function calSelectDay(d, year, month) {
+function calSelectDay(d, year, month, evt) {
   document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
+  if (evt && evt.currentTarget) evt.currentTarget.classList.add('selected');
   const date = new Date(year, month, d);
   const dateStr = date.toDateString();
-  const dayRecs = records.filter(r => new Date(r.timestamp).toDateString() === dateStr);
+  const dayRecs = db.filter(r => {
+    const ts = r.timestamp || r.timeDisplay;
+    return ts && new Date(ts).toDateString() === dateStr;
+  });
   const label = date.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
   document.getElementById('cal-detail-date').textContent = `${label} — ${dayRecs.length} record(s)`;
   if (!dayRecs.length) {
     document.getElementById('cal-detail-list').innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No attendance on this day</p>';
   } else {
-    document.getElementById('cal-detail-list').innerHTML = dayRecs.map(r => `
-      <div class="cal-detail-row">
-        <img class="cal-detail-face" src="${r.photo || ''}" onerror="this.style.display='none'">
+    document.getElementById('cal-detail-list').innerHTML = dayRecs.map(r => {
+      const img = r.face || r.photo;
+      return `<div class="cal-detail-row">
+        ${img ? `<img class="cal-detail-face" src="${img}">` : `<div class="cal-detail-face" style="display:flex;align-items:center;justify-content:center;font-size:18px">👤</div>`}
         <div class="cal-detail-info">
-          <div class="cal-detail-name">${r.name}</div>
-          <div class="cal-detail-meta">${r.roll || '—'} · ${r.type || 'Check-In'} · ${r.scheduleStatus || ''}</div>
+          <div class="cal-detail-name">${r.name||'—'}</div>
+          <div class="cal-detail-meta">${r.idRoll||r.roll||'—'} · ${r.attendanceType||r.type||'Check-In'} · ${r.scheduleStatus||''}</div>
         </div>
         <span class="badge ${r.scheduleStatus==='On-Time'?'badge-green':'badge-red'}">${r.scheduleStatus||''}</span>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
   document.getElementById('cal-detail').style.display = 'block';
   document.getElementById('cal-no-selection').style.display = 'none';
@@ -2084,18 +1945,19 @@ function calPrev() { calDate.setMonth(calDate.getMonth() - 1); renderCalendar();
 function calNext() { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); }
 
 // ============================================================
-// 🏆 LEADERBOARD
+// LEADERBOARD  ← BUG FIX: was using undefined `records`, now uses `db`
 // ============================================================
 function renderLeaderboard() {
   const filter = document.getElementById('lb-filter')?.value || 'ontime';
   const nameMap = {};
-  records.forEach(r => {
+  db.forEach(r => {
     if (!r.name) return;
     const key = r.name.trim().toLowerCase();
-    if (!nameMap[key]) nameMap[key] = { name: r.name, photo: r.photo, total: 0, ontime: 0, dates: new Set() };
+    if (!nameMap[key]) nameMap[key] = { name: r.name, photo: r.face||r.photo, total: 0, ontime: 0, dates: new Set() };
     nameMap[key].total++;
     if (r.scheduleStatus === 'On-Time') nameMap[key].ontime++;
-    nameMap[key].dates.add(new Date(r.timestamp).toDateString());
+    const ts = r.timestamp || r.timeDisplay;
+    if (ts) nameMap[key].dates.add(new Date(ts).toDateString());
   });
   let people = Object.values(nameMap);
   if (filter === 'ontime') people.sort((a,b) => b.ontime - a.ontime);
@@ -2123,7 +1985,7 @@ function renderLeaderboard() {
 }
 
 // ============================================================
-// 🔍 GLOBAL SEARCH OVERLAY
+// GLOBAL SEARCH  ← BUG FIX: was using undefined `records`, now uses `db`
 // ============================================================
 function openSearch() {
   const overlay = document.getElementById('search-overlay');
@@ -2139,20 +2001,21 @@ function renderGlobalSearch(q) {
   const el = document.getElementById('global-search-results');
   q = q.trim().toLowerCase();
   if (!q) { el.innerHTML = `<p style="font-size:14px;color:var(--muted);text-align:center;padding:24px 0">Start typing to search across all records</p>`; return; }
-  const hits = records.filter(r =>
+  const hits = db.filter(r =>
     (r.name||'').toLowerCase().includes(q) ||
-    (r.roll||'').toLowerCase().includes(q) ||
+    (r.idRoll||r.roll||'').toLowerCase().includes(q) ||
     (r.phone||'').toLowerCase().includes(q) ||
     (r.org||'').toLowerCase().includes(q)
   ).slice(0, 20);
   if (!hits.length) { el.innerHTML = `<p style="font-size:14px;color:var(--muted);text-align:center;padding:24px 0">No results for "${q}"</p>`; return; }
   el.innerHTML = hits.map(r => {
     const badgeColor = r.scheduleStatus === 'On-Time' ? 'rgba(52,199,89,0.15);color:#34C759' : 'rgba(255,59,48,0.12);color:#FF3B30';
+    const img = r.face || r.photo;
     return `<div class="gs-result" onclick="closeSearch();showPage('admin')">
-      ${r.photo ? `<img class="gs-face" src="${r.photo}">` : `<div class="gs-face" style="display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>`}
+      ${img ? `<img class="gs-face" src="${img}">` : `<div class="gs-face" style="display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>`}
       <div class="gs-info">
         <div class="gs-name">${r.name || '—'}</div>
-        <div class="gs-meta">${r.roll || ''} · ${r.org || ''} · ${r.timeDisplay || ''}</div>
+        <div class="gs-meta">${r.idRoll||r.roll||''} · ${r.org||''} · ${r.timeDisplay||''}</div>
       </div>
       <span class="gs-badge" style="background:${badgeColor}">${r.scheduleStatus||''}</span>
     </div>`;
@@ -2160,7 +2023,7 @@ function renderGlobalSearch(q) {
 }
 
 // ============================================================
-// ⚠️ LATE ALERT BANNER
+// LATE ALERT BANNER
 // ============================================================
 function checkLateAlert() {
   const banner = document.getElementById('late-alert-banner');
@@ -2182,15 +2045,15 @@ function checkLateAlert() {
 }
 
 // ============================================================
-// ⏱ CHECK-IN DURATION TIMER
+// CHECK-IN DURATION TIMER
 // ============================================================
 let checkinTimerInterval = null;
 function startCheckinTimer(name, type) {
   if (type !== 'Check-Out' && type !== 'Return') { document.getElementById('checkin-timer-wrap').style.display = 'none'; return; }
-  // Find last check-in for this name
-  const rec = records.find(r => r.name?.toLowerCase() === name?.toLowerCase() && (r.type === 'Check-In' || r.attendanceType === 'Check-In'));
+  const rec = db.find(r => (r.name||'').toLowerCase() === (name||'').toLowerCase() && (r.type === 'Check-In' || r.attendanceType === 'Check-In'));
   if (!rec) { document.getElementById('checkin-timer-wrap').style.display = 'none'; return; }
-  const since = new Date(rec.timestamp);
+  const since = new Date(rec.timestamp || rec.timeDisplay);
+  if (isNaN(since.getTime())) { document.getElementById('checkin-timer-wrap').style.display = 'none'; return; }
   document.getElementById('checkin-timer-wrap').style.display = 'block';
   if (checkinTimerInterval) clearInterval(checkinTimerInterval);
   function tick() {
@@ -2204,11 +2067,11 @@ function startCheckinTimer(name, type) {
 }
 
 // ============================================================
-// 📲 WHATSAPP BULK REPORT
+// WHATSAPP BULK REPORT  ← BUG FIX: was using undefined `records`, now uses `db`
 // ============================================================
 function whatsappBulkReport() {
   const today = new Date().toDateString();
-  const todayRecs = records.filter(r => new Date(r.timestamp).toDateString() === today);
+  const todayRecs = db.filter(r => r.timeStr === today || (r.timestamp && new Date(r.timestamp).toDateString() === today));
   if (!todayRecs.length) { showToast('No records today.'); return; }
   const onTime = todayRecs.filter(r => r.scheduleStatus === 'On-Time').length;
   const late = todayRecs.filter(r => r.scheduleStatus === 'Late').length;
@@ -2222,7 +2085,7 @@ function whatsappBulkReport() {
   msg += `📊 Rate: *${todayRecs.length > 0 ? Math.round(onTime/todayRecs.length*100) : 0}%*\n`;
   msg += `━━━━━━━━━━━━━━\n`;
   todayRecs.slice(0,20).forEach((r, i) => {
-    msg += `${i+1}. ${r.name || '—'} (${r.roll || '—'}) — ${r.scheduleStatus === 'On-Time' ? '🟢' : '🔴'} ${r.scheduleStatus}\n`;
+    msg += `${i+1}. ${r.name||'—'} (${r.idRoll||r.roll||'—'}) — ${r.scheduleStatus==='On-Time'?'🟢':'🔴'} ${r.scheduleStatus||''}\n`;
   });
   if (todayRecs.length > 20) msg += `...and ${todayRecs.length - 20} more\n`;
   msg += `\n_Sent via Corporate Attendance Suite_`;
@@ -2230,11 +2093,11 @@ function whatsappBulkReport() {
 }
 
 // ============================================================
-// 🌙 AUTO DARK MODE (time-based)
+// AUTO DARK MODE
 // ============================================================
 function autoThemeCheck() {
   const stored = localStorage.getItem('attendance_theme');
-  if (stored === 'light' || stored === 'dark') return; // user manually set it
+  if (stored === 'light' || stored === 'dark') return;
   const h = new Date().getHours();
   const shouldDark = h >= 19 || h < 6;
   if (shouldDark && !document.body.classList.contains('dark-theme')) {
@@ -2305,7 +2168,7 @@ function deleteProfilePic() {
   showToast('🗑️ Photo removed.');
 }
 function getFileIcon(name) {
-  const ext = name.split('.').pop().toLowerCase();
+  const ext = (name||'').split('.').pop().toLowerCase();
   const icons = {pdf:'📄',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',ppt:'📑',pptx:'📑',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',mp4:'🎬',mp3:'🎵',zip:'🗜️',rar:'🗜️',txt:'📋',csv:'📊'};
   return icons[ext] || '📎';
 }
@@ -2399,10 +2262,11 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// Modal backdrop close
 document.querySelectorAll('.modal-backdrop').forEach(el => {
   el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
 });
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done. File size: $(wc -c < /home/claude/fixed_attendance.html) bytes"
