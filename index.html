@@ -356,6 +356,69 @@ body.dark-theme .file-item{box-shadow:none;border:0.5px solid var(--border)}
 .file-upload-btn{width:100%;padding:14px;border-radius:13px;border:1.5px dashed var(--muted2);background:transparent;font-size:15px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;transition:border-color 0.15s,color 0.15s}
 .file-upload-btn:hover,.file-upload-btn:active{border-color:var(--accent);color:var(--accent)}
 
+/* ── TODAY STATS ── */
+.today-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.today-pill{background:var(--card);border-radius:14px;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:var(--shadow);cursor:pointer;transition:transform 0.12s}
+body.dark-theme .today-pill{box-shadow:none;border:0.5px solid var(--border)}
+.today-pill:active{transform:scale(0.94)}
+.today-pill-green{background:rgba(52,199,89,0.1)}
+.today-pill-red{background:rgba(255,59,48,0.1)}
+.today-pill-purple{background:rgba(175,82,222,0.1)}
+.today-pill-num{font-size:22px;font-weight:700;line-height:1;color:var(--text);letter-spacing:-0.5px}
+.today-pill-lbl{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.4px}
+.today-ring-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:36px;height:36px}
+.today-ring-pct{position:absolute;font-size:8px;font-weight:700;color:#AF52DE}
+
+/* ── QUICK NOTE ── */
+.quick-note-card{background:var(--card);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border)}
+.quick-note-header{display:flex;justify-content:space-between;align-items:center}
+
+/* ── CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px}
+.cal-month-label{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.4px}
+.cal-nav-btn{background:var(--bg2);border:none;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;transition:transform 0.1s}
+.cal-nav-btn:active{transform:scale(0.88)}
+.cal-daynames{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+.cal-daynames span{text-align:center;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;padding:4px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px}
+.cal-day{min-height:44px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:background 0.12s,transform 0.1s;padding:4px 2px;position:relative}
+.cal-day:active{transform:scale(0.88)}
+.cal-day.empty{cursor:default}
+.cal-day-num{font-size:15px;font-weight:500;color:var(--text);line-height:1}
+.cal-day.today .cal-day-num{color:#fff;background:var(--accent);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cal-day.selected{background:var(--accent-light)}
+.cal-day.has-records .cal-day-num{font-weight:700}
+.cal-dot-row{display:flex;gap:2px;margin-top:3px}
+.cal-dot{width:5px;height:5px;border-radius:50%}
+.cal-detail-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--separator)}
+.cal-detail-row:last-child{border-bottom:none}
+.cal-detail-face{width:36px;height:36px;border-radius:10px;object-fit:cover;background:var(--bg2);flex-shrink:0}
+.cal-detail-info{flex:1;min-width:0}
+.cal-detail-name{font-size:14px;font-weight:600;color:var(--text)}
+.cal-detail-meta{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* ── LEADERBOARD ── */
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--separator)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);flex-shrink:0}
+.lb-rank.gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#fff}
+.lb-rank.silver{background:linear-gradient(135deg,#C0C0C0,#A8A8A8);color:#fff}
+.lb-rank.bronze{background:linear-gradient(135deg,#CD7F32,#A0522D);color:#fff}
+.lb-name{flex:1;font-size:15px;font-weight:600;color:var(--text)}
+.lb-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.lb-score{font-size:17px;font-weight:700;color:var(--accent)}
+
+/* ── GLOBAL SEARCH ── */
+.gs-result{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--separator);cursor:pointer;transition:background 0.1s}
+.gs-result:last-child{border-bottom:none}
+.gs-result:active{background:var(--bg2);margin:0 -16px;padding:12px 16px;border-radius:12px}
+.gs-face{width:42px;height:42px;border-radius:12px;object-fit:cover;background:var(--bg2);flex-shrink:0}
+.gs-info{flex:1;min-width:0}
+.gs-name{font-size:15px;font-weight:600;color:var(--text)}
+.gs-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.gs-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+
 /* ── TOAST ── */
 .toast{
   position:fixed;bottom:calc(72px + env(safe-area-inset-bottom) + 8px);left:50%;
@@ -391,11 +454,28 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 <nav class="nav">
   <span class="nav-brand">📋 Corporate Suite</span>
   <div class="nav-right">
+    <div style="display:flex;align-items:center;gap:4px;cursor:pointer" onclick="sbPull()" title="Sync with cloud">
+      <span id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted2);display:inline-block;transition:background 0.3s"></span>
+      <span id="sync-lbl" class="live-clock" style="font-size:10px;padding:2px 6px;min-width:44px;text-align:center"></span>
+    </div>
     <span class="live-clock" id="live-clock">--:--:--</span>
+    <button class="icon-btn" onclick="openSearch()" title="Search">🔍</button>
     <button class="icon-btn" onclick="showPage('notif')" title="Notifications">🔔<span class="notif-dot" id="notif-dot" style="display:none"></span></button>
     <button class="icon-btn" onclick="toggleTheme()" title="Theme">🌓</button>
   </div>
 </nav>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)" onclick="if(event.target===this)closeSearch()">
+  <div style="background:var(--card);border-radius:20px 20px 0 0;position:absolute;bottom:0;left:0;right:0;padding:20px 16px 40px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s cubic-bezier(0.34,1,0.64,1)">
+    <div style="width:36px;height:4px;background:var(--muted2);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+      <input type="text" id="global-search-input" placeholder="Search name, ID, phone..." oninput="renderGlobalSearch(this.value)" style="flex:1;font-size:16px" autofocus>
+      <button onclick="closeSearch()" style="background:var(--bg2);border:none;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer">Cancel</button>
+    </div>
+    <div id="global-search-results"></div>
+  </div>
+</div>
 
 <!-- BOTTOM NAVBAR -->
 <nav class="bottom-nav" id="bottom-nav">
@@ -406,6 +486,10 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   <button class="bnav-btn" id="bnav-admin" onclick="showPage('admin')">
     <span class="bnav-icon">📊</span>
     <span class="bnav-lbl">Admin</span>
+  </button>
+  <button class="bnav-btn" id="bnav-calendar" onclick="showPage('calendar')">
+    <span class="bnav-icon">📅</span>
+    <span class="bnav-lbl">Calendar</span>
   </button>
   <button class="bnav-btn" id="bnav-files" onclick="showPage('files')">
     <span class="bnav-icon">📁</span>
@@ -421,6 +505,15 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 <div class="page active" id="page-form">
   <div id="form-main">
 
+    <!-- LATE ALERT BANNER -->
+    <div id="late-alert-banner" style="display:none;background:linear-gradient(135deg,#FF3B30,#FF6B35);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;display:none;align-items:center;gap:10px">
+      <span style="font-size:24px">⚠️</span>
+      <div>
+        <div style="font-size:14px;font-weight:700">Session Running Late</div>
+        <div id="late-alert-msg" style="font-size:12px;opacity:0.85;margin-top:2px"></div>
+      </div>
+    </div>
+
     <!-- WEATHER CARD -->
     <div class="weather-card" id="weather-card">
       <div class="wx-left">
@@ -434,6 +527,44 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <div class="wx-stat"><span>💧</span><span id="wx-hum">--%</span></div>
         <div class="wx-stat"><span>💨</span><span id="wx-wind">-- km/h</span></div>
         <div class="wx-stat"><span>📍</span><span id="wx-city">Locating...</span></div>
+      </div>
+    </div>
+
+    <!-- TODAY STATS PILLS -->
+    <div class="today-stats-row" id="today-stats-row">
+      <div class="today-pill" onclick="showPage('admin')">
+        <span class="today-pill-num" id="today-total">0</span>
+        <span class="today-pill-lbl">Today</span>
+      </div>
+      <div class="today-pill today-pill-green">
+        <span class="today-pill-num" id="today-ontime">0</span>
+        <span class="today-pill-lbl">On-Time</span>
+      </div>
+      <div class="today-pill today-pill-red">
+        <span class="today-pill-num" id="today-late">0</span>
+        <span class="today-pill-lbl">Late</span>
+      </div>
+      <div class="today-pill today-pill-purple">
+        <div class="today-ring-wrap">
+          <svg width="36" height="36" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(175,82,222,0.15)" stroke-width="4"/>
+            <circle id="today-ring-arc" cx="18" cy="18" r="14" fill="none" stroke="#AF52DE" stroke-width="4" stroke-dasharray="0 88" stroke-linecap="round" transform="rotate(-90 18 18)" style="transition:stroke-dasharray 0.6s cubic-bezier(0.34,1,0.64,1)"/>
+          </svg>
+          <span class="today-ring-pct" id="today-pct">0%</span>
+        </div>
+        <span class="today-pill-lbl">Rate</span>
+      </div>
+    </div>
+
+    <!-- QUICK NOTE -->
+    <div class="quick-note-card" id="quick-note-card">
+      <div class="quick-note-header">
+        <span style="font-size:14px;font-weight:600;color:var(--text)">📝 Quick Note</span>
+        <button onclick="toggleQuickNote()" id="qn-toggle-btn" style="background:transparent;border:none;font-size:12px;color:var(--accent);font-weight:600;cursor:pointer">Show</button>
+      </div>
+      <div id="qn-body" style="display:none;margin-top:10px">
+        <textarea id="qn-text" placeholder="Event notes, reminders, instructions..." style="min-height:80px;font-size:14px" oninput="saveQuickNote(this.value)"></textarea>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;text-align:right" id="qn-saved"></div>
       </div>
     </div>
 
@@ -520,6 +651,10 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Attendance Recorded!</h2>
     <p id="success-detail">—</p>
+    <div id="checkin-timer-wrap" style="background:var(--accent-light);border-radius:14px;padding:12px 20px;margin-bottom:16px;display:none">
+      <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:4px">⏱ Time since last check-in</div>
+      <div id="checkin-timer" style="font-size:26px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-0.5px">00:00:00</div>
+    </div>
     <div class="share-row">
       <button class="share-btn" onclick="shareWhatsApp()">📲 WhatsApp</button>
       <button class="share-btn" onclick="shareSMS()">💬 SMS</button>
@@ -568,6 +703,19 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
   </div>
 
+  <!-- LEADERBOARD -->
+  <div class="card" id="leaderboard-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="card-title" style="margin-bottom:0">🏆 Leaderboard</div>
+      <select id="lb-filter" onchange="renderLeaderboard()" style="font-size:12px;padding:4px 8px;border-radius:8px;border:0.5px solid var(--border);background:var(--bg);color:var(--text)">
+        <option value="ontime">Most On-Time</option>
+        <option value="total">Most Attendances</option>
+        <option value="streak">Best Streak</option>
+      </select>
+    </div>
+    <div id="leaderboard-list"></div>
+  </div>
+
   <!-- RECENT ACTIVITY FEED -->
   <div class="card" id="activity-card">
     <div class="card-title">Recent Activity</div>
@@ -597,7 +745,9 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 
   <button class="report-btn" onclick="exportCSV()">⬇️ Download CSV</button>
+  <button class="export-btn" style="background:rgba(52,199,89,0.1);border-color:rgba(52,199,89,0.3);color:#1B5E20;font-weight:600" onclick="sbPull()">☁️ Sync from Cloud</button>
   <button class="export-btn" onclick="exportHTML()">🌐 HTML Report</button>
+  <button class="export-btn" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#128C7E" onclick="whatsappBulkReport()">📲 WhatsApp Daily Report</button>
   <button class="export-btn" onclick="window.print()">🖨️ Print</button>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.5rem">
     <button class="export-btn" onclick="backupData()">📤 Backup JSON</button>
@@ -649,6 +799,35 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <button onclick="clearNotifs()" style="background:transparent;border:none;font-size:12px;color:var(--danger);cursor:pointer;font-weight:600">Clear all</button>
     </div>
     <div class="notif-list" id="notif-list"><p style="font-size:14px;color:var(--muted);text-align:center;padding:1.5rem 0">No notifications</p></div>
+  </div>
+</div>
+
+<!-- ===== CALENDAR PAGE ===== -->
+<div class="page" id="page-calendar">
+  <div class="page-title">Calendar</div>
+
+  <!-- Month nav -->
+  <div class="cal-header">
+    <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+    <span class="cal-month-label" id="cal-month-label"></span>
+    <button class="cal-nav-btn" onclick="calNext()">›</button>
+  </div>
+
+  <!-- Day labels -->
+  <div class="cal-daynames">
+    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+  </div>
+
+  <!-- Grid -->
+  <div class="cal-grid" id="cal-grid"></div>
+
+  <!-- Selected day detail -->
+  <div class="card" id="cal-detail" style="display:none">
+    <div class="card-title" id="cal-detail-date"></div>
+    <div id="cal-detail-list"></div>
+  </div>
+  <div id="cal-no-selection" style="text-align:center;padding:24px 0;color:var(--muted);font-size:14px">
+    Tap a day to see attendance records
   </div>
 </div>
 
@@ -763,9 +942,28 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
 
   <div class="card" style="margin-top:0.5rem">
+    <div class="card-title">Supabase Setup</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে:</div>
+    <div onclick="copySql()" style="background:var(--bg2);border-radius:10px;padding:12px;font-size:11px;font-family:monospace;color:var(--text);line-height:1.7;cursor:pointer;word-break:break-all">
+create table attendance (<br>
+&nbsp;&nbsp;id bigint primary key,<br>
+&nbsp;&nbsp;name text, roll text, phone text, org text,<br>
+&nbsp;&nbsp;type text, schedule_status text, range_status text,<br>
+&nbsp;&nbsp;lat float8, lng float8, address text, ip text,<br>
+&nbsp;&nbsp;notes text, photo text, agent text,<br>
+&nbsp;&nbsp;timestamp timestamptz default now(),<br>
+&nbsp;&nbsp;time_display text<br>
+);<br><br>
+alter table attendance enable row level security;<br>
+create policy "anon all" on attendance for all using (true) with check (true);
+    </div>
+    <button onclick="copySql()" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">📋 SQL Copy করো</button>
+  </div>
+
+  <div class="card" style="margin-top:0.5rem">
     <div class="card-title">About</div>
     <div class="settings-row" style="border:none;padding:6px 0">
-      <div class="settings-label" style="color:var(--muted);font-size:13px">Enterprise Attendance Suite v3.0<br>Built with ❤️ — All data stored locally</div>
+      <div class="settings-label" style="color:var(--muted);font-size:13px">Enterprise Attendance Suite v4.0<br>☁️ Supabase Cloud Sync enabled<br>Built with ❤️</div>
     </div>
   </div>
 </div>
@@ -849,6 +1047,97 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 
 <script>
 // ============================================================
+// SUPABASE CONFIG
+// ============================================================
+const SUPABASE_URL = 'https://zshwkbhrinsckoetifsw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzaHdrYmhyaW5zY2tvZXRpZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NzkzNjEsImV4cCI6MjA2NjA1NTM2MX0.BK8tPHMjcoD0b4qOqMp8tABIQpqHYq8bIX17BaAmR3g';
+const SB_HEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+let syncStatus = 'idle'; // idle | syncing | online | error
+
+async function sbFetch(path, options = {}) {
+  return fetch(SUPABASE_URL + '/rest/v1/' + path, { headers: SB_HEADERS, ...options });
+}
+
+// Push one record to Supabase
+async function sbInsert(rec) {
+  try {
+    const row = {
+      id: rec.id,
+      name: rec.name || '',
+      roll: rec.roll || '',
+      phone: rec.phone || '',
+      org: rec.org || '',
+      type: rec.attendanceType || rec.type || 'Check-In',
+      schedule_status: rec.scheduleStatus || '',
+      range_status: rec.rangeStatus || '',
+      lat: rec.lat || null,
+      lng: rec.lng || null,
+      address: rec.address || '',
+      ip: rec.ip || '',
+      notes: rec.notes || '',
+      photo: rec.photo || null,
+      timestamp: rec.timestamp || new Date().toISOString(),
+      time_display: rec.timeDisplay || '',
+      agent: rec.agent || ''
+    };
+    const res = await sbFetch('attendance', { method: 'POST', body: JSON.stringify(row) });
+    if (!res.ok) { const err = await res.text(); console.warn('Supabase insert error:', err); return false; }
+    return true;
+  } catch(e) { console.warn('Supabase offline:', e); return false; }
+}
+
+// Pull all records from Supabase
+async function sbPull() {
+  try {
+    setSyncStatus('syncing');
+    const res = await sbFetch('attendance?select=*&order=timestamp.desc&limit=1000');
+    if (!res.ok) { setSyncStatus('error'); return; }
+    const rows = await res.json();
+    // Merge with local — Supabase is source of truth
+    const remote = rows.map(r => ({
+      id: r.id, name: r.name, roll: r.roll, phone: r.phone, org: r.org,
+      attendanceType: r.type, type: r.type,
+      scheduleStatus: r.schedule_status, rangeStatus: r.range_status,
+      lat: r.lat, lng: r.lng, address: r.address, ip: r.ip,
+      notes: r.notes, photo: r.photo, timestamp: r.timestamp,
+      timeDisplay: r.time_display, agent: r.agent
+    }));
+    db = remote;
+    localStorage.setItem('attendance_db', JSON.stringify(db));
+    updateStats(); renderRecords(); renderActivityFeed(); updateTodayStats();
+    setSyncStatus('online');
+    showToast(`✅ Synced — ${db.length} records loaded`);
+  } catch(e) { setSyncStatus('error'); console.warn('Pull failed:', e); }
+}
+
+// Delete from Supabase
+async function sbDelete(id) {
+  try { await sbFetch(`attendance?id=eq.${id}`, { method: 'DELETE' }); } catch(e) {}
+}
+
+// Sync indicator
+function setSyncStatus(s) {
+  syncStatus = s;
+  const dot = document.getElementById('sync-dot');
+  const lbl = document.getElementById('sync-lbl');
+  if (!dot || !lbl) return;
+  const map = {
+    idle:    { color: 'var(--muted2)', text: '' },
+    syncing: { color: '#FF9500',       text: 'Syncing…' },
+    online:  { color: '#34C759',       text: 'Online' },
+    error:   { color: '#FF3B30',       text: 'Offline' }
+  };
+  dot.style.background = map[s].color;
+  lbl.textContent = map[s].text;
+}
+
+// On boot — pull from Supabase
+async function sbInit() {
+  setSyncStatus('syncing');
+  await sbPull();
+}
+
+// ============================================================
 // STATE
 // ============================================================
 let db = JSON.parse(localStorage.getItem('attendance_db') || '[]');
@@ -877,7 +1166,11 @@ let lastSuccessText = '';
   startClock();
   loadSettings();
   updateNotifDot();
-  setTimeout(() => document.getElementById('splash').classList.add('gone'), 1600);
+  updateTodayStats();
+  autoThemeCheck();
+  setInterval(checkLateAlert, 60000);
+  checkLateAlert();
+  setTimeout(() => { document.getElementById('splash').classList.add('gone'); sbInit(); }, 1600);
 })();
 
 function saveDB() { localStorage.setItem('attendance_db', JSON.stringify(db)); }
@@ -1224,10 +1517,12 @@ function showPage(p) {
   document.getElementById('page-' + p).classList.add('active');
   const bnav = document.getElementById('bnav-' + p);
   if (bnav) bnav.classList.add('active');
-  if (p === 'admin') { currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); }
+  if (p === 'admin') { currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard(); }
   if (p === 'settings') { loadSettings(); }
   if (p === 'notif') { renderNotifs(); }
   if (p === 'files') { renderFileGrid(); loadProfileData(); }
+  if (p === 'calendar') { renderCalendar(); }
+  if (p === 'form') { updateTodayStats(); }
 }
 
 // ============================================================
@@ -1334,12 +1629,15 @@ function submitAttendance() {
   };
 
   db.unshift(rec); saveDB();
+  sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
   addNotif(`✅ ${name} (${id}) marked ${rec.attendanceType}`, scheduleStatus === 'Late' ? '🔴' : '🟢');
   playSuccessChime();
   lastSuccessText = `${name} (ID: ${id}) — ${rec.attendanceType} at ${rec.timeDisplay}`;
   document.getElementById('success-detail').textContent = `${name} recorded as ${rec.attendanceType}.`;
   document.getElementById('form-main').style.display = 'none';
   document.getElementById('success-screen').style.display = 'block';
+  updateTodayStats();
+  startCheckinTimer(name, rec.attendanceType);
 }
 
 function resetForm() {
@@ -1366,16 +1664,18 @@ function manualEntry() {
   if (!name || !id) { showToast('Name and ID required.'); return; }
   const now = new Date();
   const rec = {
-    id: Date.now(), name, idRoll: id,
+    id: Date.now(), name, roll: id, idRoll: id,
     phone: document.getElementById('m-phone').value.trim() || '—',
     org: document.getElementById('m-org').value.trim() || '—',
     orgtype: 'other', attendanceType: document.getElementById('m-type').value,
-    face: null, lat: null, lng: null, address: 'Manual Entry', ip: 'Admin', agent: 'Manual (Admin)',
+    photo: null, lat: null, lng: null, address: 'Manual Entry', ip: 'Admin', agent: 'Manual (Admin)',
     scheduleStatus: 'On-Time', rangeStatus: 'In-Range', checked: false,
+    timestamp: now.toISOString(),
     timeDisplay: now.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
     timeStr: now.toDateString(), notes: 'Manual admin entry'
   };
   db.unshift(rec); saveDB();
+  sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
   addNotif(`📝 Manual entry: ${name} (${id})`, '🔵');
   ['m-name','m-id','m-phone','m-org'].forEach(i => document.getElementById(i).value = '');
   currentPage = 1; updateStats(); renderRecords(); renderActivityFeed();
@@ -1630,7 +1930,7 @@ function bulkDelete() {
   }
 }
 function deleteRecord(id) {
-  if (confirm('Delete this record?')) { db=db.filter(r=>r.id!==id); saveDB(); updateStats(); renderRecords(); showToast('Deleted.'); }
+  if (confirm('Delete this record?')) { sbDelete(id); db=db.filter(r=>r.id!==id); saveDB(); updateStats(); renderRecords(); showToast('Deleted.'); }
 }
 function clearAllData() {
   if (confirm('Wipe ALL data?')) { db=[]; saveDB(); updateStats(); renderRecords(); showToast('All data cleared.'); }
@@ -1673,6 +1973,275 @@ function exportHTML() {
   html+=`</table></body></html>`;
   const blob=new Blob([html],{type:'text/html'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='Report.html'; a.click();
+}
+
+// ============================================================
+// TODAY STATS
+// ============================================================
+function updateTodayStats() {
+  const today = new Date().toDateString();
+  const todayRecs = records.filter(r => new Date(r.timestamp).toDateString() === today);
+  const onTime = todayRecs.filter(r => r.scheduleStatus === 'On-Time').length;
+  const late = todayRecs.filter(r => r.scheduleStatus === 'Late').length;
+  const total = todayRecs.length;
+  const pct = total > 0 ? Math.round((onTime / total) * 100) : 0;
+  const circumference = 2 * Math.PI * 14; // r=14
+  const dash = (pct / 100) * circumference;
+  document.getElementById('today-total').textContent = total;
+  document.getElementById('today-ontime').textContent = onTime;
+  document.getElementById('today-late').textContent = late;
+  document.getElementById('today-pct').textContent = pct + '%';
+  const arc = document.getElementById('today-ring-arc');
+  if (arc) arc.setAttribute('stroke-dasharray', `${dash.toFixed(1)} ${circumference.toFixed(1)}`);
+}
+
+// ============================================================
+// QUICK NOTE
+// ============================================================
+let qnVisible = false;
+function toggleQuickNote() {
+  qnVisible = !qnVisible;
+  document.getElementById('qn-body').style.display = qnVisible ? 'block' : 'none';
+  document.getElementById('qn-toggle-btn').textContent = qnVisible ? 'Hide' : 'Show';
+  if (qnVisible) {
+    const saved = localStorage.getItem('attendance_quick_note') || '';
+    document.getElementById('qn-text').value = saved;
+  }
+}
+function saveQuickNote(val) {
+  localStorage.setItem('attendance_quick_note', val);
+  document.getElementById('qn-saved').textContent = 'Saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+let calDate = new Date();
+function renderCalendar() {
+  const year = calDate.getFullYear(), month = calDate.getMonth();
+  document.getElementById('cal-month-label').textContent =
+    calDate.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+
+  // Build date → records map
+  const dateMap = {};
+  records.forEach(r => {
+    const d = new Date(r.timestamp);
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      const key = d.getDate();
+      if (!dateMap[key]) dateMap[key] = [];
+      dateMap[key].push(r);
+    }
+  });
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+    const recs = dateMap[d] || [];
+    const hasRecs = recs.length > 0;
+    const onTime = recs.filter(r => r.scheduleStatus === 'On-Time').length;
+    const late = recs.filter(r => r.scheduleStatus === 'Late').length;
+    let dots = '';
+    if (onTime > 0) dots += `<div class="cal-dot" style="background:#34C759"></div>`;
+    if (late > 0) dots += `<div class="cal-dot" style="background:#FF3B30"></div>`;
+    html += `<div class="cal-day${isToday?' today':''}${hasRecs?' has-records':''}" onclick="calSelectDay(${d},${year},${month})">
+      <span class="cal-day-num">${d}</span>
+      ${hasRecs ? `<div class="cal-dot-row">${dots}</div>` : ''}
+    </div>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+  document.getElementById('cal-detail').style.display = 'none';
+  document.getElementById('cal-no-selection').style.display = 'block';
+}
+function calSelectDay(d, year, month) {
+  document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const date = new Date(year, month, d);
+  const dateStr = date.toDateString();
+  const dayRecs = records.filter(r => new Date(r.timestamp).toDateString() === dateStr);
+  const label = date.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+  document.getElementById('cal-detail-date').textContent = `${label} — ${dayRecs.length} record(s)`;
+  if (!dayRecs.length) {
+    document.getElementById('cal-detail-list').innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No attendance on this day</p>';
+  } else {
+    document.getElementById('cal-detail-list').innerHTML = dayRecs.map(r => `
+      <div class="cal-detail-row">
+        <img class="cal-detail-face" src="${r.photo || ''}" onerror="this.style.display='none'">
+        <div class="cal-detail-info">
+          <div class="cal-detail-name">${r.name}</div>
+          <div class="cal-detail-meta">${r.roll || '—'} · ${r.type || 'Check-In'} · ${r.scheduleStatus || ''}</div>
+        </div>
+        <span class="badge ${r.scheduleStatus==='On-Time'?'badge-green':'badge-red'}">${r.scheduleStatus||''}</span>
+      </div>`).join('');
+  }
+  document.getElementById('cal-detail').style.display = 'block';
+  document.getElementById('cal-no-selection').style.display = 'none';
+}
+function calPrev() { calDate.setMonth(calDate.getMonth() - 1); renderCalendar(); }
+function calNext() { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); }
+
+// ============================================================
+// 🏆 LEADERBOARD
+// ============================================================
+function renderLeaderboard() {
+  const filter = document.getElementById('lb-filter')?.value || 'ontime';
+  const nameMap = {};
+  records.forEach(r => {
+    if (!r.name) return;
+    const key = r.name.trim().toLowerCase();
+    if (!nameMap[key]) nameMap[key] = { name: r.name, photo: r.photo, total: 0, ontime: 0, dates: new Set() };
+    nameMap[key].total++;
+    if (r.scheduleStatus === 'On-Time') nameMap[key].ontime++;
+    nameMap[key].dates.add(new Date(r.timestamp).toDateString());
+  });
+  let people = Object.values(nameMap);
+  if (filter === 'ontime') people.sort((a,b) => b.ontime - a.ontime);
+  else if (filter === 'total') people.sort((a,b) => b.total - a.total);
+  else people.sort((a,b) => b.dates.size - a.dates.size);
+  people = people.slice(0, 8);
+  const medals = ['gold','silver','bronze'];
+  const el = document.getElementById('leaderboard-list');
+  if (!el) return;
+  if (!people.length) { el.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No data yet</p>'; return; }
+  el.innerHTML = people.map((p, i) => {
+    const rankClass = medals[i] || '';
+    const score = filter === 'ontime' ? p.ontime + ' On-Time' : filter === 'total' ? p.total + ' entries' : p.dates.size + ' days';
+    const scoreNum = filter === 'ontime' ? p.ontime : filter === 'total' ? p.total : p.dates.size;
+    return `<div class="lb-row">
+      <div class="lb-rank ${rankClass}">${i < 3 ? ['🥇','🥈','🥉'][i] : i+1}</div>
+      ${p.photo ? `<img class="gs-face" src="${p.photo}" style="width:36px;height:36px;border-radius:10px;object-fit:cover">` : `<div style="width:36px;height:36px;border-radius:10px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:18px">👤</div>`}
+      <div style="flex:1;min-width:0">
+        <div class="lb-name">${p.name}</div>
+        <div class="lb-sub">${score}</div>
+      </div>
+      <div class="lb-score">${scoreNum}</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// 🔍 GLOBAL SEARCH OVERLAY
+// ============================================================
+function openSearch() {
+  const overlay = document.getElementById('search-overlay');
+  overlay.style.display = 'flex';
+  setTimeout(() => document.getElementById('global-search-input').focus(), 100);
+  renderGlobalSearch('');
+}
+function closeSearch() {
+  document.getElementById('search-overlay').style.display = 'none';
+  document.getElementById('global-search-input').value = '';
+}
+function renderGlobalSearch(q) {
+  const el = document.getElementById('global-search-results');
+  q = q.trim().toLowerCase();
+  if (!q) { el.innerHTML = `<p style="font-size:14px;color:var(--muted);text-align:center;padding:24px 0">Start typing to search across all records</p>`; return; }
+  const hits = records.filter(r =>
+    (r.name||'').toLowerCase().includes(q) ||
+    (r.roll||'').toLowerCase().includes(q) ||
+    (r.phone||'').toLowerCase().includes(q) ||
+    (r.org||'').toLowerCase().includes(q)
+  ).slice(0, 20);
+  if (!hits.length) { el.innerHTML = `<p style="font-size:14px;color:var(--muted);text-align:center;padding:24px 0">No results for "${q}"</p>`; return; }
+  el.innerHTML = hits.map(r => {
+    const badgeColor = r.scheduleStatus === 'On-Time' ? 'rgba(52,199,89,0.15);color:#34C759' : 'rgba(255,59,48,0.12);color:#FF3B30';
+    return `<div class="gs-result" onclick="closeSearch();showPage('admin')">
+      ${r.photo ? `<img class="gs-face" src="${r.photo}">` : `<div class="gs-face" style="display:flex;align-items:center;justify-content:center;font-size:20px">👤</div>`}
+      <div class="gs-info">
+        <div class="gs-name">${r.name || '—'}</div>
+        <div class="gs-meta">${r.roll || ''} · ${r.org || ''} · ${r.timeDisplay || ''}</div>
+      </div>
+      <span class="gs-badge" style="background:${badgeColor}">${r.scheduleStatus||''}</span>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// ⚠️ LATE ALERT BANNER
+// ============================================================
+function checkLateAlert() {
+  const banner = document.getElementById('late-alert-banner');
+  if (!banner || !eventProfile || !eventProfile.start) return;
+  const now = new Date();
+  const start = new Date(eventProfile.start);
+  const end = eventProfile.end ? new Date(eventProfile.end) : null;
+  if (now > start && (!end || now < end)) {
+    const diff = now - start;
+    const mins = Math.floor(diff / 60000);
+    const hrs = Math.floor(mins / 60);
+    const rem = mins % 60;
+    const timeStr = hrs > 0 ? `${hrs}h ${rem}m` : `${mins}m`;
+    document.getElementById('late-alert-msg').textContent = `Event started ${timeStr} ago — check-ins now marked Late`;
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+// ============================================================
+// ⏱ CHECK-IN DURATION TIMER
+// ============================================================
+let checkinTimerInterval = null;
+function startCheckinTimer(name, type) {
+  if (type !== 'Check-Out' && type !== 'Return') { document.getElementById('checkin-timer-wrap').style.display = 'none'; return; }
+  // Find last check-in for this name
+  const rec = records.find(r => r.name?.toLowerCase() === name?.toLowerCase() && (r.type === 'Check-In' || r.attendanceType === 'Check-In'));
+  if (!rec) { document.getElementById('checkin-timer-wrap').style.display = 'none'; return; }
+  const since = new Date(rec.timestamp);
+  document.getElementById('checkin-timer-wrap').style.display = 'block';
+  if (checkinTimerInterval) clearInterval(checkinTimerInterval);
+  function tick() {
+    const diff = Date.now() - since.getTime();
+    const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('checkin-timer').textContent =
+      `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  tick();
+  checkinTimerInterval = setInterval(tick, 1000);
+}
+
+// ============================================================
+// 📲 WHATSAPP BULK REPORT
+// ============================================================
+function whatsappBulkReport() {
+  const today = new Date().toDateString();
+  const todayRecs = records.filter(r => new Date(r.timestamp).toDateString() === today);
+  if (!todayRecs.length) { showToast('No records today.'); return; }
+  const onTime = todayRecs.filter(r => r.scheduleStatus === 'On-Time').length;
+  const late = todayRecs.filter(r => r.scheduleStatus === 'Late').length;
+  const eventName = eventProfile?.name || 'Attendance Report';
+  let msg = `📋 *${eventName}*\n`;
+  msg += `📅 ${new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}\n`;
+  msg += `━━━━━━━━━━━━━━\n`;
+  msg += `✅ Total: *${todayRecs.length}*\n`;
+  msg += `🟢 On-Time: *${onTime}*\n`;
+  msg += `🔴 Late: *${late}*\n`;
+  msg += `📊 Rate: *${todayRecs.length > 0 ? Math.round(onTime/todayRecs.length*100) : 0}%*\n`;
+  msg += `━━━━━━━━━━━━━━\n`;
+  todayRecs.slice(0,20).forEach((r, i) => {
+    msg += `${i+1}. ${r.name || '—'} (${r.roll || '—'}) — ${r.scheduleStatus === 'On-Time' ? '🟢' : '🔴'} ${r.scheduleStatus}\n`;
+  });
+  if (todayRecs.length > 20) msg += `...and ${todayRecs.length - 20} more\n`;
+  msg += `\n_Sent via Corporate Attendance Suite_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+}
+
+// ============================================================
+// 🌙 AUTO DARK MODE (time-based)
+// ============================================================
+function autoThemeCheck() {
+  const stored = localStorage.getItem('attendance_theme');
+  if (stored === 'light' || stored === 'dark') return; // user manually set it
+  const h = new Date().getHours();
+  const shouldDark = h >= 19 || h < 6;
+  if (shouldDark && !document.body.classList.contains('dark-theme')) {
+    document.body.classList.add('dark-theme');
+  } else if (!shouldDark && document.body.classList.contains('dark-theme')) {
+    document.body.classList.remove('dark-theme');
+  }
 }
 
 // ============================================================
@@ -1805,6 +2374,21 @@ function deleteFile(id) {
   userFiles = userFiles.filter(x => String(x.id) !== String(id));
   localStorage.setItem('attendance_files', JSON.stringify(userFiles));
   renderFileGrid(); showToast('Deleted.');
+}
+
+function copySql() {
+  const sql = `create table attendance (
+  id bigint primary key,
+  name text, roll text, phone text, org text,
+  type text, schedule_status text, range_status text,
+  lat float8, lng float8, address text, ip text,
+  notes text, photo text, agent text,
+  timestamp timestamptz default now(),
+  time_display text
+);
+alter table attendance enable row level security;
+create policy "anon all" on attendance for all using (true) with check (true);`;
+  navigator.clipboard.writeText(sql).then(() => showToast('✅ SQL copied! Supabase > SQL Editor এ paste করো'));
 }
 
 // ============================================================
