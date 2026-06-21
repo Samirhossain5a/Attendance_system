@@ -1,5 +1,3 @@
-description="Create fixed HTML file"
-cat > /home/claude/fixed_attendance.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -368,6 +366,25 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 }
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
+/* AUTH SCREEN */
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:5000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#auth-screen.show{display:flex}
+.auth-box{width:100%;max-width:360px}
+.auth-logo{width:64px;height:64px;background:linear-gradient(145deg,#1C8EF9,#0055D4);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 8px 24px rgba(0,122,255,0.3)}
+.auth-title{font-size:24px;font-weight:700;text-align:center;letter-spacing:-0.4px;color:var(--text);margin-bottom:4px}
+.auth-sub{font-size:14px;color:var(--muted);text-align:center;margin-bottom:24px}
+.auth-tabs{display:flex;background:var(--bg2);border-radius:12px;padding:3px;margin-bottom:20px}
+.auth-tab{flex:1;text-align:center;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.18s}
+.auth-tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.auth-error{background:rgba(255,59,48,0.1);border:0.5px solid rgba(255,59,48,0.3);border-radius:10px;padding:10px 13px;font-size:13px;color:#FF3B30;margin-bottom:12px;display:none}
+.auth-info{background:rgba(0,122,255,0.1);border:0.5px solid rgba(0,122,255,0.25);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--accent);margin-bottom:12px;display:none}
+.auth-submit-btn{width:100%;padding:15px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;transition:transform 0.1s,opacity 0.15s}
+.auth-submit-btn:active{transform:scale(0.97);opacity:0.85}
+.auth-submit-btn:disabled{opacity:0.5;cursor:not-allowed}
+.auth-foot{text-align:center;font-size:12px;color:var(--muted2);margin-top:18px}
+#user-bar{display:none;align-items:center;gap:6px}
+.user-chip{background:var(--bg2);border-radius:20px;padding:4px 10px 4px 4px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer}
+.user-chip-avatar{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
 @media print{
   body{background:#fff;color:#000}
   .nav,.report-btn,.export-btn,.bulk-bar,#search-input,#filter-org,#filter-status,.edit-profile-btn,.delete-rec-btn,.rec-edit-btn,button,input,.rec-check-wrap,.live-clock,.countdown-row,.pagination,#splash,.manual-entry-card,.bottom-nav{display:none !important}
@@ -387,9 +404,47 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 
 <div id="toast" class="toast"></div>
 
+<!-- AUTH SCREEN (Register / Login) -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">✅</div>
+    <div class="auth-title" id="auth-heading">Welcome back</div>
+    <div class="auth-sub" id="auth-subheading">Login to mark attendance & sync to cloud</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</div>
+      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Register</div>
+    </div>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="auth-info" id="auth-info"></div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="username"></div>
+      <div class="field" style="margin-bottom:6px"><label>Password</label><input type="password" id="login-password" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="auth-submit-btn" id="login-btn" onclick="doLogin()">🔐 Login</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" style="display:none">
+      <div class="field"><label>Full Name</label><input type="text" id="reg-name" placeholder="Your name" autocomplete="name"></div>
+      <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com" autocomplete="username"></div>
+      <div class="field" style="margin-bottom:6px"><label>Password</label><input type="password" id="reg-password" placeholder="At least 6 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()"></div>
+      <button class="auth-submit-btn" id="register-btn" onclick="doRegister()">✨ Create Account</button>
+    </div>
+
+    <div class="auth-foot">☁️ Secured by Supabase Auth · your data syncs across devices</div>
+  </div>
+</div>
+
 <nav class="nav">
   <span class="nav-brand">📋 Corporate Suite</span>
   <div class="nav-right">
+    <div id="user-bar">
+      <div class="user-chip" onclick="showPage('settings')" title="Account">
+        <span class="user-chip-avatar" id="user-chip-avatar">?</span>
+        <span id="user-chip-name" style="max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+      </div>
+    </div>
     <div style="display:flex;align-items:center;gap:4px;cursor:pointer" onclick="sbPull()" title="Sync with cloud">
       <span id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted2);display:inline-block;transition:background 0.3s"></span>
       <span id="sync-lbl" class="live-clock" style="font-size:10px;padding:2px 6px;min-width:44px;text-align:center"></span>
@@ -785,6 +840,16 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 
 <!-- SETTINGS PAGE -->
 <div class="page" id="page-settings">
+  <div class="card" id="account-card">
+    <div class="card-title">Account</div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-label" id="acct-name-label">—</div>
+        <div class="settings-sub" id="acct-email-label">—</div>
+      </div>
+    </div>
+    <button class="export-btn" style="background:rgba(255,59,48,0.08);border-color:rgba(255,59,48,0.25);color:var(--danger);font-weight:600;margin-top:4px" onclick="doLogout()">🚪 Log Out</button>
+  </div>
   <div class="card">
     <div class="card-title">Display</div>
     <div class="settings-section">
@@ -835,10 +900,11 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">Supabase Setup</div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে:</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে (Auth সহ — প্রতি user এর data আলাদা থাকবে):</div>
     <div onclick="copySql()" style="background:var(--bg2);border-radius:10px;padding:12px;font-size:11px;font-family:monospace;color:var(--text);line-height:1.7;cursor:pointer;word-break:break-all">
 create table attendance (<br>
 &nbsp;&nbsp;id bigint primary key,<br>
+&nbsp;&nbsp;user_id uuid references auth.users(id) default auth.uid(),<br>
 &nbsp;&nbsp;name text, roll text, phone text, org text,<br>
 &nbsp;&nbsp;type text, schedule_status text, range_status text,<br>
 &nbsp;&nbsp;lat float8, lng float8, address text, ip text,<br>
@@ -846,15 +912,23 @@ create table attendance (<br>
 &nbsp;&nbsp;timestamp timestamptz default now(),<br>
 &nbsp;&nbsp;time_display text<br>
 );<br><br>
-alter table attendance enable row level security;<br>
-create policy "anon all" on attendance for all using (true) with check (true);
+alter table attendance enable row level security;<br><br>
+create policy "select own" on attendance for select<br>
+&nbsp;&nbsp;using (auth.uid() = user_id);<br>
+create policy "insert own" on attendance for insert<br>
+&nbsp;&nbsp;with check (auth.uid() = user_id);<br>
+create policy "update own" on attendance for update<br>
+&nbsp;&nbsp;using (auth.uid() = user_id);<br>
+create policy "delete own" on attendance for delete<br>
+&nbsp;&nbsp;using (auth.uid() = user_id);
     </div>
     <button onclick="copySql()" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">📋 SQL Copy করো</button>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7">⚠️ Email confirmation বন্ধ রাখতে: Supabase Dashboard → Authentication → Providers → Email → "Confirm email" টগল OFF করো (test করার জন্য সহজ হবে)।</div>
   </div>
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">About</div>
     <div class="settings-row" style="border:none;padding:6px 0">
-      <div class="settings-label" style="color:var(--muted);font-size:13px">Enterprise Attendance Suite v4.0<br>☁️ Supabase Cloud Sync enabled<br>Built with ❤️</div>
+      <div class="settings-label" style="color:var(--muted);font-size:13px">Enterprise Attendance Suite v5.0<br>☁️ Supabase Cloud Sync + Auth enabled<br>Built with ❤️</div>
     </div>
   </div>
 </div>
@@ -942,17 +1016,79 @@ create policy "anon all" on attendance for all using (true) with check (true);
 // ============================================================
 const SUPABASE_URL = 'https://zshwkbhrinsckoetifsw.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzaHdrYmhyaW5zY2tvZXRpZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NzkzNjEsImV4cCI6MjA2NjA1NTM2MX0.BK8tPHMjcoD0b4qOqMp8tABIQpqHYq8bIX17BaAmR3g';
-const SB_HEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
 let syncStatus = 'idle';
 
+// ---------- AUTH STATE ----------
+let authSession = JSON.parse(localStorage.getItem('attendance_session') || 'null'); // {access_token, refresh_token, user:{id,email,...}}
+let authUser = authSession ? authSession.user : null;
+
+function getAuthHeaders() {
+  const token = (authSession && authSession.access_token) || SUPABASE_KEY;
+  return {
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + token,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+}
+
 async function sbFetch(path, options = {}) {
-  return fetch(SUPABASE_URL + '/rest/v1/' + path, { headers: SB_HEADERS, ...options });
+  return fetch(SUPABASE_URL + '/rest/v1/' + path, { headers: getAuthHeaders(), ...options });
+}
+
+// ---------- AUTH: REGISTER ----------
+async function authRegister(name, email, password) {
+  const res = await fetch(SUPABASE_URL + '/auth/v1/signup', {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, data: { full_name: name } })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description || data.msg || data.error || 'Registration failed.');
+  return data;
+}
+
+// ---------- AUTH: LOGIN ----------
+async function authLogin(email, password) {
+  const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error_description || data.msg || 'Login failed. Check email/password.');
+  return data;
+}
+
+// ---------- AUTH: LOGOUT ----------
+async function authLogout() {
+  try {
+    if (authSession && authSession.access_token) {
+      await fetch(SUPABASE_URL + '/auth/v1/logout', {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + authSession.access_token }
+      });
+    }
+  } catch(e) {}
+  authSession = null; authUser = null;
+  localStorage.removeItem('attendance_session');
+}
+
+function saveSession(tokenData) {
+  authSession = {
+    access_token: tokenData.access_token,
+    refresh_token: tokenData.refresh_token,
+    user: tokenData.user
+  };
+  authUser = authSession.user;
+  localStorage.setItem('attendance_session', JSON.stringify(authSession));
 }
 
 async function sbInsert(rec) {
   try {
     const row = {
       id: rec.id,
+      user_id: authUser ? authUser.id : null,
       name: rec.name || '',
       roll: rec.idRoll || rec.roll || '',
       phone: rec.phone || '',
@@ -976,6 +1112,22 @@ async function sbInsert(rec) {
   } catch(e) { console.warn('Supabase offline:', e); return false; }
 }
 
+async function sbUpdate(rec) {
+  try {
+    const row = {
+      name: rec.name || '',
+      roll: rec.idRoll || rec.roll || '',
+      phone: rec.phone || '',
+      org: rec.org || '',
+      type: rec.attendanceType || rec.type || 'Check-In',
+      notes: rec.notes || ''
+    };
+    const res = await sbFetch(`attendance?id=eq.${rec.id}`, { method: 'PATCH', body: JSON.stringify(row) });
+    if (!res.ok) { const err = await res.text(); console.warn('Supabase update error:', err); return false; }
+    return true;
+  } catch(e) { console.warn('Supabase offline:', e); return false; }
+}
+
 async function sbPull() {
   try {
     setSyncStatus('syncing');
@@ -990,10 +1142,10 @@ async function sbPull() {
       notes: r.notes, face: r.photo, photo: r.photo,
       timestamp: r.timestamp,
       timeDisplay: r.time_display, timeStr: r.timestamp ? new Date(r.timestamp).toDateString() : '',
-      agent: r.agent
+      agent: r.agent, user_id: r.user_id
     }));
     db = remote;
-    localStorage.setItem('attendance_db', JSON.stringify(db));
+    saveDB();
     updateStats(); renderRecords(); renderActivityFeed(); updateTodayStats();
     setSyncStatus('online');
     showToast(`✅ Synced — ${db.length} records loaded`);
@@ -1048,6 +1200,16 @@ let lastSuccessText = '';
   if (currentTheme === 'dark' || (currentTheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.body.classList.add('dark-theme');
   }
+  document.getElementById('splash').classList.add('gone');
+  if (!authSession || !authSession.access_token) {
+    showAuthScreen();
+    return;
+  }
+  startApp();
+})();
+
+function startApp() {
+  updateUserChip();
   locationData.agent = getDeviceInfo();
   getLocation(); getIP(); applyProfile();
   startClock();
@@ -1057,8 +1219,115 @@ let lastSuccessText = '';
   autoThemeCheck();
   setInterval(checkLateAlert, 60000);
   checkLateAlert();
-  setTimeout(() => { document.getElementById('splash').classList.add('gone'); sbInit(); }, 1600);
-})();
+  sbInit();
+}
+
+function updateUserChip() {
+  const bar = document.getElementById('user-bar');
+  const nameEl = document.getElementById('user-chip-name');
+  const avatarEl = document.getElementById('user-chip-avatar');
+  const acctNameEl = document.getElementById('acct-name-label');
+  const acctEmailEl = document.getElementById('acct-email-label');
+  if (!authUser) { if (bar) bar.style.display = 'none'; return; }
+  const displayName = (authUser.user_metadata && authUser.user_metadata.full_name) || authUser.email || 'User';
+  if (bar) bar.style.display = 'flex';
+  if (nameEl) nameEl.textContent = displayName;
+  if (avatarEl) avatarEl.textContent = displayName.charAt(0).toUpperCase();
+  if (acctNameEl) acctNameEl.textContent = displayName;
+  if (acctEmailEl) acctEmailEl.textContent = authUser.email || '';
+}
+
+// ============================================================
+// AUTH UI
+// ============================================================
+function showAuthScreen() {
+  document.getElementById('auth-screen').classList.add('show');
+}
+function hideAuthScreen() {
+  document.getElementById('auth-screen').classList.remove('show');
+}
+function switchAuthTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('auth-heading').textContent = tab === 'login' ? 'Welcome back' : 'Create your account';
+  document.getElementById('auth-subheading').textContent = tab === 'login' ? 'Login to mark attendance & sync to cloud' : 'Register to start tracking attendance';
+  hideAuthMsgs();
+}
+function hideAuthMsgs() {
+  document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('auth-info').style.display = 'none';
+}
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = '⚠️ ' + msg; el.style.display = 'block';
+  document.getElementById('auth-info').style.display = 'none';
+}
+function showAuthInfo(msg) {
+  const el = document.getElementById('auth-info');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+async function doLogin() {
+  hideAuthMsgs();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) { showAuthError('Email and password দিন।'); return; }
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = '🔐 Logging in...';
+  try {
+    const data = await authLogin(email, password);
+    saveSession(data);
+    hideAuthScreen();
+    startApp();
+    showToast('✅ Logged in!');
+  } catch(e) {
+    showAuthError(e.message || 'Login failed.');
+  } finally {
+    btn.disabled = false; btn.textContent = '🔐 Login';
+  }
+}
+
+async function doRegister() {
+  hideAuthMsgs();
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  if (!name || !email || !password) { showAuthError('সব ফিল্ড পূরণ করুন।'); return; }
+  if (password.length < 6) { showAuthError('Password কমপক্ষে ৬ অক্ষরের হতে হবে।'); return; }
+  const btn = document.getElementById('register-btn');
+  btn.disabled = true; btn.textContent = '✨ Creating...';
+  try {
+    const data = await authRegister(name, email, password);
+    if (data.access_token) {
+      // Auto-confirmed (email confirmation OFF) — log straight in
+      saveSession(data);
+      hideAuthScreen();
+      startApp();
+      showToast('✅ Account created! Welcome.');
+    } else {
+      // Email confirmation required
+      showAuthInfo('✅ Account created! এখন আপনার ইমেইল চেক করে confirm করুন, তারপর Login করুন।');
+      switchAuthTab('login');
+      document.getElementById('login-email').value = email;
+    }
+  } catch(e) {
+    showAuthError(e.message || 'Registration failed.');
+  } finally {
+    btn.disabled = false; btn.textContent = '✨ Create Account';
+  }
+}
+
+async function doLogout() {
+  if (!confirm('Log out করতে চান?')) return;
+  await authLogout();
+  // Clear local cached cloud data (keeps it clean per-account); local-only data like files/profile picture stay.
+  db = [];
+  saveDB();
+  location.reload();
+}
 
 function saveDB() { localStorage.setItem('attendance_db', JSON.stringify(db)); }
 function saveSetting(key, val) {
@@ -1764,6 +2033,7 @@ function saveEditRecord() {
   r.type = r.attendanceType;
   r.notes = document.getElementById('edit-notes').value.trim();
   saveDB(); closeModal('edit-modal'); updateStats(); renderRecords();
+  sbUpdate(r).then(ok => setSyncStatus(ok ? 'online' : 'error'));
   showToast('✅ Record updated.');
 }
 
@@ -1779,9 +2049,10 @@ function toggleSelectAll(master) {
   });
 }
 function bulkDelete() {
-  const n = db.filter(r=>r.checked).length;
-  if (!n) { showToast('No records selected.'); return; }
-  if (confirm(`Delete ${n} records?`)) {
+  const toDelete = db.filter(r=>r.checked);
+  if (!toDelete.length) { showToast('No records selected.'); return; }
+  if (confirm(`Delete ${toDelete.length} records?`)) {
+    toDelete.forEach(r => sbDelete(r.id));
     db=db.filter(r=>!r.checked); saveDB();
     document.getElementById('master-select').checked=false;
     currentPage=1; updateStats(); renderRecords(); showToast('Deleted.');
@@ -1834,7 +2105,7 @@ function exportHTML() {
 }
 
 // ============================================================
-// TODAY STATS  ← BUG FIX: was using undefined `records`, now uses `db`
+// TODAY STATS
 // ============================================================
 function updateTodayStats() {
   const today = new Date().toDateString();
@@ -1872,7 +2143,7 @@ function saveQuickNote(val) {
 }
 
 // ============================================================
-// CALENDAR  ← BUG FIX: was using undefined `records`, now uses `db`
+// CALENDAR
 // ============================================================
 let calDate = new Date();
 function renderCalendar() {
@@ -1945,7 +2216,7 @@ function calPrev() { calDate.setMonth(calDate.getMonth() - 1); renderCalendar();
 function calNext() { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); }
 
 // ============================================================
-// LEADERBOARD  ← BUG FIX: was using undefined `records`, now uses `db`
+// LEADERBOARD
 // ============================================================
 function renderLeaderboard() {
   const filter = document.getElementById('lb-filter')?.value || 'ontime';
@@ -1985,7 +2256,7 @@ function renderLeaderboard() {
 }
 
 // ============================================================
-// GLOBAL SEARCH  ← BUG FIX: was using undefined `records`, now uses `db`
+// GLOBAL SEARCH
 // ============================================================
 function openSearch() {
   const overlay = document.getElementById('search-overlay');
@@ -2067,7 +2338,7 @@ function startCheckinTimer(name, type) {
 }
 
 // ============================================================
-// WHATSAPP BULK REPORT  ← BUG FIX: was using undefined `records`, now uses `db`
+// WHATSAPP BULK REPORT
 // ============================================================
 function whatsappBulkReport() {
   const today = new Date().toDateString();
@@ -2242,6 +2513,7 @@ function deleteFile(id) {
 function copySql() {
   const sql = `create table attendance (
   id bigint primary key,
+  user_id uuid references auth.users(id) default auth.uid(),
   name text, roll text, phone text, org text,
   type text, schedule_status text, range_status text,
   lat float8, lng float8, address text, ip text,
@@ -2250,7 +2522,15 @@ function copySql() {
   time_display text
 );
 alter table attendance enable row level security;
-create policy "anon all" on attendance for all using (true) with check (true);`;
+
+create policy "select own" on attendance for select
+  using (auth.uid() = user_id);
+create policy "insert own" on attendance for insert
+  with check (auth.uid() = user_id);
+create policy "update own" on attendance for update
+  using (auth.uid() = user_id);
+create policy "delete own" on attendance for delete
+  using (auth.uid() = user_id);`;
   navigator.clipboard.writeText(sql).then(() => showToast('✅ SQL copied! Supabase > SQL Editor এ paste করো'));
 }
 
@@ -2268,5 +2548,3 @@ document.querySelectorAll('.modal-backdrop').forEach(el => {
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done. File size: $(wc -c < /home/claude/fixed_attendance.html) bytes"
