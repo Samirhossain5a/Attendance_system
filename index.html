@@ -340,6 +340,16 @@ body.dark-theme .quick-note-card{box-shadow:none;border:0.5px solid var(--border
 .cal-detail-name{font-size:14px;font-weight:600;color:var(--text)}
 .cal-detail-meta{font-size:12px;color:var(--muted);margin-top:1px}
 .lb-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--separator)}
+.um-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--separator)}
+.um-row:last-child{border-bottom:none}
+.um-avatar{width:38px;height:38px;border-radius:10px;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.um-info{flex:1;min-width:0}
+.um-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.um-email{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.um-stats{display:flex;gap:8px;margin-top:4px}
+.um-stat-pill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600}
+.um-del-btn{background:transparent;border:none;font-size:16px;cursor:pointer;opacity:0.4;padding:6px;transition:opacity 0.12s;flex-shrink:0}
+.um-del-btn:hover,.um-del-btn:active{opacity:1}
 .lb-row:last-child{border-bottom:none}
 .lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);flex-shrink:0}
 .lb-rank.gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#fff}
@@ -493,6 +503,13 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 <!-- FORM PAGE -->
 <div class="page active" id="page-form">
   <div id="form-main">
+    <div id="broadcast-banner" style="display:none;background:linear-gradient(135deg,#5856D6,#3634A3);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;align-items:center;gap:10px">
+      <span style="font-size:22px">📢</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;opacity:0.85">Announcement</div>
+        <div id="broadcast-text" style="font-size:14px;font-weight:500;margin-top:2px;line-height:1.4"></div>
+      </div>
+    </div>
     <div id="late-alert-banner" style="display:none;background:linear-gradient(135deg,#FF3B30,#FF6B35);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#fff;align-items:center;gap:10px">
       <span style="font-size:24px">⚠️</span>
       <div>
@@ -694,6 +711,10 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
     <div id="leaderboard-list"></div>
   </div>
+  <div class="card" id="user-mgmt-card" style="display:none">
+    <div class="card-title">👑 User Management</div>
+    <div id="user-mgmt-list"></div>
+  </div>
   <div class="card" id="activity-card">
     <div class="card-title">Recent Activity</div>
     <div class="activity-feed" id="activity-feed"></div>
@@ -858,6 +879,18 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
     <button class="export-btn" style="background:rgba(255,59,48,0.08);border-color:rgba(255,59,48,0.25);color:var(--danger);font-weight:600;margin-top:4px" onclick="doLogout()">🚪 Log Out</button>
   </div>
+  <div class="card" id="broadcast-admin-card" style="display:none">
+    <div class="card-title">📢 Admin Broadcast (Super Admin)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">এই note সব user-এর Form পেজে উপরে দেখাবে। খালি রাখলে কিছু দেখাবে না।</div>
+    <div class="field" style="margin-bottom:8px">
+      <textarea id="broadcast-input" placeholder="যেমন: আজকের সেশন ৩০ মিনিট পিছিয়ে গেছে।" style="min-height:80px"></textarea>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="updateBroadcast()" style="flex:1;padding:11px;border-radius:11px;border:none;background:var(--accent);color:#fff;font-size:14px;font-weight:600;cursor:pointer">📢 Broadcast করো</button>
+      <button onclick="clearBroadcast()" style="padding:11px 16px;border-radius:11px;border:none;background:var(--bg2);color:var(--text);font-size:14px;font-weight:600;cursor:pointer">Clear</button>
+    </div>
+    <div id="broadcast-status" style="font-size:11px;color:var(--muted);margin-top:8px"></div>
+  </div>
   <div class="card">
     <div class="card-title">Display</div>
     <div class="settings-section">
@@ -937,7 +970,20 @@ create policy "insert own" on attendance for insert<br>
 create policy "update own or admin" on attendance for update<br>
 &nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');<br>
 create policy "delete own or admin" on attendance for delete<br>
-&nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
+&nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');<br><br>
+create table if not exists broadcast (<br>
+&nbsp;&nbsp;id bigint primary key default 1,<br>
+&nbsp;&nbsp;message text,<br>
+&nbsp;&nbsp;updated_at timestamptz default now(),<br>
+&nbsp;&nbsp;updated_by text<br>
+);<br>
+insert into broadcast (id, message) values (1, '') on conflict (id) do nothing;<br>
+alter table broadcast enable row level security;<br>
+drop policy if exists "broadcast select all" on broadcast;<br>
+drop policy if exists "broadcast update admin only" on broadcast;<br>
+create policy "broadcast select all" on broadcast for select using (true);<br>
+create policy "broadcast update admin only" on broadcast for update<br>
+&nbsp;&nbsp;using (auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
     </div>
     <button onclick="copySql()" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">📋 SQL Copy করো</button>
     <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7">👑 Super Admin email: <b>samirhossain5a@gmail.com</b> — এই ইমেইল দিয়ে login করলে সব user এর data দেখা/এডিট/ডিলিট করা যাবে।</div>
@@ -1193,7 +1239,7 @@ async function sbPull() {
     }));
     db = remote;
     saveDB();
-    updateStats(); renderRecords(); renderActivityFeed(); updateTodayStats();
+    updateStats(); renderRecords(); renderActivityFeed(); updateTodayStats(); renderUserManagement();
     setSyncStatus('online');
     showToast(`✅ Synced — ${db.length} records loaded`);
   } catch(e) { setSyncStatus('error'); console.warn('Pull failed:', e); }
@@ -1221,6 +1267,76 @@ function setSyncStatus(s) {
 async function sbInit() {
   setSyncStatus('syncing');
   await sbPull();
+  await fetchBroadcast();
+}
+
+// ---------- BROADCAST ANNOUNCEMENT ----------
+async function fetchBroadcast() {
+  try {
+    const res = await sbFetch('broadcast?select=message,updated_at&id=eq.1');
+    if (!res.ok) return;
+    const rows = await res.json();
+    const msg = (rows && rows[0] && rows[0].message) ? rows[0].message.trim() : '';
+    showBroadcastBanner(msg);
+  } catch(e) { /* silently ignore — broadcast table may not exist yet */ }
+}
+
+function showBroadcastBanner(msg) {
+  const el = document.getElementById('broadcast-banner');
+  const textEl = document.getElementById('broadcast-text');
+  if (!el || !textEl) return;
+  if (msg) {
+    textEl.textContent = msg;
+    el.style.display = 'flex';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+async function saveBroadcast(message) {
+  try {
+    const row = { id: 1, message: message, updated_at: new Date().toISOString(), updated_by: authUser ? authUser.email : null };
+    const res = await sbFetch('broadcast?id=eq.1', { method: 'PATCH', body: JSON.stringify(row) });
+    if (!res.ok) {
+      // Row might not exist yet — try insert
+      const res2 = await sbFetch('broadcast', { method: 'POST', body: JSON.stringify(row) });
+      return res2.ok;
+    }
+    return true;
+  } catch(e) { console.warn('Broadcast save failed:', e); return false; }
+}
+
+async function loadBroadcastEditor() {
+  const card = document.getElementById('broadcast-admin-card');
+  if (!card) return;
+  if (!isSuperAdmin()) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  try {
+    const res = await sbFetch('broadcast?select=message&id=eq.1');
+    if (res.ok) {
+      const rows = await res.json();
+      document.getElementById('broadcast-input').value = (rows && rows[0] && rows[0].message) || '';
+    }
+  } catch(e) {}
+}
+
+async function updateBroadcast() {
+  const msg = document.getElementById('broadcast-input').value.trim();
+  const statusEl = document.getElementById('broadcast-status');
+  statusEl.textContent = '⏳ Saving...';
+  const ok = await saveBroadcast(msg);
+  if (ok) {
+    statusEl.textContent = '✅ Broadcast updated — সব user এখন দেখবে।';
+    showBroadcastBanner(msg);
+    showToast('📢 Broadcast সেভ হয়েছে।');
+  } else {
+    statusEl.textContent = '❌ সেভ করা যায়নি। Settings পেজে "Supabase Setup" থেকে broadcast table SQL run করেছেন তো?';
+  }
+}
+
+async function clearBroadcast() {
+  document.getElementById('broadcast-input').value = '';
+  await updateBroadcast();
 }
 
 // ============================================================
@@ -1701,7 +1817,7 @@ function showPage(p) {
   const bnav = document.getElementById('bnav-' + p);
   if (bnav) bnav.classList.add('active');
   if (p === 'admin') {
-    currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard();
+    currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard(); renderUserManagement();
     const banner = document.getElementById('super-admin-banner');
     if (banner) {
       if (isSuperAdmin()) {
@@ -1713,7 +1829,7 @@ function showPage(p) {
       }
     }
   }
-  if (p === 'settings') { loadSettings(); }
+  if (p === 'settings') { loadSettings(); loadBroadcastEditor(); }
   if (p === 'notif') { renderNotifs(); }
   if (p === 'files') { renderFileGrid(); loadProfileData(); }
   if (p === 'calendar') { renderCalendar(); }
@@ -2339,6 +2455,70 @@ function renderLeaderboard() {
 }
 
 // ============================================================
+// SUPER ADMIN: USER MANAGEMENT + PER-USER STATS
+// ============================================================
+function renderUserManagement() {
+  const card = document.getElementById('user-mgmt-card');
+  const list = document.getElementById('user-mgmt-list');
+  if (!card || !list) return;
+  if (!isSuperAdmin()) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+
+  const userMap = {};
+  db.forEach(r => {
+    const email = r.ownerEmail;
+    if (!email) return;
+    if (!userMap[email]) userMap[email] = { email, total: 0, ontime: 0, late: 0, lastTs: null, names: new Set() };
+    userMap[email].total++;
+    if (r.scheduleStatus === 'On-Time') userMap[email].ontime++;
+    if (r.scheduleStatus === 'Late') userMap[email].late++;
+    if (r.name) userMap[email].names.add(r.name);
+    const ts = r.timestamp ? new Date(r.timestamp).getTime() : null;
+    if (ts && (!userMap[email].lastTs || ts > userMap[email].lastTs)) userMap[email].lastTs = ts;
+  });
+  const users = Object.values(userMap).sort((a,b) => (b.lastTs||0) - (a.lastTs||0));
+
+  if (!users.length) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">এখনো কোনো user attendance submit করেনি।</p>';
+    return;
+  }
+
+  list.innerHTML = users.map(u => {
+    const rate = u.total > 0 ? Math.round((u.ontime / u.total) * 100) : 0;
+    const displayName = [...u.names][0] || u.email;
+    const lastActive = u.lastTs ? new Date(u.lastTs).toLocaleDateString() : '—';
+    const isMe = isSuperAdmin() && authUser && authUser.email === u.email;
+    return `<div class="um-row">
+      <div class="um-avatar">${displayName.charAt(0).toUpperCase()}</div>
+      <div class="um-info">
+        <div class="um-name">${displayName}${isMe ? ' 👑' : ''}</div>
+        <div class="um-email">${u.email}</div>
+        <div class="um-stats">
+          <span class="um-stat-pill" style="background:var(--accent-light);color:var(--accent)">${u.total} total</span>
+          <span class="um-stat-pill" style="background:rgba(52,199,89,0.12);color:#34C759">${rate}% on-time</span>
+          <span class="um-stat-pill" style="background:var(--bg2);color:var(--muted)">last: ${lastActive}</span>
+        </div>
+      </div>
+      ${isMe ? '' : `<button class="um-del-btn" onclick="deleteUserData('${u.email}','${displayName.replace(/'/g,"\\'")}')" title="Delete all data for this user">🗑️</button>`}
+    </div>`;
+  }).join('');
+}
+
+async function deleteUserData(email, name) {
+  const records = db.filter(r => r.ownerEmail === email);
+  if (!records.length) { showToast('No records found for this user.'); return; }
+  if (!confirm(`${name} (${email}) এর সব ${records.length} টা record ডিলিট করতে চান? এটা undo করা যাবে না।`)) return;
+  showToast('🗑️ Deleting...');
+  for (const r of records) {
+    await sbDelete(r.id);
+  }
+  db = db.filter(r => r.ownerEmail !== email);
+  saveDB();
+  updateStats(); renderRecords(); renderActivityFeed(); renderUserManagement();
+  showToast(`✅ ${name} এর সব data ডিলিট করা হয়েছে।`);
+}
+
+// ============================================================
 // GLOBAL SEARCH
 // ============================================================
 function openSearch() {
@@ -2624,7 +2804,22 @@ create policy "insert own" on attendance for insert
 create policy "update own or admin" on attendance for update
   using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
 create policy "delete own or admin" on attendance for delete
-  using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');`;
+  using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
+
+-- Broadcast announcements table
+create table if not exists broadcast (
+  id bigint primary key default 1,
+  message text,
+  updated_at timestamptz default now(),
+  updated_by text
+);
+insert into broadcast (id, message) values (1, '') on conflict (id) do nothing;
+alter table broadcast enable row level security;
+drop policy if exists "broadcast select all" on broadcast;
+drop policy if exists "broadcast update admin only" on broadcast;
+create policy "broadcast select all" on broadcast for select using (true);
+create policy "broadcast update admin only" on broadcast for update
+  using (auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');`;
   navigator.clipboard.writeText(sql).then(() => showToast('✅ SQL copied! Supabase > SQL Editor এ paste করো'));
 }
 
