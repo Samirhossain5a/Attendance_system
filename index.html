@@ -939,7 +939,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
     <button class="export-btn" style="margin-top:0" onclick="backupData()">📤 Backup All Data</button>
   </div>
-  <div class="card" style="margin-top:0.5rem">
+  <div class="card" id="supabase-setup-card" style="margin-top:0.5rem;display:none">
     <div class="card-title">Supabase Setup</div>
     <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে (Auth + Super Admin সহ):</div>
     <div onclick="copySql()" style="background:var(--bg2);border-radius:10px;padding:12px;font-size:11px;font-family:monospace;color:var(--text);line-height:1.7;cursor:pointer;word-break:break-all">
@@ -1307,6 +1307,7 @@ async function saveBroadcast(message) {
 }
 
 async function loadBroadcastEditor() {
+  toggleAdminOnlySettings();
   const card = document.getElementById('broadcast-admin-card');
   if (!card) return;
   if (!isSuperAdmin()) { card.style.display = 'none'; return; }
@@ -1319,6 +1320,12 @@ async function loadBroadcastEditor() {
     }
   } catch(e) {}
 }
+
+function toggleAdminOnlySettings() {
+  const setupCard = document.getElementById('supabase-setup-card');
+  if (setupCard) setupCard.style.display = isSuperAdmin() ? 'block' : 'none';
+}
+
 
 async function updateBroadcast() {
   const msg = document.getElementById('broadcast-input').value.trim();
@@ -1523,6 +1530,7 @@ function loadSettings() {
   if (st2) st2.textContent = kb + ' KB';
   const tot = document.getElementById('set-total');
   if (tot) tot.textContent = db.length;
+  toggleAdminOnlySettings();
 }
 
 // ============================================================
