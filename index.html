@@ -402,6 +402,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   .record-card{border:1px solid #ccc !important;page-break-inside:avoid;box-shadow:none !important}
 }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
 <body>
 
@@ -454,6 +455,10 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <span class="user-chip-avatar" id="user-chip-avatar">?</span>
         <span id="user-chip-name" style="max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
       </div>
+    </div>
+    <div id="offline-badge" style="display:none;align-items:center;gap:3px;background:rgba(255,149,0,0.15);border-radius:12px;padding:3px 8px;cursor:pointer" onclick="processPendingSync()" title="Pending offline records — tap to retry sync">
+      <span style="font-size:11px">📡</span>
+      <span class="offline-count" style="font-size:10px;font-weight:700;color:#FF9500">0</span>
     </div>
     <div style="display:flex;align-items:center;gap:4px;cursor:pointer" onclick="sbPull()" title="Sync with cloud">
       <span id="sync-dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted2);display:inline-block;transition:background 0.3s"></span>
@@ -741,6 +746,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
   <button class="report-btn" onclick="exportCSV()">⬇️ Download CSV</button>
   <button class="export-btn" style="background:rgba(52,199,89,0.1);border-color:rgba(52,199,89,0.3);color:#1B5E20;font-weight:600" onclick="sbPull()">☁️ Sync from Cloud</button>
+  <button class="export-btn" style="background:rgba(0,122,255,0.1);border-color:rgba(0,122,255,0.3);color:var(--accent);font-weight:600" onclick="openLiveMap()">🗺️ Live Map View</button>
   <button class="export-btn" onclick="exportHTML()">🌐 HTML Report</button>
   <button class="export-btn" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#128C7E" onclick="whatsappBulkReport()">📲 WhatsApp Daily Report</button>
   <button class="export-btn" onclick="window.print()">🖨️ Print</button>
@@ -926,6 +932,16 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
     </div>
   </div>
   <div class="card">
+    <div class="card-title">Notifications</div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div><div class="settings-label">Event start reminders</div><div class="settings-sub">Browser notification ১৫ ও ৫ মিনিট আগে + শুরুর সময়</div></div>
+        <label class="toggle"><input type="checkbox" id="event-reminder-toggle" onchange="toggleEventReminders(this)"><span class="toggle-slider"></span></label>
+      </div>
+      <div id="notif-permission-hint" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6"></div>
+    </div>
+  </div>
+  <div class="card">
     <div class="card-title">Data</div>
     <div class="settings-section">
       <div class="settings-row">
@@ -1074,6 +1090,24 @@ create policy "broadcast update admin only" on broadcast for update<br>
   </div>
 </div>
 
+<!-- LIVE MAP MODAL -->
+<div class="modal-backdrop" id="map-modal">
+  <div class="modal-sheet" style="padding-left:0;padding-right:0">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="padding:0 16px">🗺️ Live Check-in Map</div>
+    <div id="map-container" style="width:100%;height:380px;background:var(--bg2)"></div>
+    <div style="padding:12px 16px 0">
+      <div id="map-legend" style="display:flex;gap:14px;font-size:11px;color:var(--muted);margin-bottom:10px">
+        <span>🟢 On-Time</span>
+        <span>🔴 Late</span>
+        <span>📍 Event location</span>
+      </div>
+      <button class="export-btn" style="margin-top:0" onclick="closeModal('map-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 // ============================================================
 // SUPABASE CONFIG
@@ -1177,6 +1211,7 @@ function saveSession(tokenData) {
 }
 
 async function sbInsert(rec) {
+  if (!navigator.onLine) { queueSync('insert', rec); return false; }
   try {
     const row = {
       id: rec.id,
@@ -1200,12 +1235,13 @@ async function sbInsert(rec) {
       agent: rec.agent || ''
     };
     const res = await sbFetch('attendance', { method: 'POST', body: JSON.stringify(row) });
-    if (!res.ok) { const err = await res.text(); console.warn('Supabase insert error:', err); return false; }
+    if (!res.ok) { const err = await res.text(); console.warn('Supabase insert error:', err); queueSync('insert', rec); return false; }
     return true;
-  } catch(e) { console.warn('Supabase offline:', e); return false; }
+  } catch(e) { console.warn('Supabase offline:', e); queueSync('insert', rec); return false; }
 }
 
 async function sbUpdate(rec) {
+  if (!navigator.onLine) { queueSync('update', rec); return false; }
   try {
     const row = {
       name: rec.name || '',
@@ -1216,9 +1252,9 @@ async function sbUpdate(rec) {
       notes: rec.notes || ''
     };
     const res = await sbFetch(`attendance?id=eq.${rec.id}`, { method: 'PATCH', body: JSON.stringify(row) });
-    if (!res.ok) { const err = await res.text(); console.warn('Supabase update error:', err); return false; }
+    if (!res.ok) { const err = await res.text(); console.warn('Supabase update error:', err); queueSync('update', rec); return false; }
     return true;
-  } catch(e) { console.warn('Supabase offline:', e); return false; }
+  } catch(e) { console.warn('Supabase offline:', e); queueSync('update', rec); return false; }
 }
 
 async function sbPull() {
@@ -1246,8 +1282,77 @@ async function sbPull() {
 }
 
 async function sbDelete(id) {
-  try { await sbFetch(`attendance?id=eq.${id}`, { method: 'DELETE' }); } catch(e) {}
+  if (!navigator.onLine) { queueSync('delete', { id }); return false; }
+  try {
+    const res = await sbFetch(`attendance?id=eq.${id}`, { method: 'DELETE' });
+    if (!res.ok) { queueSync('delete', { id }); return false; }
+    return true;
+  } catch(e) { queueSync('delete', { id }); return false; }
 }
+
+// ---------- OFFLINE SYNC QUEUE ----------
+function queueSync(action, rec) {
+  pendingSync.push({ action, rec, queuedAt: Date.now() });
+  localStorage.setItem('attendance_pending_sync', JSON.stringify(pendingSync));
+  updateOfflineIndicator();
+}
+
+async function processPendingSync() {
+  if (!pendingSync.length || !navigator.onLine) { updateOfflineIndicator(); return; }
+  setSyncStatus('syncing');
+  const queue = [...pendingSync];
+  pendingSync = [];
+  let successCount = 0, failCount = 0;
+  for (const item of queue) {
+    let ok = false;
+    try {
+      if (item.action === 'insert') {
+        const row = {
+          id: item.rec.id, user_id: authUser ? authUser.id : null, owner_email: authUser ? authUser.email : null,
+          name: item.rec.name || '', roll: item.rec.idRoll || item.rec.roll || '', phone: item.rec.phone || '',
+          org: item.rec.org || '', type: item.rec.attendanceType || item.rec.type || 'Check-In',
+          schedule_status: item.rec.scheduleStatus || '', range_status: item.rec.rangeStatus || '',
+          lat: item.rec.lat || null, lng: item.rec.lng || null, address: item.rec.address || '', ip: item.rec.ip || '',
+          notes: item.rec.notes || '', photo: item.rec.face || item.rec.photo || null,
+          timestamp: item.rec.timestamp || new Date().toISOString(), time_display: item.rec.timeDisplay || '', agent: item.rec.agent || ''
+        };
+        const res = await sbFetch('attendance', { method: 'POST', body: JSON.stringify(row) });
+        ok = res.ok;
+      } else if (item.action === 'update') {
+        const row = { name: item.rec.name||'', roll: item.rec.idRoll||item.rec.roll||'', phone: item.rec.phone||'', org: item.rec.org||'', type: item.rec.attendanceType||item.rec.type||'Check-In', notes: item.rec.notes||'' };
+        const res = await sbFetch(`attendance?id=eq.${item.rec.id}`, { method: 'PATCH', body: JSON.stringify(row) });
+        ok = res.ok;
+      } else if (item.action === 'delete') {
+        const res = await sbFetch(`attendance?id=eq.${item.rec.id}`, { method: 'DELETE' });
+        ok = res.ok;
+      }
+    } catch(e) { ok = false; }
+    if (ok) successCount++;
+    else { failCount++; pendingSync.push(item); } // keep failed ones for next retry
+  }
+  localStorage.setItem('attendance_pending_sync', JSON.stringify(pendingSync));
+  updateOfflineIndicator();
+  if (successCount > 0) {
+    setSyncStatus('online');
+    showToast(`☁️ ${successCount} offline record synced!`);
+  } else if (failCount > 0) {
+    setSyncStatus('error');
+  }
+}
+
+function updateOfflineIndicator() {
+  const badge = document.getElementById('offline-badge');
+  if (!badge) return;
+  if (pendingSync.length > 0) {
+    badge.style.display = 'flex';
+    badge.querySelector('span.offline-count').textContent = pendingSync.length;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+window.addEventListener('online', () => { isOnline = true; showToast('🟢 Internet ফিরে এসেছে — sync হচ্ছে...'); processPendingSync(); });
+window.addEventListener('offline', () => { isOnline = false; setSyncStatus('error'); showToast('🔴 Internet নেই — offline mode চালু (data local-এ সেভ হচ্ছে)'); });
 
 function setSyncStatus(s) {
   syncStatus = s;
@@ -1362,6 +1467,8 @@ let isAdminAuthenticated = false;
 let currentPage = 1;
 const PAGE_SIZE = 10;
 let lastSuccessText = '';
+let pendingSync = JSON.parse(localStorage.getItem('attendance_pending_sync') || '[]'); // [{action:'insert'|'update'|'delete', rec or id}]
+let isOnline = navigator.onLine;
 
 // ============================================================
 // BOOT
@@ -1389,7 +1496,11 @@ function startApp() {
   autoThemeCheck();
   setInterval(checkLateAlert, 60000);
   checkLateAlert();
-  sbInit();
+  setInterval(checkEventReminder, 30000);
+  checkEventReminder();
+  updateOfflineIndicator();
+  if (navigator.onLine) { sbInit(); processPendingSync(); }
+  else { setSyncStatus('error'); showToast('🔴 Internet নেই — offline mode-এ চলছে'); }
 }
 
 function updateUserChip() {
@@ -1524,6 +1635,9 @@ function loadSettings() {
   if (rp) rp.checked = settings.requirePhoto !== false;
   const af = document.getElementById('autofill-toggle');
   if (af) af.checked = settings.autofill !== false;
+  const er = document.getElementById('event-reminder-toggle');
+  if (er) er.checked = !!settings.eventReminders && (typeof Notification === 'undefined' || Notification.permission === 'granted');
+  updateNotifPermissionHint();
   const raw = JSON.stringify(db);
   const kb = (new Blob([raw]).size / 1024).toFixed(1);
   const st2 = document.getElementById('set-storage');
@@ -1944,11 +2058,16 @@ function submitAttendance() {
     ownerEmail: authUser ? authUser.email : null
   };
   db.unshift(rec); saveDB();
-  sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
+  sbInsert(rec).then(ok => {
+    setSyncStatus(ok ? 'online' : (navigator.onLine ? 'error' : 'error'));
+    if (!ok) updateOfflineIndicator();
+  });
   addNotif(`✅ ${name} (${id}) marked ${rec.attendanceType}`, scheduleStatus === 'Late' ? '🔴' : '🟢');
   playSuccessChime();
   lastSuccessText = `${name} (ID: ${id}) — ${rec.attendanceType} at ${rec.timeDisplay}`;
-  document.getElementById('success-detail').textContent = `${name} recorded as ${rec.attendanceType}.`;
+  document.getElementById('success-detail').textContent = navigator.onLine
+    ? `${name} recorded as ${rec.attendanceType}.`
+    : `${name} recorded as ${rec.attendanceType}. 📡 Internet নেই — পরে auto-sync হবে।`;
   document.getElementById('form-main').style.display = 'none';
   document.getElementById('success-screen').style.display = 'block';
   updateTodayStats();
@@ -2191,6 +2310,69 @@ function showFaceModal(rid) {
 }
 
 // ============================================================
+// LIVE MAP VIEW (Leaflet)
+// ============================================================
+let liveMapInstance = null;
+function openLiveMap() {
+  const pinned = db.filter(r => r.lat && r.lng);
+  if (!pinned.length) { showToast('📍 কোনো GPS-tagged record নেই দেখানোর জন্য।'); return; }
+  document.getElementById('map-modal').classList.add('open');
+  // Defer render until modal is visible and sized correctly
+  setTimeout(() => renderLiveMap(pinned), 150);
+}
+
+function renderLiveMap(records) {
+  const container = document.getElementById('map-container');
+  if (!container || typeof L === 'undefined') { showToast('⚠️ Map লোড করা যায়নি — internet চেক করুন।'); return; }
+
+  // Destroy previous instance to avoid Leaflet re-init errors
+  if (liveMapInstance) { liveMapInstance.remove(); liveMapInstance = null; }
+
+  const avgLat = records.reduce((s,r) => s + r.lat, 0) / records.length;
+  const avgLng = records.reduce((s,r) => s + r.lng, 0) / records.length;
+
+  liveMapInstance = L.map('map-container').setView([avgLat, avgLng], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19
+  }).addTo(liveMapInstance);
+
+  const bounds = [];
+  records.forEach(r => {
+    const isLate = r.scheduleStatus === 'Late';
+    const color = isLate ? '#FF3B30' : '#34C759';
+    const marker = L.circleMarker([r.lat, r.lng], {
+      radius: 8, fillColor: color, color: '#fff', weight: 2, opacity: 1, fillOpacity: 0.9
+    }).addTo(liveMapInstance);
+    const ownerLine = isSuperAdmin() && r.ownerEmail ? `<br><span style="color:#888">👑 ${r.ownerEmail}</span>` : '';
+    marker.bindPopup(`
+      <b>${r.name || '—'}</b><br>
+      ${r.idRoll || r.roll || ''} · ${r.org || ''}<br>
+      ${r.attendanceType || r.type || ''} — ${r.scheduleStatus || ''}<br>
+      <span style="color:#888;font-size:11px">${r.timeDisplay || ''}</span>${ownerLine}
+    `);
+    bounds.push([r.lat, r.lng]);
+  });
+
+  // Pin event location if configured
+  if (eventProfile && eventProfile.targetLat && eventProfile.targetLng) {
+    const eventIcon = L.divIcon({ html: '📍', className: '', iconSize: [24,24] });
+    L.marker([eventProfile.targetLat, eventProfile.targetLng], { icon: eventIcon })
+      .addTo(liveMapInstance)
+      .bindPopup(`<b>${eventProfile.name || 'Event Location'}</b>${eventProfile.targetRadius ? `<br>Radius: ${eventProfile.targetRadius}m` : ''}`);
+    bounds.push([eventProfile.targetLat, eventProfile.targetLng]);
+    if (eventProfile.targetRadius) {
+      L.circle([eventProfile.targetLat, eventProfile.targetLng], {
+        radius: eventProfile.targetRadius, color: '#007AFF', fillColor: '#007AFF', fillOpacity: 0.08, weight: 1.5
+      }).addTo(liveMapInstance);
+    }
+  }
+
+  if (bounds.length > 1) liveMapInstance.fitBounds(bounds, { padding: [30,30] });
+  setTimeout(() => { if (liveMapInstance) liveMapInstance.invalidateSize(); }, 200);
+}
+
+// ============================================================
 // PERSON SUMMARY
 // ============================================================
 function showPersonSummary(idRoll) {
@@ -2244,7 +2426,10 @@ function saveEditRecord() {
   showToast('✅ Record updated.');
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  if (id === 'map-modal' && liveMapInstance) { liveMapInstance.remove(); liveMapInstance = null; }
+}
 
 // ============================================================
 // BULK / DELETE
@@ -2587,6 +2772,83 @@ function checkLateAlert() {
 }
 
 // ============================================================
+// PUSH-STYLE EVENT REMINDER (Browser Notifications)
+// ============================================================
+const REMINDER_THRESHOLDS = [15, 5]; // minutes before event start
+function getNotifiedFlags() {
+  return JSON.parse(localStorage.getItem('attendance_notified_flags') || '{}');
+}
+function setNotifiedFlag(key) {
+  const flags = getNotifiedFlags();
+  flags[key] = true;
+  localStorage.setItem('attendance_notified_flags', JSON.stringify(flags));
+}
+async function requestNotifyPermission() {
+  if (!('Notification' in window)) { showToast('⚠️ এই ব্রাউজার notification সাপোর্ট করে না।'); return false; }
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission === 'denied') { showToast('🔕 Notification ব্রাউজার সেটিংস থেকে block করা আছে।'); return false; }
+  const perm = await Notification.requestPermission();
+  return perm === 'granted';
+}
+async function toggleEventReminders(cb) {
+  if (cb.checked) {
+    const granted = await requestNotifyPermission();
+    if (!granted) { cb.checked = false; updateNotifPermissionHint(); return; }
+    settings.eventReminders = true;
+    showToast('🔔 Event reminder চালু হয়েছে।');
+  } else {
+    settings.eventReminders = false;
+  }
+  localStorage.setItem('attendance_settings', JSON.stringify(settings));
+  updateNotifPermissionHint();
+}
+function updateNotifPermissionHint() {
+  const hint = document.getElementById('notif-permission-hint');
+  if (!hint) return;
+  if (!('Notification' in window)) { hint.textContent = '⚠️ এই ব্রাউজার notification সাপোর্ট করে না।'; return; }
+  if (Notification.permission === 'denied') { hint.textContent = '🔕 Notification ব্রাউজার সেটিংস থেকে block করা — Browser settings থেকে allow করুন।'; return; }
+  if (settings.eventReminders) { hint.textContent = '✅ Event start এর ১৫ ও ৫ মিনিট আগে, এবং শুরুর সময় notification পাবেন।'; }
+  else { hint.textContent = ''; }
+}
+function fireNotification(title, body) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  try {
+    new Notification(title, { body, icon: '✅', tag: 'attendance-reminder' });
+  } catch(e) { console.warn('Notification failed:', e); }
+}
+function checkEventReminder() {
+  if (!settings.eventReminders) return;
+  if (!eventProfile || !eventProfile.start) return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const now = new Date();
+  const start = new Date(eventProfile.start);
+  const diffMin = Math.round((start - now) / 60000);
+  const eventKey = eventProfile.name + '_' + eventProfile.start;
+  REMINDER_THRESHOLDS.forEach(threshold => {
+    const flagKey = `${eventKey}_${threshold}`;
+    if (diffMin > 0 && diffMin <= threshold) {
+      const flags = getNotifiedFlags();
+      if (!flags[flagKey]) {
+        fireNotification(
+          `⏰ ${eventProfile.name || 'Event'} শুরু হবে ${diffMin} মিনিটে`,
+          `Attendance মার্ক করতে ভুলবেন না — ${eventProfile.organizer ? 'Organizer: ' + eventProfile.organizer : ''}`
+        );
+        setNotifiedFlag(flagKey);
+      }
+    }
+  });
+  // Notify exactly at start time too
+  const startFlagKey = `${eventKey}_start`;
+  if (diffMin <= 0 && diffMin > -2) {
+    const flags = getNotifiedFlags();
+    if (!flags[startFlagKey]) {
+      fireNotification(`🟢 ${eventProfile.name || 'Event'} শুরু হয়েছে`, 'এখন attendance মার্ক করুন।');
+      setNotifiedFlag(startFlagKey);
+    }
+  }
+}
+
+// ============================================================
 // CHECK-IN DURATION TIMER
 // ============================================================
 let checkinTimerInterval = null;
@@ -2840,7 +3102,7 @@ function showToast(msg) {
 }
 
 document.querySelectorAll('.modal-backdrop').forEach(el => {
-  el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
+  el.addEventListener('click', e => { if (e.target===el) closeModal(el.id); });
 });
 </script>
 </body>
