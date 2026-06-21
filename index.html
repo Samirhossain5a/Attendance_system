@@ -641,6 +641,13 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 
 <!-- ADMIN PAGE -->
 <div class="page" id="page-admin">
+  <div id="super-admin-banner" style="display:none;background:linear-gradient(135deg,#FFD700,#FF9500);border-radius:14px;padding:12px 16px;margin-bottom:14px;color:#1a1a1a;align-items:center;gap:10px">
+    <span style="font-size:22px">👑</span>
+    <div>
+      <div style="font-size:14px;font-weight:700">Super Admin Mode</div>
+      <div id="super-admin-msg" style="font-size:12px;opacity:0.85;margin-top:2px">Showing all users' attendance records</div>
+    </div>
+  </div>
   <div class="profile-card">
     <div class="profile-card-top">
       <div>
@@ -740,6 +747,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
         <option value="Overtime">Overtime</option>
       </select>
     </div>
+    <select id="filter-owner" onchange="currentPage=1;renderRecords()" style="display:none"><option value="">👑 All Users</option></select>
   </div>
   <div class="bulk-bar" style="margin-top:0.75rem">
     <label style="display:flex;align-items:center;gap:6px;margin-bottom:0;cursor:pointer">
@@ -900,11 +908,12 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
   </div>
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">Supabase Setup</div>
-    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে (Auth সহ — প্রতি user এর data আলাদা থাকবে):</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:10px">Supabase এ নিচের SQL run করো Table তৈরি করতে (Auth + Super Admin সহ):</div>
     <div onclick="copySql()" style="background:var(--bg2);border-radius:10px;padding:12px;font-size:11px;font-family:monospace;color:var(--text);line-height:1.7;cursor:pointer;word-break:break-all">
-create table attendance (<br>
+create table if not exists attendance (<br>
 &nbsp;&nbsp;id bigint primary key,<br>
 &nbsp;&nbsp;user_id uuid references auth.users(id) default auth.uid(),<br>
+&nbsp;&nbsp;owner_email text,<br>
 &nbsp;&nbsp;name text, roll text, phone text, org text,<br>
 &nbsp;&nbsp;type text, schedule_status text, range_status text,<br>
 &nbsp;&nbsp;lat float8, lng float8, address text, ip text,<br>
@@ -912,18 +921,27 @@ create table attendance (<br>
 &nbsp;&nbsp;timestamp timestamptz default now(),<br>
 &nbsp;&nbsp;time_display text<br>
 );<br><br>
+alter table attendance add column if not exists owner_email text;<br><br>
 alter table attendance enable row level security;<br><br>
-create policy "select own" on attendance for select<br>
-&nbsp;&nbsp;using (auth.uid() = user_id);<br>
+drop policy if exists "select own" on attendance;<br>
+drop policy if exists "insert own" on attendance;<br>
+drop policy if exists "update own" on attendance;<br>
+drop policy if exists "delete own" on attendance;<br>
+drop policy if exists "select own or admin" on attendance;<br>
+drop policy if exists "update own or admin" on attendance;<br>
+drop policy if exists "delete own or admin" on attendance;<br><br>
+create policy "select own or admin" on attendance for select<br>
+&nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');<br>
 create policy "insert own" on attendance for insert<br>
 &nbsp;&nbsp;with check (auth.uid() = user_id);<br>
-create policy "update own" on attendance for update<br>
-&nbsp;&nbsp;using (auth.uid() = user_id);<br>
-create policy "delete own" on attendance for delete<br>
-&nbsp;&nbsp;using (auth.uid() = user_id);
+create policy "update own or admin" on attendance for update<br>
+&nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');<br>
+create policy "delete own or admin" on attendance for delete<br>
+&nbsp;&nbsp;using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
     </div>
     <button onclick="copySql()" style="margin-top:8px;width:100%;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer">📋 SQL Copy করো</button>
-    <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7">⚠️ Email confirmation বন্ধ রাখতে: Supabase Dashboard → Authentication → Providers → Email → "Confirm email" টগল OFF করো (test করার জন্য সহজ হবে)।</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7">👑 Super Admin email: <b>samirhossain5a@gmail.com</b> — এই ইমেইল দিয়ে login করলে সব user এর data দেখা/এডিট/ডিলিট করা যাবে।</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.7">⚠️ Email confirmation বন্ধ রাখতে: Supabase Dashboard → Authentication → Providers → Email → "Confirm email" টগল OFF করো।</div>
   </div>
   <div class="card" style="margin-top:0.5rem">
     <div class="card-title">About</div>
@@ -1016,6 +1034,10 @@ create policy "delete own" on attendance for delete<br>
 // ============================================================
 const SUPABASE_URL = 'https://zshwkbhrinsckoetifsw.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_aVM5BOB9rwM4gAhUBhSjHg_49KOuP0c';
+const SUPER_ADMIN_EMAIL = 'samirhossain5a@gmail.com';
+function isSuperAdmin() {
+  return !!(authUser && authUser.email && authUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase());
+}
 let syncStatus = 'idle';
 
 // ---------- AUTH STATE ----------
@@ -1113,6 +1135,7 @@ async function sbInsert(rec) {
     const row = {
       id: rec.id,
       user_id: authUser ? authUser.id : null,
+      owner_email: authUser ? authUser.email : null,
       name: rec.name || '',
       roll: rec.idRoll || rec.roll || '',
       phone: rec.phone || '',
@@ -1166,7 +1189,7 @@ async function sbPull() {
       notes: r.notes, face: r.photo, photo: r.photo,
       timestamp: r.timestamp,
       timeDisplay: r.time_display, timeStr: r.timestamp ? new Date(r.timestamp).toDateString() : '',
-      agent: r.agent, user_id: r.user_id
+      agent: r.agent, user_id: r.user_id, ownerEmail: r.owner_email
     }));
     db = remote;
     saveDB();
@@ -1255,9 +1278,9 @@ function updateUserChip() {
   if (!authUser) { if (bar) bar.style.display = 'none'; return; }
   const displayName = (authUser.user_metadata && authUser.user_metadata.full_name) || authUser.email || 'User';
   if (bar) bar.style.display = 'flex';
-  if (nameEl) nameEl.textContent = displayName;
+  if (nameEl) nameEl.textContent = (isSuperAdmin() ? '👑 ' : '') + displayName;
   if (avatarEl) avatarEl.textContent = displayName.charAt(0).toUpperCase();
-  if (acctNameEl) acctNameEl.textContent = displayName;
+  if (acctNameEl) acctNameEl.textContent = displayName + (isSuperAdmin() ? ' 👑 Super Admin' : '');
   if (acctEmailEl) acctEmailEl.textContent = authUser.email || '';
 }
 
@@ -1677,7 +1700,19 @@ function showPage(p) {
   document.getElementById('page-' + p).classList.add('active');
   const bnav = document.getElementById('bnav-' + p);
   if (bnav) bnav.classList.add('active');
-  if (p === 'admin') { currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard(); }
+  if (p === 'admin') {
+    currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard();
+    const banner = document.getElementById('super-admin-banner');
+    if (banner) {
+      if (isSuperAdmin()) {
+        const userCount = new Set(db.map(r => r.ownerEmail).filter(Boolean)).size;
+        document.getElementById('super-admin-msg').textContent = `Showing records from ${userCount} user(s) across the system`;
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+  }
   if (p === 'settings') { loadSettings(); }
   if (p === 'notif') { renderNotifs(); }
   if (p === 'files') { renderFileGrid(); loadProfileData(); }
@@ -1781,7 +1816,8 @@ function submitAttendance() {
     timestamp: now2.toISOString(),
     timeDisplay: now2.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
     timeStr: now2.toDateString(),
-    notes: document.getElementById('f-notes').value.trim()
+    notes: document.getElementById('f-notes').value.trim(),
+    ownerEmail: authUser ? authUser.email : null
   };
   db.unshift(rec); saveDB();
   sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
@@ -1829,7 +1865,8 @@ function manualEntry() {
     scheduleStatus: 'On-Time', rangeStatus: 'In-Range', checked: false,
     timestamp: now.toISOString(),
     timeDisplay: now.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
-    timeStr: now.toDateString(), notes: 'Manual admin entry'
+    timeStr: now.toDateString(), notes: 'Manual admin entry',
+    ownerEmail: authUser ? authUser.email : null
   };
   db.unshift(rec); saveDB();
   sbInsert(rec).then(ok => setSyncStatus(ok ? 'online' : 'error'));
@@ -1926,6 +1963,20 @@ function updateStats() {
   const prev = sel.value;
   sel.innerHTML = '<option value="">All Branches</option>';
   [...branches].sort().forEach(o => { const opt = document.createElement('option'); opt.value=o; opt.textContent=o; if(o===prev) opt.selected=true; sel.appendChild(opt); });
+
+  // Super admin: populate "filter by user" dropdown
+  const ownerSel = document.getElementById('filter-owner');
+  if (ownerSel) {
+    if (isSuperAdmin()) {
+      ownerSel.style.display = 'block';
+      const owners = [...new Set(db.map(r => r.ownerEmail).filter(Boolean))].sort();
+      const prevOwner = ownerSel.value;
+      ownerSel.innerHTML = '<option value="">👑 All Users</option>';
+      owners.forEach(em => { const opt = document.createElement('option'); opt.value=em; opt.textContent=em; if(em===prevOwner) opt.selected=true; ownerSel.appendChild(opt); });
+    } else {
+      ownerSel.style.display = 'none';
+    }
+  }
 }
 
 // ============================================================
@@ -1937,10 +1988,13 @@ function getFiltered() {
   const status = document.getElementById('filter-status').value;
   const from = document.getElementById('filter-date-from').value;
   const to = document.getElementById('filter-date-to').value;
+  const ownerSel = document.getElementById('filter-owner');
+  const owner = (ownerSel && isSuperAdmin()) ? ownerSel.value : '';
   return db.filter(r => {
     const rid = r.idRoll || r.roll || '';
     if (q && !(r.name||'').toLowerCase().includes(q) && !rid.toLowerCase().includes(q)) return false;
     if (org && r.org !== org) return false;
+    if (owner && r.ownerEmail !== owner) return false;
     if (status) {
       if (['On-Time','Late'].includes(status) && r.scheduleStatus !== status) return false;
       if (['In-Range','Out-of-Range'].includes(status) && r.rangeStatus !== status) return false;
@@ -1978,7 +2032,7 @@ function renderRecords() {
           ${r.rangeStatus==='Out-of-Range'?'<span class="badge badge-red">📍 Out</span>':'<span class="badge badge-green">📍 In Range</span>'}
           ${r.notes?`<br><span style="font-style:italic">📝 ${r.notes}</span>`:''}
         </div>
-        <div class="record-time">🕐 ${r.timeDisplay||''} · 🌐 ${r.ip||''}</div>
+        <div class="record-time">🕐 ${r.timeDisplay||''} · 🌐 ${r.ip||''}${(isSuperAdmin() && r.ownerEmail) ? ` · 👑 <span style="color:var(--accent);font-weight:600">${r.ownerEmail}</span>` : ''}</div>
       </div>
       <div class="rec-actions">
         <button class="rec-edit-btn" onclick="openEditModal(${r.id})" title="Edit">✏️</button>
@@ -2540,9 +2594,10 @@ function deleteFile(id) {
 }
 
 function copySql() {
-  const sql = `create table attendance (
+  const sql = `create table if not exists attendance (
   id bigint primary key,
   user_id uuid references auth.users(id) default auth.uid(),
+  owner_email text,
   name text, roll text, phone text, org text,
   type text, schedule_status text, range_status text,
   lat float8, lng float8, address text, ip text,
@@ -2550,16 +2605,26 @@ function copySql() {
   timestamp timestamptz default now(),
   time_display text
 );
+
+alter table attendance add column if not exists owner_email text;
 alter table attendance enable row level security;
 
-create policy "select own" on attendance for select
-  using (auth.uid() = user_id);
+drop policy if exists "select own" on attendance;
+drop policy if exists "insert own" on attendance;
+drop policy if exists "update own" on attendance;
+drop policy if exists "delete own" on attendance;
+drop policy if exists "select own or admin" on attendance;
+drop policy if exists "update own or admin" on attendance;
+drop policy if exists "delete own or admin" on attendance;
+
+create policy "select own or admin" on attendance for select
+  using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
 create policy "insert own" on attendance for insert
   with check (auth.uid() = user_id);
-create policy "update own" on attendance for update
-  using (auth.uid() = user_id);
-create policy "delete own" on attendance for delete
-  using (auth.uid() = user_id);`;
+create policy "update own or admin" on attendance for update
+  using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');
+create policy "delete own or admin" on attendance for delete
+  using (auth.uid() = user_id or auth.jwt() ->> 'email' = 'samirhossain5a@gmail.com');`;
   navigator.clipboard.writeText(sql).then(() => showToast('✅ SQL copied! Supabase > SQL Editor এ paste করো'));
 }
 
