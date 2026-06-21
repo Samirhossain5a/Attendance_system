@@ -751,6 +751,21 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
       <div id="super-admin-msg" style="font-size:12px;opacity:0.85;margin-top:2px">Showing all users' attendance records</div>
     </div>
   </div>
+  <div class="card" id="cutoff-card" style="background:linear-gradient(135deg,rgba(255,149,0,0.1),rgba(255,59,48,0.06));border:0.5px solid rgba(255,149,0,0.25)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="margin-bottom:0;color:#FF9500">⏰ Daily Cutoff Time</div>
+      <span id="cutoff-active-badge" class="badge badge-orange" style="display:none">Active</span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">এই সময়ের পর কেউ attendance দিলে স্বয়ংক্রিয়ভাবে "Late" দেখাবে — প্রতিদিন একই সময়ে প্রযোজ্য (Event Configuration-এ আলাদা start time সেট না থাকলে)।</div>
+    <div style="display:flex;gap:8px">
+      <input type="time" id="cutoff-time-input" style="flex:1">
+      <button onclick="saveDailyCutoff()" style="padding:0 18px;border-radius:11px;border:none;background:#FF9500;color:#fff;font-size:14px;font-weight:600;cursor:pointer">Save</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <div id="cutoff-status-text" style="font-size:12px;color:var(--muted)"></div>
+      <button id="cutoff-clear-btn" onclick="clearDailyCutoff()" style="display:none;background:transparent;border:none;color:var(--danger);font-size:12px;font-weight:600;cursor:pointer">Remove</button>
+    </div>
+  </div>
   <div class="profile-card">
     <div class="profile-card-top">
       <div>
