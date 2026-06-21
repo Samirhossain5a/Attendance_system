@@ -395,6 +395,87 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 #user-bar{display:none;align-items:center;gap:6px}
 .user-chip{background:var(--bg2);border-radius:20px;padding:4px 10px 4px 4px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer}
 .user-chip-avatar{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+
+/* ============================================================
+   MOBILE RESPONSIVE — same design, tighter fit on small screens
+   ============================================================ */
+@media (max-width: 480px) {
+  .page{padding:12px 12px 0}
+  .page{padding-bottom:calc(72px + env(safe-area-inset-bottom)) !important}
+  .page-title{font-size:24px}
+
+  /* Nav bar: shrink gaps and hide least-critical items first */
+  .nav{padding:0 8px;height:46px}
+  .nav-brand{font-size:14px}
+  .nav-right{gap:2px}
+  .icon-btn{width:30px;height:30px;font-size:14px}
+  .live-clock{font-size:11px;margin-right:0}
+  #user-bar .user-chip-name, #user-chip-name{max-width:46px !important}
+  .user-chip{padding:3px 7px 3px 3px;font-size:11px}
+  .user-chip-avatar{width:18px;height:18px;font-size:9px}
+  #offline-badge{padding:2px 6px}
+  #sync-lbl{display:none}
+
+  /* Weather / event / quick-note cards */
+  .weather-card{padding:12px 14px;flex-wrap:wrap;gap:8px}
+  .wx-temp{font-size:28px}
+  .wx-icon{font-size:36px}
+  .wx-right{text-align:right}
+
+  /* Today stats: keep 4 columns but tighten */
+  .today-stats-row{gap:6px}
+  .today-pill{padding:10px 4px 8px}
+  .today-pill-num{font-size:18px}
+  .today-pill-lbl{font-size:9px}
+
+  /* Camera + forms */
+  .card{padding:14px;border-radius:14px}
+  input,select,textarea{font-size:16px;padding:12px 13px}
+  .cam-btn-row{flex-wrap:wrap}
+  #captureBtn{min-width:0}
+
+  /* Admin profile + stats */
+  .profile-card{padding:14px}
+  .profile-card-stats{gap:10px}
+  .profile-stat-num{font-size:18px}
+
+  /* Summary / file grids: 2-col stays, just tighten gap */
+  .summary-stat-row{gap:6px}
+  .file-grid{gap:8px}
+
+  /* Record cards */
+  .record-card{padding:12px;gap:10px}
+  .record-face{width:42px;height:42px}
+  .record-name{font-size:14px}
+  .record-meta{font-size:11px}
+
+  /* Filters row in admin: stack org/status if cramped */
+  .date-range-row{grid-template-columns:1fr 1fr}
+
+  /* Modals: full-bleed, slightly less padding */
+  .modal-sheet{padding:16px 12px max(20px, env(safe-area-inset-bottom))}
+  .modal-title{font-size:16px}
+
+  /* Bottom nav: tighten labels */
+  .bnav-lbl{font-size:9px}
+  .bnav-icon{font-size:20px}
+
+  /* Live map modal sizing on phones */
+  #map-container{height:300px}
+
+  /* Auth screen padding */
+  .auth-box{max-width:100%}
+}
+
+@media (max-width: 360px) {
+  .nav-brand{font-size:12px}
+  #user-bar{display:none !important}
+  .live-clock{font-size:10px}
+  .today-pill-num{font-size:16px}
+  .wx-temp{font-size:24px}
+  .today-stats-row{grid-template-columns:repeat(4,1fr);gap:4px}
+}
+
 @media print{
   body{background:#fff;color:#000}
   .nav,.report-btn,.export-btn,.bulk-bar,#search-input,#filter-org,#filter-status,.edit-profile-btn,.delete-rec-btn,.rec-edit-btn,button,input,.rec-check-wrap,.live-clock,.countdown-row,.pagination,#splash,.manual-entry-card,.bottom-nav{display:none !important}
