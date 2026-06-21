@@ -376,7 +376,7 @@ body.dark-theme .toast{background:rgba(220,220,225,0.9);color:#000}
 .auth-tabs{display:flex;background:var(--bg2);border-radius:12px;padding:3px;margin-bottom:20px}
 .auth-tab{flex:1;text-align:center;padding:10px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.18s}
 .auth-tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-.auth-error{background:rgba(255,59,48,0.1);border:0.5px solid rgba(255,59,48,0.3);border-radius:10px;padding:10px 13px;font-size:13px;color:#FF3B30;margin-bottom:12px;display:none}
+.auth-error{background:rgba(255,59,48,0.1);border:0.5px solid rgba(255,59,48,0.3);border-radius:10px;padding:10px 13px;font-size:13px;color:#FF3B30;margin-bottom:12px;display:none;word-break:break-word;line-height:1.5}
 .auth-info{background:rgba(0,122,255,0.1);border:0.5px solid rgba(0,122,255,0.25);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--accent);margin-bottom:12px;display:none}
 .auth-submit-btn{width:100%;padding:15px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;transition:transform 0.1s,opacity 0.15s}
 .auth-submit-btn:active{transform:scale(0.97);opacity:0.85}
@@ -1038,25 +1038,49 @@ async function sbFetch(path, options = {}) {
 
 // ---------- AUTH: REGISTER ----------
 async function authRegister(name, email, password) {
-  const res = await fetch(SUPABASE_URL + '/auth/v1/signup', {
-    method: 'POST',
-    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, data: { full_name: name } })
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error_description || data.msg || data.error || 'Registration failed.');
+  let res, data;
+  try {
+    res = await fetch(SUPABASE_URL + '/auth/v1/signup', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, data: { full_name: name } })
+    });
+  } catch (networkErr) {
+    throw new Error('Network/CORS error: ' + networkErr.message);
+  }
+  try {
+    data = await res.json();
+  } catch (parseErr) {
+    throw new Error(`Server returned non-JSON response (status ${res.status}).`);
+  }
+  if (!res.ok) {
+    const msg = data.msg || data.error_description || data.message || data.error || data.error_code || data.code || JSON.stringify(data);
+    throw new Error(`[${res.status}] ${msg}`);
+  }
   return data;
 }
 
 // ---------- AUTH: LOGIN ----------
 async function authLogin(email, password) {
-  const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
-    method: 'POST',
-    headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error_description || data.msg || 'Login failed. Check email/password.');
+  let res, data;
+  try {
+    res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+  } catch (networkErr) {
+    throw new Error('Network/CORS error: ' + networkErr.message);
+  }
+  try {
+    data = await res.json();
+  } catch (parseErr) {
+    throw new Error(`Server returned non-JSON response (status ${res.status}).`);
+  }
+  if (!res.ok) {
+    const msg = data.msg || data.error_description || data.message || data.error || data.error_code || data.code || JSON.stringify(data);
+    throw new Error(`[${res.status}] ${msg}`);
+  }
   return data;
 }
 
@@ -1307,6 +1331,11 @@ async function doRegister() {
       hideAuthScreen();
       startApp();
       showToast('✅ Account created! Welcome.');
+    } else if (data.id && data.identities && data.identities.length === 0) {
+      // Supabase returns 200 with empty identities when the email is already registered
+      showAuthError('এই ইমেইল দিয়ে আগেই একটা অ্যাকাউন্ট আছে। Login করুন।');
+      switchAuthTab('login');
+      document.getElementById('login-email').value = email;
     } else {
       // Email confirmation required
       showAuthInfo('✅ Account created! এখন আপনার ইমেইল চেক করে confirm করুন, তারপর Login করুন।');
