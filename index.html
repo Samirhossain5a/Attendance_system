@@ -1552,6 +1552,7 @@ async function clearBroadcast() {
 // ============================================================
 let db = JSON.parse(localStorage.getItem('attendance_db') || '[]');
 let eventProfile = JSON.parse(localStorage.getItem('attendance_profile') || 'null');
+let dailyCutoffTime = localStorage.getItem('attendance_daily_cutoff') || ''; // "HH:MM" format, e.g. "09:00"
 let adminPin = localStorage.getItem('attendance_secure_pin') || '1234';
 let currentTheme = localStorage.getItem('attendance_theme') || 'auto';
 let settings = JSON.parse(localStorage.getItem('attendance_settings') || '{"faceGuide":true,"sound":true,"blockDup":false,"requirePhoto":true,"autofill":true}');
@@ -1585,6 +1586,7 @@ function startApp() {
   updateUserChip();
   locationData.agent = getDeviceInfo();
   getLocation(); getIP(); applyProfile();
+  updateCutoffUI();
   startClock();
   loadSettings();
   updateNotifDot();
@@ -2035,7 +2037,7 @@ function showPage(p) {
   const bnav = document.getElementById('bnav-' + p);
   if (bnav) bnav.classList.add('active');
   if (p === 'admin') {
-    currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard(); renderUserManagement();
+    currentPage = 1; updateStats(); renderRecords(); renderActivityFeed(); renderLeaderboard(); renderUserManagement(); updateCutoffUI();
     const banner = document.getElementById('super-admin-banner');
     if (banner) {
       if (isSuperAdmin()) {
@@ -2101,6 +2103,65 @@ function applyProfile() {
 }
 
 // ============================================================
+// DAILY CUTOFF TIME (simple, recurring every day)
+// ============================================================
+function saveDailyCutoff() {
+  const val = document.getElementById('cutoff-time-input').value; // "HH:MM"
+  if (!val) { showToast('⚠️ একটা সময় বাছাই করো।'); return; }
+  dailyCutoffTime = val;
+  localStorage.setItem('attendance_daily_cutoff', dailyCutoffTime);
+  updateCutoffUI();
+  showToast(`✅ Daily cutoff সেট হয়েছে — রোজ ${formatTime12h(val)} এর পর "Late" দেখাবে।`);
+}
+function clearDailyCutoff() {
+  if (!confirm('Daily cutoff time সরিয়ে দিতে চান?')) return;
+  dailyCutoffTime = '';
+  localStorage.removeItem('attendance_daily_cutoff');
+  updateCutoffUI();
+  showToast('🗑️ Daily cutoff সরানো হয়েছে।');
+}
+function formatTime12h(hhmm) {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12}:${String(m).padStart(2,'0')} ${period}`;
+}
+function updateCutoffUI() {
+  const input = document.getElementById('cutoff-time-input');
+  const badge = document.getElementById('cutoff-active-badge');
+  const statusText = document.getElementById('cutoff-status-text');
+  const clearBtn = document.getElementById('cutoff-clear-btn');
+  if (!input) return;
+  if (dailyCutoffTime) {
+    input.value = dailyCutoffTime;
+    if (badge) badge.style.display = 'inline-block';
+    if (statusText) statusText.textContent = `⏰ রোজ ${formatTime12h(dailyCutoffTime)} এর পর "Late" ধরা হবে`;
+    if (clearBtn) clearBtn.style.display = 'inline-block';
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (statusText) statusText.textContent = 'কোনো cutoff সেট করা নেই — সব attendance "On-Time" ধরা হবে (যদি Event Configuration-এ আলাদা সময় না থাকে)।';
+    if (clearBtn) clearBtn.style.display = 'none';
+  }
+}
+// Computes On-Time/Late using: 1) full Event Configuration start/end if set, else 2) daily cutoff time, else 3) always On-Time
+function computeScheduleStatus(now) {
+  if (eventProfile && eventProfile.start) {
+    const start = new Date(eventProfile.start);
+    const end = eventProfile.end ? new Date(eventProfile.end) : null;
+    if (end) return (now < start || now <= end) ? 'On-Time' : 'Late';
+    return now > start ? 'Late' : 'On-Time';
+  }
+  if (dailyCutoffTime) {
+    const [h, m] = dailyCutoffTime.split(':').map(Number);
+    const cutoff = new Date(now);
+    cutoff.setHours(h, m, 0, 0);
+    return now > cutoff ? 'Late' : 'On-Time';
+  }
+  return 'On-Time';
+}
+
+// ============================================================
 // SUBMIT
 // ============================================================
 function submitAttendance() {
@@ -2121,16 +2182,7 @@ function submitAttendance() {
     if (!list.includes(id.toLowerCase())) { showToast('❌ ID not in whitelist.'); return; }
   }
   const now = new Date();
-  let scheduleStatus = 'On-Time';
-  if (eventProfile && eventProfile.start) {
-    const start = new Date(eventProfile.start);
-    const end = eventProfile.end ? new Date(eventProfile.end) : null;
-    if (end) {
-      scheduleStatus = (now < start || now <= end) ? 'On-Time' : 'Late';
-    } else {
-      scheduleStatus = now > start ? 'Late' : 'On-Time';
-    }
-  }
+  let scheduleStatus = computeScheduleStatus(now);
   let rangeStatus = 'In-Range';
   if (eventProfile && eventProfile.targetLat && eventProfile.targetLng && eventProfile.targetRadius) {
     if (locationData.lat && locationData.lng) {
@@ -2201,7 +2253,7 @@ function manualEntry() {
     type: document.getElementById('m-type').value,
     face: null, photo: null, lat: null, lng: null,
     address: 'Manual Entry', ip: 'Admin', agent: 'Manual (Admin)',
-    scheduleStatus: 'On-Time', rangeStatus: 'In-Range', checked: false,
+    scheduleStatus: computeScheduleStatus(now), rangeStatus: 'In-Range', checked: false,
     timestamp: now.toISOString(),
     timeDisplay: now.toLocaleString([],{dateStyle:'medium',timeStyle:'short'}),
     timeStr: now.toDateString(), notes: 'Manual admin entry',
@@ -2850,21 +2902,40 @@ function renderGlobalSearch(q) {
 // ============================================================
 function checkLateAlert() {
   const banner = document.getElementById('late-alert-banner');
-  if (!banner || !eventProfile || !eventProfile.start) return;
+  if (!banner) return;
   const now = new Date();
-  const start = new Date(eventProfile.start);
-  const end = eventProfile.end ? new Date(eventProfile.end) : null;
-  if (now > start && (!end || now < end)) {
-    const diff = now - start;
-    const mins = Math.floor(diff / 60000);
-    const hrs = Math.floor(mins / 60);
-    const rem = mins % 60;
-    const timeStr = hrs > 0 ? `${hrs}h ${rem}m` : `${mins}m`;
-    document.getElementById('late-alert-msg').textContent = `Event started ${timeStr} ago — check-ins now marked Late`;
-    banner.style.display = 'flex';
-  } else {
+  if (eventProfile && eventProfile.start) {
+    const start = new Date(eventProfile.start);
+    const end = eventProfile.end ? new Date(eventProfile.end) : null;
+    if (now > start && (!end || now < end)) {
+      const diff = now - start;
+      const mins = Math.floor(diff / 60000);
+      const hrs = Math.floor(mins / 60);
+      const rem = mins % 60;
+      const timeStr = hrs > 0 ? `${hrs}h ${rem}m` : `${mins}m`;
+      document.getElementById('late-alert-msg').textContent = `Event started ${timeStr} ago — check-ins now marked Late`;
+      banner.style.display = 'flex';
+      return;
+    }
     banner.style.display = 'none';
+    return;
   }
+  if (dailyCutoffTime) {
+    const [h, m] = dailyCutoffTime.split(':').map(Number);
+    const cutoff = new Date(now);
+    cutoff.setHours(h, m, 0, 0);
+    if (now > cutoff) {
+      const diff = now - cutoff;
+      const mins = Math.floor(diff / 60000);
+      const hrs = Math.floor(mins / 60);
+      const rem = mins % 60;
+      const timeStr = hrs > 0 ? `${hrs}h ${rem}m` : `${mins}m`;
+      document.getElementById('late-alert-msg').textContent = `আজকের cutoff (${formatTime12h(dailyCutoffTime)}) ${timeStr} আগে পার হয়ে গেছে — এখন check-in "Late" দেখাবে`;
+      banner.style.display = 'flex';
+      return;
+    }
+  }
+  banner.style.display = 'none';
 }
 
 // ============================================================
